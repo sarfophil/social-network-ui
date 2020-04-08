@@ -35,4 +35,8 @@ export class PostsComponent implements OnInit {
     setTimeout(() => this.showPlaceholder = true,3000)
   }
 
+  showPostModal(){
+    console.log('show modal')
+  }
+
 }

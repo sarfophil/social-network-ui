@@ -6,12 +6,12 @@
                 <div class="row align-items-center">
                     <div class="col-md-5">
                         <!-- header top navigation start -->
-                        <div class="header-top-navigation">
+                        <div class="header-top-navigation" >
                             <nav>
                                 <ul>
-                                    <li class="active"><a routerLink="/home">home</a></li>
+                                    <li class="active"><a [routerLink]="headerType == 'user'?'/home':'/admin/dashboard'">home</a></li>
 
-                                    <li class="notification-trigger">
+                                    <li class="notification-trigger" *ngIf="headerType == 'user'">
                                     <a class="msg-trigger-btn" style="cursor: pointer;" (click)="expandNotification()">notification</a>
                                         <div class="message-dropdown" id="b" [@slideToggle]="isOpen? 'open':'close'">
                                             <div class="dropdown-title">
@@ -116,7 +116,7 @@
                     <div class="col-md-5">
                         <div class="header-top-right d-flex align-items-center justify-content-end">
                             <!-- header top search start -->
-                            <div class="header-top-search">
+                            <div class="header-top-search" *ngIf="headerType == 'user'">
                                 <form class="top-search-box">
                                     <input type="text" placeholder="Search" class="top-search-field">
                                     <button class="top-search-btn"><i class="flaticon-search"></i></button>
@@ -139,7 +139,8 @@
                                         </div>
                                         <div class="profile-body">
                                             <ul>
-                                                <li><a routerLink="/profile/1/timeline"><i class="flaticon-user"></i>Profile</a></li>
+                                                <li *ngIf="headerType == 'user'"><a routerLink="/profile/1/timeline"><i class="flaticon-user"></i>Profile</a></li>
+                                                <li *ngIf="headerType == 'admin'"><a routerLink="/admin/dashboard/profile/"><i class="flaticon-user"></i>Profile</a></li>
                                             </ul>
                                             <ul>
                                                 <li><a href="signup.html"><i class="flaticon-unlock"></i>Sing out</a></li>
@@ -178,7 +179,7 @@
                     </li>
                    
                     <!-- Search -->
-                    <li>
+                    <li *ngIf="headerType == 'user'">
                         <button class="search-trigger" (click) = "toggleSearch()">
                             <i class="search-icon flaticon-search"></i>
                             <i class="close-icon flaticon-cross-out"></i>
@@ -200,14 +201,15 @@
                             <img src="assets/images/profile/profile-small-1.jpg" alt="profile picture">
                         </figure>
                     </a>
-                    <div class="profile-dropdown text-left" [@slideToggle] = "isProfileOpen ? 'openProfile':'closeProfile'">
+                    <div class="profile-dropdown text-left" *ngIf="headerType == 'user'" [@slideToggle] = "isProfileOpen ? 'openProfile':'closeProfile'">
                         <div class="profile-head">
                             <h5 class="name"><a href="#">Madison Howard</a></h5>
                             <a class="mail" href="#">mailnam@mail.com</a>
                         </div>
                         <div class="profile-body">
                             <ul>
-                                <li><a routerLink="/profile/1/timeline"><i class="flaticon-user"></i>Profile</a></li>
+                                <li *ngIf="headerType == 'user'"><a routerLink="/profile/1/timeline"><i class="flaticon-user"></i>Profile</a></li>
+                                <li *ngIf="headerType == 'admin'"><a routerLink="/admin/dashboard/profile/"><i class="flaticon-user"></i>Profile</a></li>
                             </ul>
                             <ul>
                                 <li><a href="signup.html"><i class="flaticon-unlock"></i>Sing out</a></li>

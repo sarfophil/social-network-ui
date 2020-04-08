@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener, Input } from '@angular/core';
 import {trigger,state,style,transition, animate} from '@angular/animations';
 
 
@@ -43,6 +43,7 @@ export class HeaderComponent implements OnInit {
   isSearchInputOpen = false;
   isProfileOpen = false;
 
+  @Input() headerType: string;
 
   constructor() { }
 

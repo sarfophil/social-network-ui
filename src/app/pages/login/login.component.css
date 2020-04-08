@@ -2,3 +2,18 @@
 .timeline-bg-content {
     background-image: url('../../../assets/images/banner/adda-timeline.jpg');
 }
+
+.other-links{
+    padding-top: 12px;
+    font-size: 16px;
+}
+
+.other-links a{
+    color: #dc4734;
+}
+
+.other-links p{
+    text-align: center;
+}
+
+

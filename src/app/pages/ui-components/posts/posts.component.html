@@ -43,6 +43,37 @@
         <!-- Modal end -->
     </div>
 </div>
+
+<!-- Comment Modal -->
+
+<!-- Modal start -->
+<div class="modal fade large" id="postModal" aria-labelledby="postModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">User name</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body custom-scroll">
+                <div class="row">
+                    <div class="col-lg-7">
+                        
+                    </div>
+                    <div class="col-lg-4"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal end -->
+
+
+
+
+
+
 <!-- share box end -->
 <div class="box-placeholder" style="width: 100%; margin: auto;" [@loadingPlaceholder]="showPlaceholder ? 'close':'open'">
     <div class="p-4">
@@ -105,7 +136,7 @@
             <div class="post-thumb-gallery img-gallery">
                 <div class="row no-gutters">
                     <div class="col-8">
-                        <figure class="post-thumb">
+                        <figure class="post-thumb" (click)="showPostModal()">
                             <a class="gallery-selector" href="assets/images/post/post-large-2.jpg">
                                 <img src="assets/images/post/post-2.jpg" alt="post image">
                             </a>
@@ -115,7 +146,7 @@
                         <div class="row">
                             <div class="col-12">
                                 <figure class="post-thumb">
-                                    <a class="gallery-selector" href="assets/images/post/post-large-3.jpg">
+                                    <a class="gallery-selector" href="assets/images/post/post-large-3.jpg" (click)="showPostModal()" data-toggle="modal" data-target="#postModal">
                                         <img src="assets/images/post/post-3.jpg" alt="post image">
                                     </a>
                                 </figure>

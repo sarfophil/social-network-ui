@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
-import { AnimationService } from './animation.service';
+import { ConfigService } from './config-service';
 
-describe('AnimationService', () => {
+describe('ConfigServiceService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: AnimationService = TestBed.get(AnimationService);
+    const service: ConfigService = TestBed.get(ConfigService);
     expect(service).toBeTruthy();
   });
 });
