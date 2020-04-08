@@ -67,7 +67,7 @@ export class ProviderService {
        headers:  this.config.getHeaders()
     }
 
-    return this.http.get(url,httpOptions) .pipe(
+    return this.http.get(url,httpOptions).pipe(
       retry(2), // retries 2 times when request fails
       catchError(this.config.handleError)
     )  

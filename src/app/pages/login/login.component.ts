@@ -4,7 +4,8 @@ import { ProviderService } from 'src/app/service/provider-service/provider.servi
 import { API_TYPE } from 'src/app/model/apiType';
 import { HttpParams } from '@angular/common/http';
 import { resolve } from 'url';
-import { pipe } from 'rxjs';
+import { pipe, Observable } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 @Component({
   selector: 'app-login',
@@ -26,9 +27,11 @@ export class LoginComponent implements OnInit {
 
   testApi(){
     let queryParam = '?user=5e8b84f61a6fc1397022ff69&page=0&limit=5'
-    this.provider.get(API_TYPE.POST,'',queryParam).subscribe(res => {
-      console.log(res)
-    })
+    this.provider.get(API_TYPE.POST,'',queryParam)
+      .subscribe(
+        (res) => console.log(res),
+        error => console.log(`${error}`)
+    )
   }
 
 }
