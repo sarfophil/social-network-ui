@@ -24,9 +24,30 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.css",
+              "src/assets/css/vendor/bootstrap.min.css",
+              "src/assets/css/vendor/bicon.min.css",
+              "src/assets/css/vendor/flaticon.css",
+              "src/assets/css/plugins/plyr.css",
+              "src/assets/css/plugins/slick.min.css",
+              "src/assets/css/plugins/perfect-scrollbar.css",   
+              "src/assets/css/style.css",
+              "src/assets/css/placeholder.scss"
             ],
-            "scripts": []
+            "scripts": [
+              "src/assets/js/vendor/modernizr-3.6.0.min.js",
+              "src/assets/js/vendor/jquery-3.3.1.min.js",
+              "src/assets/js/vendor/popper.min.js",
+              "src/assets/js/vendor/bootstrap.min.js",
+              "src/assets/js/plugins/slick.min.js",
+              "src/assets/js/plugins/plyr.min.js",
+              "src/assets/js/plugins/perfect-scrollbar.min.js",
+              "src/assets/js/plugins/lightgallery-all.min.js",
+              "src/assets/js/plugins/imagesloaded.pkgd.min.js",
+              "src/assets/js/plugins/isotope.pkgd.min.js",
+              "src/assets/js/plugins/nice-select.min.js",
+              "src/assets/js/main.js"
+            ]
           },
           "configurations": {
             "production": {

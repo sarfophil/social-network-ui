@@ -1,0 +1,81 @@
+<app-header></app-header>
+<main>
+
+<div class="main-wrapper">
+    <div class="profile-banner-large bg-img">
+    </div>
+    <div class="profile-menu-area bg-white">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-3 col-md-3">
+                    <div class="profile-picture-box">
+                        <figure class="profile-picture">
+                            <a href="profile.html">
+                                <img src="assets/images/profile/profile-1.jpg" alt="profile picture">
+                            </a>
+                        </figure>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 offset-lg-1">
+                    <div class="profile-menu-wrapper">
+                        <div class="main-menu-inner header-top-navigation">
+                            <nav>
+                                <ul class="main-menu">
+                                    <li routerLinkActive="active"><a routerLink="/profile/1/timeline">timeline</a></li>
+                                    <li><a href="photos.html">photos</a></li>
+                                    <li  routerLinkActive="active"><a routerLink="/profile/1/followers">Followers (20)</a></li>
+                                    <!-- <li class="d-inline-block d-md-none"><a href="profile.html">edit profile</a></li> -->
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-3 d-none d-md-block">
+                    <div class="profile-edit-panel">
+                        <button class="edit-btn">edit profile</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 order-2 order-lg-1">
+                <aside class="widget-area profile-sidebar">
+                    <!-- widget single item start -->
+                    <div class="card widget-item">
+                        <h4 class="widget-title">kate palson</h4>
+                        <div class="widget-body">
+                            <div class="about-author">
+                                <p>I Don’t know how? But i believe that it is possible one day if i stay with my dream all time</p>
+                                <ul class="author-into-list">
+                                    <li><a href="#"><i class="bi bi-office-bag"></i>Graphic Designer</a></li>
+                                    <li><a href="#"><i class="bi bi-home"></i>Melbourne, Australia</a></li>
+                                    <li><a href="#"><i class="bi bi-location-pointer"></i>Pulshar, Melbourne</a></li>
+                                    <li><a href="#"><i class="bi bi-heart-beat"></i>Travel, Swimming</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- widget single item end -->
+
+                </aside>
+            </div>
+
+            <div class="col-lg-6 order-1 order-lg-2">
+            
+                <router-outlet></router-outlet>
+
+
+            </div>
+
+            <div class="col-lg-3 order-3">
+                <aside class="widget-area">
+                   <app-search-widget></app-search-widget>
+                </aside>
+            </div>
+        </div>
+    </div>
+</div>
+
+</main>
