@@ -1064,7 +1064,7 @@ textarea:focus {
 }
 
 .dropdown-msg-list li.msg-list-item .author a {
-  color: #333333;
+  /* color: #333333; */
 }
 
 .dropdown-msg-list li.msg-list-item .author a:hover {
@@ -1080,6 +1080,7 @@ textarea:focus {
   position: relative;
   padding-bottom: 5px;
   border-bottom: 1px solid #ddd;
+  margin-top: 10px;
 }
 
 .top-search-field {
@@ -1561,9 +1562,7 @@ textarea:focus {
 
 .author {
   font-size: 14px;
-  font-weight: 800;
   line-height: 1;
-  text-transform: capitalize;
 }
 
 .author a {

@@ -81,8 +81,11 @@ export class ProviderService {
             // launch Modal
             let dialogRef = this.dialog.open(LoginWidgetComponent,{
               maxWidth: '500px',
-              maxHeight: '300px'
+              maxHeight: '300px',
+              data: this
             })
+
+            
             
             dialogRef.afterClosed().subscribe((res) => {
               location.reload()

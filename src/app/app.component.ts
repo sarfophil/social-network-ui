@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SocketioService } from './service/socket/socketio.service';
+import { ViewportScroller } from '@angular/common';
 
 @Component({
   selector: 'app-root',
@@ -8,12 +9,16 @@ import { SocketioService } from './service/socket/socketio.service';
 })
 export class AppComponent implements OnInit{
   title = 'social-network';
-  constructor(private socketioService:SocketioService){}
+  constructor(private socketioService:SocketioService,private viewportScroller: ViewportScroller){}
 
 
   ngOnInit(): void {
     this.socketioService.initiazeSocketClient()
-    this.socketioService.demoBroadcast()
+    this.socketioService.onNotificationReceivedEvent()
+  }
+
+  scrollUp(){
+   this.viewportScroller.scrollToPosition([0,0])
   }
 
 }
