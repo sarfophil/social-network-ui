@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { catchError, retry } from 'rxjs/operators'
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { ConfigService } from '../config/config-service';
 import { API_TYPE } from 'src/app/model/apiType';
+import { MatDialog } from '@angular/material/dialog';
+import { LoginWidgetComponent } from 'src/app/pages/ui-components/login-widget/login-widget.component';
 
 
 @Injectable({
@@ -11,7 +13,7 @@ import { API_TYPE } from 'src/app/model/apiType';
 })
 export class ProviderService {
 
-  constructor(private http:HttpClient,private config: ConfigService) { }
+  constructor(private http:HttpClient,private config: ConfigService,private dialog: MatDialog) { }
 
 
   /**
@@ -72,6 +74,23 @@ export class ProviderService {
       catchError(this.config.handleError)
     )  
   }
+
+  onTokenExpired(content:string,statusCode:number): void{
+    let expired = content? true : false;
+        if(expired){
+            // launch Modal
+            let dialogRef = this.dialog.open(LoginWidgetComponent,{
+              maxWidth: '500px',
+              maxHeight: '300px'
+            })
+            
+            dialogRef.afterClosed().subscribe((res) => {
+              location.reload()
+            })
+        }
+  }
+
+
 
 
 }

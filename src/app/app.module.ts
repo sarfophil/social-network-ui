@@ -25,6 +25,12 @@ import { AccountReviewComponent } from './pages/admin-ui-components/account-revi
 import { SocketIoModule,SocketIoConfig } from 'ngx-socket-io'
 import { environment } from 'src/environments/environment';
 import { AdminLoginComponent } from './pages/admin-login/admin-login.component';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { LoginWidgetComponent } from './pages/ui-components/login-widget/login-widget.component';
+import {MatDialogModule} from '@angular/material/dialog';
 
 
 // socket config
@@ -51,16 +57,23 @@ const socketConfig: SocketIoConfig = {url: environment.socketEndpoint,options: {
     KeywordComponent,
     PostReviewComponent,
     AccountReviewComponent,
-    AdminLoginComponent
+    AdminLoginComponent,
+    LoginWidgetComponent
   ],
   imports: [
     BrowserModule,  
     HttpClientModule,
+    MatProgressSpinnerModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatSnackBarModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    SocketIoModule.forRoot(socketConfig)
+    SocketIoModule.forRoot(socketConfig),
+    MatDialogModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [LoginWidgetComponent]
 })
 export class AppModule { }
