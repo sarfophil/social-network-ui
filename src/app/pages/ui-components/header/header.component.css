@@ -1,0 +1,20 @@
+.notification-dropdown{
+    width: 300px;
+    z-index: 100;
+    position: abosulute;
+    top: 20;
+    box-shadow: 0px 1px 15px 0px rgba(51, 51, 51, 0.2);
+    background-color: #fff;
+    border-radius: 0 0 2px 2px;
+    left: 0;
+}
+
+.you{
+    font-style: italic;
+    font-weight: 100 !important;
+    font-size: 11px;
+}
+
+
+
+

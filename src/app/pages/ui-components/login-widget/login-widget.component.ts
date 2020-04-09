@@ -5,7 +5,6 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { LoginResponse } from '../../login/login.component';
 import { API_TYPE } from 'src/app/model/apiType';
 import { ProviderService } from 'src/app/service/provider-service/provider.service';
-import { Route } from '@angular/compiler/src/core';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -28,7 +27,7 @@ export class LoginWidgetComponent implements OnInit {
   loginForm: FormGroup;
   isLoading: Boolean = false;
   constructor(public dialogRef: MatDialogRef<LoginWidgetComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,private formBuilder: FormBuilder,private provider: ProviderService,private router: Router,private snackbar: MatSnackBar) { }
+    @Inject(MAT_DIALOG_DATA) public data: any,private formBuilder: FormBuilder,private snackbar: MatSnackBar) { }
 
   ngOnInit() {
     this.dialogRef.disableClose = true;
@@ -41,7 +40,7 @@ export class LoginWidgetComponent implements OnInit {
   login() {
     this.isLoading = true;
     let body = this.loginForm.value;
-    this.provider.post(API_TYPE.USER,'login',body)
+    this.data.post(API_TYPE.USER,'login',body)
     .subscribe({      
       next:(res:LoginResponse)=> {     
         res.user.password = '';

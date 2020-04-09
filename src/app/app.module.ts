@@ -31,6 +31,10 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { LoginWidgetComponent } from './pages/ui-components/login-widget/login-widget.component';
 import {MatDialogModule} from '@angular/material/dialog';
+import { ShortenPipe } from './pipe/shorten/shorten.pipe';
+import { MomentPipe } from './pipe/moment/moment.pipe';
+import { SearchComponent } from './pages/search/search.component';
+import { CreatePostComponent } from './pages/ui-components/widgets/create-post/create-post.component';
 
 
 // socket config
@@ -58,7 +62,11 @@ const socketConfig: SocketIoConfig = {url: environment.socketEndpoint,options: {
     PostReviewComponent,
     AccountReviewComponent,
     AdminLoginComponent,
-    LoginWidgetComponent
+    LoginWidgetComponent,
+    ShortenPipe,
+    MomentPipe,
+    SearchComponent,
+    CreatePostComponent
   ],
   imports: [
     BrowserModule,  

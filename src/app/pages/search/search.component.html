@@ -1,0 +1,16 @@
+<app-header
+     [headerType]="'user'">
+</app-header>
+
+<main>
+    <div class="main-wrapper pt-80">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-7 order-1 order-lg-2" style="overflow: auto;">
+                    <app-posts  [postState]="postState" [postData] = "searchQuery"></app-posts>
+                </div>
+                <div class="col-lg-5 order-3"></div>
+            </div>
+        </div>
+    </div>
+</main>
