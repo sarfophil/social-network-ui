@@ -11,6 +11,7 @@ import { PostReviewComponent } from './pages/admin-ui-components/post-review/pos
 import { AccountReviewComponent } from './pages/admin-ui-components/account-review/account-review.component';
 import { AdvertComponent } from './pages/admin-ui-components/advert/advert.component';
 import { AdminLoginComponent } from './pages/admin-login/admin-login.component'
+import { CanActivateTeamService } from './service/canActivateTeam/can-activate-team.service';
 
 const routes: Routes = [
   {
@@ -24,11 +25,15 @@ const routes: Routes = [
   },
   {
     path: 'home',
-    component: HomeComponent
+    component: HomeComponent,
+    canActivate: [CanActivateTeamService],
+    data:{role: ['USER_ROLE']}
   },
   {
     path: 'profile/:userId',
     component: ProfileComponent,
+    data: {role: ['USER_ROLE']},
+    canActivate: [CanActivateTeamService],
     children: [
       {
         path: '',
@@ -37,11 +42,15 @@ const routes: Routes = [
       },
       {
         path: 'timeline',
-        component: PostsComponent
+        component: PostsComponent,  
+        data: {role: ['USER_ROLE']},
+        canActivateChild: [CanActivateTeamService]
       },
       {
         path: 'followers',
-        component: FollowersComponent
+        component: FollowersComponent,   
+        data: {role: ['USER_ROLE']},      
+        canActivateChild: [CanActivateTeamService]
       }
     ]
   },

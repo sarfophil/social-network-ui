@@ -16,4 +16,8 @@
     text-align: center;
 }
 
+.loader > svg > circle{
+    stroke: #fff !important;
+}
+
 

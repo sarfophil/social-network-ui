@@ -32,7 +32,8 @@
               "src/assets/css/plugins/slick.min.css",
               "src/assets/css/plugins/perfect-scrollbar.css",   
               "src/assets/css/style.css",
-              "src/assets/css/placeholder.scss"
+              "src/assets/css/placeholder.scss",
+              "src/color.scss"
             ],
             "scripts": [
               "src/assets/js/vendor/modernizr-3.6.0.min.js",

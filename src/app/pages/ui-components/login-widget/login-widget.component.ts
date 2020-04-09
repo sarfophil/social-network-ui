@@ -1,23 +1,18 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { ProviderService } from 'src/app/service/provider-service/provider.service';
+import { Component, OnInit, Inject } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { trigger, state, style } from '@angular/animations';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { LoginResponse } from '../../login/login.component';
 import { API_TYPE } from 'src/app/model/apiType';
-import { FormBuilder,Validators, FormGroup } from '@angular/forms'
-import { trigger,state,style } from '@angular/animations';
-
-import {MatSnackBar} from '@angular/material/snack-bar';
-import { User } from 'src/app/model/user';
-
-export interface LoginResponse{
-   access_token: string;
-   user: User
-}
-
+import { ProviderService } from 'src/app/service/provider-service/provider.service';
+import { Route } from '@angular/compiler/src/core';
+import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css'],
+  selector: 'app-login-widget',
+  templateUrl: './login-widget.component.html',
+  styleUrls: ['./login-widget.component.css'],
   animations: [
     trigger('loadingState',[
       state('open',style({
@@ -29,18 +24,19 @@ export interface LoginResponse{
     ])
   ]
 })
-export class LoginComponent implements OnInit {
+export class LoginWidgetComponent implements OnInit {
   loginForm: FormGroup;
   isLoading: Boolean = false;
-  constructor(private router:Router,private provider:ProviderService,private formBuilder:FormBuilder,private snackbar:MatSnackBar) { }
+  constructor(public dialogRef: MatDialogRef<LoginWidgetComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any,private formBuilder: FormBuilder,private provider: ProviderService,private router: Router,private snackbar: MatSnackBar) { }
 
   ngOnInit() {
+    this.dialogRef.disableClose = true;
     this.loginForm = this.formBuilder.group({
       username: ['',Validators.required],
       password: ['',Validators.required]
     })
   }
-
 
   login() {
     this.isLoading = true;
@@ -51,7 +47,7 @@ export class LoginComponent implements OnInit {
         res.user.password = '';
         localStorage.setItem('access_token',res.access_token)
         localStorage.setItem('active_user',JSON.stringify(res.user))
-        this.router.navigateByUrl('/home')
+        this.dialogRef.close()
       },
       error:(err) => {
         this.isLoading = false
@@ -62,6 +58,5 @@ export class LoginComponent implements OnInit {
     })
     
   }
-
 
 }

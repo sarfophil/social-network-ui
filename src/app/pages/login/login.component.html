@@ -21,18 +21,23 @@
                         <!-- Login Div -->
                         <div class="col-lg-6">  
                             <div class="login-area">
-                                <div class="row align-items-center">
-                                    <div class="col-12 col-sm">
-                                        <input type="text" placeholder="Email or Userame" class="single-field">
-                                    </div>
-                                    <div class="col-12 col-sm">
-                                        <input type="password" placeholder="Password" class="single-field">
-                                    </div>
-                                    <div class="col-12 col-sm-auto">
-                                        <button class="login-btn" type="button" (click) = "login()">Login</button>
-                                    </div>
-                          
-                                </div>
+                                
+                                <form [formGroup]="loginForm" (ngSubmit)="login()">
+                                    <div class="row align-items-center">
+                                            <div class="col-12 col-sm">
+                                                <input type="text" placeholder="Email or Username" formControlName="username" class="single-field">
+                                            </div>
+                                            <div class="col-12 col-sm">
+                                                <input type="password" placeholder="Password" formControlName="password" class="single-field">
+                                            </div>
+                                            <div class="col-12 col-sm-auto">
+                                                <button [@loadingState]="isLoading?'close':'open'" class="login-btn" type="submit" [disabled]="!loginForm.valid">Login</button>
+                                                <mat-progress-spinner [@loadingState]="isLoading?'open':'close'" class="loader" color="white" mode="indeterminate" value="10" strokeWidth="3" diameter="40">
+                                                </mat-progress-spinner>
+                                            </div>
+                                            
+                                    </div>    
+                                </form>
                             </div>
                             
                         </div>

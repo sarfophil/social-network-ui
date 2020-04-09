@@ -1,13 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpHeaders, HttpResponse, HttpErrorResponse } from '@angular/common/http';
-import { throwError } from 'rxjs';
+import { throwError, Observable } from 'rxjs';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class ConfigService {
+  
+  constructor() {
+   }
 
-  constructor() { }
 
 
   getHeaders(){
@@ -17,6 +20,9 @@ export class ConfigService {
     })
   }
 
+  
+
+  
   handleError(error: HttpErrorResponse){
     if (error.error instanceof ErrorEvent) {
       // A client-side or network error occurred. Handle it accordingly.
@@ -28,10 +34,13 @@ export class ConfigService {
         `Backend returned code ${error.status}, ` +
         `body was: ${error.error}`);
     }
-    // return an observable with a user-facing error message
-    return throwError('Something bad happened; please try again later.');
 
+    // return an observable with a user-facing error message
+    return throwError({statusCode:error.status,responseMessage:error.error,message:'Something bad happened; please try again later.'});
   }
+
+  
+ 
 
 
 
