@@ -33,11 +33,12 @@
                                                 <!-- *ngFor="let result of search$ | async" -->
                                                 <li class="msg-list-item d-flex justify-content-between" *ngFor="let result of search$ | async">
                                                     <!-- profile picture end -->
-                                                    <div class="profile-thumb">
-                                                        <figure class="profile-thumb-middle">
-                                                            <img src="assets/images/profile/profile-small-3.jpg" alt="profile picture">
+                                                    <!-- <div class="profile-thumb">
+                                                        <figure class="profile-thumb-middle"> -->
+                                                            <!-- <img src="assets/images/profile/profile-small-3.jpg" alt="profile picture"> -->
+                                                            <!-- <app-profile-photo [imageName]="result" [style]=""></app-profile-photo>
                                                         </figure>
-                                                    </div>
+                                                    </div> -->
                                                     <!-- profile picture end -->
 
                                                     <!-- message content start -->
@@ -70,6 +71,7 @@
                         <div class="brand-logo text-center">
                             <a href="index.html">
                                 <img src="assets/images/logo/logo.png" alt="brand logo">
+                                
                             </a>
                         </div>
                         <!-- brand logo end -->
@@ -84,7 +86,8 @@
                                 <div class="profile-thumb-small">
                                     <a href="javascript:void(0)" class="profile-triger" (click)="openProfileDropdown()">
                                         <figure>
-                                            <img src="assets/images/profile/profile-small-1.jpg" alt="profile picture">
+                                            <!-- <img src="assets/images/profile/profile-small-1.jpg" alt="profile picture"> -->
+                                            <app-profile-photo [imageName]="currentuser.profilePicture" [style]=""></app-profile-photo>
                                         </figure>
                                     </a>
                                     <div class="profile-dropdown" [@slideToggle] = "isProfileOpen ? 'openProfile':'closeProfile'">

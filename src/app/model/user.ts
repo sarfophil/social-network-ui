@@ -1,7 +1,8 @@
 /**
  * User Response Interface
  */
-export interface User{
+
+ export interface User{
     _id: String,
     username: String;
     email: String;
@@ -12,4 +13,5 @@ export interface User{
     age: Number;
     isActive: Boolean;
     password: String;
+    profilePicture: String;
 }
