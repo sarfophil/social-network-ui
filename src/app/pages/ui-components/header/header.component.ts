@@ -55,6 +55,7 @@ export class HeaderComponent implements OnInit {
 
   // View All Link
   viewAllRoute:string = ''
+
   constructor(private router:Router,private _eref: ElementRef,private provider : ProviderService) { }
 
   ngOnInit() {

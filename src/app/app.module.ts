@@ -35,6 +35,7 @@ import { ShortenPipe } from './pipe/shorten/shorten.pipe';
 import { MomentPipe } from './pipe/moment/moment.pipe';
 import { SearchComponent } from './pages/search/search.component';
 import { CreatePostComponent } from './pages/ui-components/widgets/create-post/create-post.component';
+import { ProfilePhotoComponent } from './pages/ui-components/profile-photo/profile-photo.component';
 
 
 // socket config
@@ -66,7 +67,8 @@ const socketConfig: SocketIoConfig = {url: environment.socketEndpoint,options: {
     ShortenPipe,
     MomentPipe,
     SearchComponent,
-    CreatePostComponent
+    CreatePostComponent,
+    ProfilePhotoComponent
   ],
   imports: [
     BrowserModule,  
