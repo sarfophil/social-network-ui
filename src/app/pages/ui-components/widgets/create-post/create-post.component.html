@@ -13,34 +13,67 @@
 
         <!-- share content box start -->
         <div class="share-content-box w-100">
-            <form class="share-text-box">
-                <textarea name="share" class="share-text-field" aria-disabled="true" placeholder="Say Something" data-toggle="modal" data-target="#textbox" id="email"></textarea>
+            <form class="share-text-box" (ngSubmit)=onCreatePost(f) #f="ngForm">
+                <textarea name="content" ngModel class="share-text-field" aria-disabled="true"
+                    placeholder="Say Something" data-toggle="modal" data-target="#textbox" id="content"></textarea>
                 <button class="btn-share" type="submit">share</button>
             </form>
         </div>
         <!-- share content box end -->
         <!-- Modal start -->
-        <div class="modal fade" id="textbox" aria-labelledby="textbox">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Share Your Mood</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body custom-scroll">
-                        <textarea name="share" class="share-field-big custom-scroll" placeholder="Say Something"></textarea>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="post-share-btn" data-dismiss="modal">cancel</button>
-                        <button type="button" class="post-share-btn">post</button>
+        <form (ngSubmit)=onCreatePost(f) #f="ngForm">
+            <div class="modal fade" id="textbox" aria-labelledby="textbox">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Share Your Mood</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body custom-scroll">
+                            <textarea name="content" id="content" ngModel class="share-field-big custom-scroll"
+                                placeholder="Say Something"></textarea>
+                            <h6 class="modal-title">insert your audience age</h6>
+                            <input type="number" name="minAge" ngModel placeholder="Min Age" class="single-field">
+                            <input type="number" name="maxAge" ngModel placeholder="Max Age" class="single-field">
+                            <br>
+
+                            <a class="a" (click)=toggleDisplay()>Select Followers to Notify</a>
+
+                            <hr>
+                            <div [hidden]='isShow' *ngFor="let user of users; let i = index">
+
+
+                                <li class="list-group-item">
+                                    <!-- Default checked -->
+                                    <div class="custom-control custom-checkbox">
+                                        <input class="single-field" type="checkbox" id='{{user._id}}' name="{{user._id}}"
+                                            [(ngModel)]="user.checked">
+                                        <label [attr.for]="user._id"> {{user.name}}</label></div>
+                                </li>
+
+                            </div>
+                            <hr>
+
+                            <input type="checkbox" name="notifyFollowers" ngModel value="true" > <label for="notifyFollowers">NotifyFollowers</label>
+
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="post-share-btn" data-dismiss="modal">cancel</button>
+                            <button type="submit" class="post-share-btn">post</button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </form>
         <!-- Modal end -->
     </div>
 </div>
+
+<template #audienceFollowers>
+    <input type="checkbox" name="audienceFollowers" id="">
+</template>
 
 <!-- Comment Modal -->
