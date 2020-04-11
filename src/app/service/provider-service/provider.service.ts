@@ -84,9 +84,7 @@ export class ProviderService {
               maxHeight: '300px',
               data: this
             })
-
-            
-            
+    
             dialogRef.afterClosed().subscribe((res) => {
               location.reload()
             })

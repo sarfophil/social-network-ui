@@ -36,6 +36,7 @@ import { MomentPipe } from './pipe/moment/moment.pipe';
 import { SearchComponent } from './pages/search/search.component';
 import { CreatePostComponent } from './pages/ui-components/widgets/create-post/create-post.component';
 import { ProfilePhotoComponent } from './pages/ui-components/profile-photo/profile-photo.component';
+import { ViewPostModalComponent } from './pages/ui-components/view-post-modal/view-post-modal.component';
 
 
 // socket config
@@ -68,7 +69,8 @@ const socketConfig: SocketIoConfig = {url: environment.socketEndpoint,options: {
     MomentPipe,
     SearchComponent,
     CreatePostComponent,
-    ProfilePhotoComponent
+    ProfilePhotoComponent,
+    ViewPostModalComponent
   ],
   imports: [
     BrowserModule,  
@@ -84,6 +86,6 @@ const socketConfig: SocketIoConfig = {url: environment.socketEndpoint,options: {
   ],
   providers: [],
   bootstrap: [AppComponent],
-  entryComponents: [LoginWidgetComponent]
+  entryComponents: [LoginWidgetComponent,ViewPostModalComponent]
 })
 export class AppModule { }

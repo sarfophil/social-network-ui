@@ -17,6 +17,9 @@ export class ProfilePhotoComponent implements OnInit {
   /** css styles */
   @Input("style") style: Object = {};
 
+  /** Fetch image with userId */
+  @Input("fetchWithUserId") fetchWithUserId: String
+
   isLoading:Boolean = true;
 
   imageSrc:any = 'assets/img/user.png';
@@ -24,7 +27,7 @@ export class ProfilePhotoComponent implements OnInit {
   constructor(private providerService: ProviderService,private sanitizer:DomSanitizer) { }
 
   ngOnInit() {
-    if(this.imageName) this.loadImage()
+    this.loadImage()
   }
 
   
@@ -32,8 +35,10 @@ export class ProfilePhotoComponent implements OnInit {
 
 
   loadImage(){
+     let queryParam = `?imagename=${this.imageName}`
+     if(this.fetchWithUserId && !this.imageName) queryParam = `?userId=${this.fetchWithUserId}`
      let headerOption = {responseType: 'blob'}
-     this.providerService.get(API_TYPE.DEFAULT,'download',`?imagename=${this.imageName}`,headerOption)
+     this.providerService.get(API_TYPE.DEFAULT,'download',queryParam,headerOption)
      .subscribe(
        (res) => {
          let objectUrl = URL.createObjectURL(res)
