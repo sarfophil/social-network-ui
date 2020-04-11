@@ -4,7 +4,7 @@ export class Post {
         private audienceCriteria:{age: { min: Number, max: Number }}, 
          private targetFollowers:any[],
           private notifyFollowers :boolean,
-          private images :File){};
+          private imageLink: string){};
           
 
 }

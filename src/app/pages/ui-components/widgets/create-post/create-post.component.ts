@@ -64,44 +64,6 @@ export class CreatePostComponent implements OnInit {
   }
 
 
-
-  
-
-  toggleDisplay() {
-    this.isShow = !this.isShow;
-  }
-
-  onFileSelect(event) {
-    if (event.target.files.length > 0) {
-      const file = event.target.files[0];
-      this.uploadForm.get('profile').setValue(file);
-    }
-  }
-
-  get f() {
-    return this.myForm.controls;
-  }
-
-  onFileChange(event) {
-    const reader = new FileReader();
-
-    if (event.target.files && event.target.files.length) {
-      const [file] = event.target.files;
-      reader.readAsDataURL(file);
-
-      reader.onload = () => {
-
-        this.imageSrc = reader.result as string;
-
-        this.myForm.patchValue({
-          fileSource: reader.result
-        });
-
-      };
-
-    }
-  }
-
   submit() {
     let audienceFollowers = [];
 
@@ -115,14 +77,14 @@ export class CreatePostComponent implements OnInit {
     }
 
     console.log(audienceFollowers);
-  let  ageGroupTarget=  { age: { minAge: this.myForm.get('minAge').value, maxAge: this.myForm.get('maxAge').value } }
+    let ageGroupTarget = { age: { minAge: this.myForm.get('minAge').value, maxAge: this.myForm.get('maxAge').value } }
     var formData: any = new FormData();
     formData.append("content", this.myForm.get('content').value);
-     formData.append("imageLink", this.myForm.get('avatar').value);
+    formData.append("imageLink", this.myForm.get('avatar').value);
     formData.append("targetFollowers", JSON.stringify(audienceFollowers));
     formData.append('ageGroupTarget', JSON.stringify(ageGroupTarget));
-     formData.append("notifyFollowers", new String(this.myForm.get('notifyFollowers').value));
-console.log(this.myForm.get('avatar').value)
+    formData.append("notifyFollowers", new String(this.myForm.get('notifyFollowers').value));
+    console.log(this.myForm.get('avatar').value)
 
     this.http.post('http://localhost:3000/posts', formData).subscribe((data: Post) => {
       this.isCreated = true
@@ -144,7 +106,10 @@ console.log(this.myForm.get('avatar').value)
   }
 
 
-   
-  
+  toggleDisplay() {
+    this.isShow = !this.isShow;
+  }
+ 
+
 }
 
