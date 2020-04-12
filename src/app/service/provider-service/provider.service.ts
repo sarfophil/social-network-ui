@@ -36,6 +36,21 @@ export class ProviderService {
             catchError(this.config.handleError)
           )   
   }
+  formDatapost(apiType:API_TYPE,body){
+    // concat url
+    const url = `${environment.apiEndpoint}${apiType}`;
+
+    // options
+    const httpOptions = {
+       headers:  this.config.getHeaders()
+    }
+
+    return this.http.post(url,body,httpOptions)
+          .pipe(
+            catchError(this.config.handleError)
+          )   
+  }
+
 
 
   put(apiType:API_TYPE,pathName,body){
@@ -44,7 +59,7 @@ export class ProviderService {
 
     // options
     const httpOptions = {
-       headers:  this.config.getHeaders()
+       headers:  this.config.getHeadersMultipart()
     }
 
     return this.http.put(url,body,httpOptions)
@@ -60,7 +75,7 @@ export class ProviderService {
    * @param pathName 
    * @param queryParam should start with [?example=value&example2=value2]
    */
-  get(apiType:API_TYPE,pathName,queryParam,httpOptions:Object = {headers:  this.config.getHeaders()}) {
+  get(apiType:API_TYPE,pathName,queryParam?,httpOptions:Object = {headers:  this.config.getHeaders()}) {
     // concat url
     const url = `${environment.apiEndpoint}${apiType}${pathName}${queryParam}`;
 

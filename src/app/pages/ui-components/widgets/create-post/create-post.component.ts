@@ -8,6 +8,8 @@ import { error } from 'util';
 import { elementAt } from 'rxjs/operators';
 import { ViewEncapsulation } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import { ConfigService } from 'src/app/service/config/config-service';
 
 
 @Component({
@@ -36,7 +38,7 @@ export class CreatePostComponent implements OnInit {
 
 
 
-  constructor(private http: HttpClient, private formBuilder: FormBuilder, private providerService: ProviderService) {
+  constructor(private config:ConfigService,private snackBar:MatSnackBar,private http: HttpClient, private formBuilder: FormBuilder, private providerService: ProviderService) {
     this.myForm = this.formBuilder.group({
       content: [''],
       avatar: [null],
@@ -49,7 +51,7 @@ export class CreatePostComponent implements OnInit {
   ngOnInit() {
 
     this.isSearchPage = this.pageType === PostType.SEARCH_POSTS;
-    this.providerService.get(API_TYPE.USER, '/5e8bac83e37a22312b353ccc/followers', '').subscribe((Listusers: Array<any>) => {
+    this.providerService.get(API_TYPE.USER, '/followers', '').subscribe((Listusers: Array<any>) => {
       console.log("Listusers", Listusers)
       this.users = Listusers;
 
@@ -86,13 +88,19 @@ export class CreatePostComponent implements OnInit {
     formData.append("notifyFollowers", new String(this.myForm.get('notifyFollowers').value));
     console.log(this.myForm.get('avatar').value)
 
-    this.http.post('http://localhost:3000/posts', formData).subscribe((data: Post) => {
+    const httpOptions = {
+      headers:  this.config.getHeadersMultipart()
+   }
+
+    this.http.post('http://localhost:3000/posts', formData,httpOptions).subscribe((data: Post) => {
       this.isCreated = true
-      console.log(this.isCreated)
+      this.snackBar.open('post created successfully','Ok')
     }, error => {
+       this.snackBar.open(error.errorMessage,'Ok')
       this.errorMessage = error.responseMessage;
-      console.log(this.errorMessage)
     });
+
+    this.myForm.reset()
   }
 
   uploadFile(event) {

@@ -20,6 +20,15 @@ export class ConfigService {
     })
   }
 
+  getHeadersMultipart(){
+    return new HttpHeaders({
+      'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+    })
+    
+  };
+  
+
+
   
 
   
