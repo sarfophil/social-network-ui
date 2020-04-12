@@ -13,15 +13,15 @@
 
         <!-- share content box start -->
         <div class="share-content-box w-100">
-            <form class="share-text-box" (ngSubmit)=onCreatePost(f) #f="ngForm">
-                <textarea name="content" ngModel class="share-text-field" aria-disabled="true"
-                    placeholder="Say Something" data-toggle="modal" data-target="#textbox" id="content"></textarea>
+            <form class="share-text-box">
+                <textarea name="content" class="share-text-field" aria-disabled="true" placeholder="Say Something"
+                    data-toggle="modal" data-target="#textbox" required id="content"></textarea>
                 <button class="btn-share" type="submit">share</button>
             </form>
         </div>
         <!-- share content box end -->
         <!-- Modal start -->
-        <form (ngSubmit)=onCreatePost(f) #f="ngForm">
+        <form [formGroup]="myForm" (ngSubmit)="  submit()">
             <div class="modal fade" id="textbox" aria-labelledby="textbox">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -32,32 +32,34 @@
                             </button>
                         </div>
                         <div class="modal-body custom-scroll">
-                            <textarea name="content" id="content" ngModel class="share-field-big custom-scroll"
-                                placeholder="Say Something"></textarea>
-                            <h6 class="modal-title">insert your audience age</h6>
-                            <input type="number" name="minAge" ngModel placeholder="Min Age" class="single-field">
-                            <input type="number" name="maxAge" ngModel placeholder="Max Age" class="single-field">
-                            <br>
+                            <textarea name="content" id="content" formControlName="content" required
+                                class="share-field-big custom-scroll" placeholder="Say Something"></textarea>
+                            <h6 class="modal-title">Insert your audience age</h6>
+                            <input type="number" name="minAge" formControlName="minAge" placeholder="Min Age"
+                                class="mr-4 mt-2 single-field">
+                            <input type="number" name="maxAge" formControlName="maxAge" placeholder="Max Age"
+                                class=" mt-2 single-field">
+                            <br><br>
 
-                            <a class="a" (click)=toggleDisplay()>Select Followers to Notify</a>
+                            <a class="a" class="text-danger" (click)=toggleDisplay()>Select Followers to Notify</a>
+                            <hr [hidden]=isShow>
 
-                            <hr>
                             <div [hidden]='isShow' *ngFor="let user of users; let i = index">
-
-
                                 <li class="list-group-item">
-                                    <!-- Default checked -->
-                                    <div class="custom-control custom-checkbox">
-                                        <input class="single-field" type="checkbox" id='{{user._id}}' name="{{user._id}}"
-                                            [(ngModel)]="user.checked">
-                                        <label [attr.for]="user._id"> {{user.name}}</label></div>
+                                    <input class="ml-2 form-check-input" [ngModelOptions]="{standalone: true}"
+                                        type="checkbox" id='{{user._id}}' name="{{user._id}}"
+                                        [(ngModel)]="user.checked">
+                                    <label class="ml-4" style="font-size: 17px;" [attr.for]="user._id">
+                                        {{user.userId.username}}</label>
                                 </li>
-
                             </div>
-                            <hr>
+                            <hr [hidden]=isShow>
 
-                            <input type="checkbox" name="notifyFollowers" ngModel value="true" > <label for="notifyFollowers">NotifyFollowers</label>
-
+                            <br>
+                            <h4>Uload Image</h4>
+                            <input type="file" (change)="uploadFile($event)">
+                            <input type="checkbox" name="notifyFollowers" formControlName="notifyFollowers"
+                                value="true"> <label for="notifyFollowers">NotifyFollowers</label>
 
                         </div>
                         <div class="modal-footer">
