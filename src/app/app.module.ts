@@ -27,10 +27,10 @@ import { environment } from 'src/environments/environment';
 import { AdminLoginComponent } from './pages/admin-login/admin-login.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { LoginWidgetComponent } from './pages/ui-components/login-widget/login-widget.component';
-import {MatDialogModule} from '@angular/material/dialog';
+import { MatDialogModule} from '@angular/material/dialog';
 import { ShortenPipe } from './pipe/shorten/shorten.pipe';
 import { MomentPipe } from './pipe/moment/moment.pipe';
 import { SearchComponent } from './pages/search/search.component';
