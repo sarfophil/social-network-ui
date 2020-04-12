@@ -7,5 +7,5 @@ export class Post {
           private notifyFollowers :boolean,
           private imageLink: string){};
           
-
+    }
 

@@ -62,25 +62,25 @@
                                 <h1 class="create-acc text-center">Create An Account</h1>
                                 <div class="signup-inner text-center">
                                     <h5 class="title">Wellcome to Adda</h5>
-                                    <form class="signup-inner--form">
+                                    <form class="signup-inner--form" [formGroup]="signUpForm" (ngSubmit)="signUp()">
                                         <div class="row">
                                             <div class="col-6">
-                                                <input type="email" class="single-field" placeholder="Email">
+                                                <input type="email"  formControlName="email" class="single-field" placeholder="Email">
                                             </div>
                                             <div class="col-md-6">
-                                                <input type="text" class="single-field" placeholder="Username">
+                                                <input type="text" formControlName="username" class="single-field" placeholder="Username">
                                             </div>
                                             <div class="col-md-6">
-                                                <input type="password" class="single-field" placeholder="Password">
+                                                <input type="password" formControlName="password" class="single-field" placeholder="Password">
                                             </div>
                                             <div class="col-md-6">
-                                                <input type="password" class="single-field" placeholder="Password">
+                                                <input type="conformpassword"  formControlName="conformpassword" class="single-field" placeholder="confirm password">
                                             </div>
                                             <div class="col-md-12">
-                                                <select class="nice-select" name="sortby">
+                                                <select class="nice-select" name="sortby" [(value)]="selcetedValue">
                                                     <option value="trending">Age</option>
-                                                    <option value="sales">18+</option>
-                                                    <option value="sales">18-</option>
+                                                    <option value="old">18+</option>
+                                                    <option value="young">18-</option>
                                                 </select>
                                             </div>
                                             <div class="col-12">

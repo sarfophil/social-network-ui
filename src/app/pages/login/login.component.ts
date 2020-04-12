@@ -7,6 +7,7 @@ import { trigger,state,style } from '@angular/animations';
 
 import {MatSnackBar} from '@angular/material/snack-bar';
 import { User } from 'src/app/model/user';
+import { stringify } from 'querystring';
 
 export interface LoginResponse{
    access_token: string;
@@ -30,14 +31,27 @@ export interface LoginResponse{
   ]
 })
 export class LoginComponent implements OnInit {
+  selcetedValue:string;
+  signUpForm:FormGroup;
   loginForm: FormGroup;
   isLoading: Boolean = false;
   constructor(private router:Router,private provider:ProviderService,private formBuilder:FormBuilder,private snackbar:MatSnackBar) { }
 
   ngOnInit() {
+    
     this.loginForm = this.formBuilder.group({
       username: ['',Validators.required],
       password: ['',Validators.required]
+       })
+    this.signUpForm=this.formBuilder.group({
+      username: ['',Validators.required],
+      password: ['',Validators.required],
+      email:['',Validators.required],
+      age:['',Validators.required],
+      conformpassword:['',Validators.required]
+
+
+
     })
   }
 
@@ -62,6 +76,11 @@ export class LoginComponent implements OnInit {
     })
     
   }
-
+signUp(){
+  
+  let body = this.signUpForm.value;
+  this.provider.post(API_TYPE.USER,'account',body)
+  console.log(body)
+}
 
 }
