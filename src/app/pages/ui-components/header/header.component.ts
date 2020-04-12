@@ -1,7 +1,7 @@
-import { Component, OnInit, HostListener, Input, ElementRef } from '@angular/core';
+import {Component, OnInit, HostListener, Input, ElementRef, OnDestroy} from '@angular/core';
 import {trigger,state,style,transition, animate} from '@angular/animations';
 import { Router } from '@angular/router';
-import { fromEvent, Observable, Subject } from 'rxjs';
+import {fromEvent, Observable, Subject, Subscription} from 'rxjs';
 import { map, filter, debounce, debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { ProviderService } from 'src/app/service/provider-service/provider.service';
 import { API_TYPE } from 'src/app/model/apiType';
@@ -38,15 +38,15 @@ import { Post } from 'src/app/model/post';
       // profile Dropdown
       state('openProfile',style({
         display: 'block'
-      })),  
+      })),
       state('closeProfile',style({
         display: 'none'
      }))
     ])
-    
+
   ]
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit,OnDestroy {
   isOpen = false;
   isSearchInputOpen = false;
   isProfileOpen = false;
@@ -116,8 +116,12 @@ export class HeaderComponent implements OnInit {
          },
          data: post
       })
-     
+
       dialogRef.afterOpened().subscribe(res => console.log(`${res}`))
+  }
+
+  ngOnDestroy(): void {
+
   }
 
 

@@ -1,12 +1,24 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { User } from 'src/app/model/user';
-import { ProviderService } from 'src/app/service/provider-service/provider.service';
-import { API_TYPE } from 'src/app/model/apiType';
-import { Comment } from 'src/app/model/comment';
-import { pipe, Observable, of } from 'rxjs';
-import { map, switchMap, catchError, take, flatMap, tap } from 'rxjs/operators';
-import { state, trigger, style } from '@angular/animations';
+import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {User} from 'src/app/model/user';
+import {ProviderService} from 'src/app/service/provider-service/provider.service';
+import {API_TYPE} from 'src/app/model/apiType';
+import {Comment} from 'src/app/model/comment';
+import {Observable, Subscription} from 'rxjs';
+import {filter, map, switchMap} from 'rxjs/operators';
+import {animate, state, style, transition, trigger} from '@angular/animations';
+import {Howl} from 'howler';
+import {MatSnackBar} from "@angular/material/snack-bar";
+
+
+export enum LoadingStrategy {
+    DEFAULT, // Loads data from the beginning
+    PARTIAL // Loads data based on the skip value
+}
+
+export interface TotalComments {
+  comments:number
+}
 
 @Component({
   selector: 'app-view-post-modal',
@@ -20,13 +32,26 @@ import { state, trigger, style } from '@angular/animations';
       state('close',style({
         display: 'none'
       }))
+    ]),
+    trigger('makingRequestTrigger',[
+       state('requesting',style({
+           display: 'block'
+       })),
+       state('done',style({
+           display: 'none'
+       })),
+       transition('requesting => done',[
+         animate('1s')
+       ])
     ])
   ]
 })
-export class ViewPostModalComponent implements OnInit {
+export class ViewPostModalComponent implements OnInit,OnDestroy {
 
   post: any;
-  likes: string = ''
+
+  likes: string = '';
+
   currentUser: User = JSON.parse(localStorage.getItem('active_user'))
 
   /** Comment Data limit */
@@ -34,23 +59,53 @@ export class ViewPostModalComponent implements OnInit {
 
   private  skip: number = 0;
 
-  comments: Array<Comment> = []
+  comments: Array<Comment> = [];
 
   // Proxy Array for processing of comments
-  commentProxyDataList: Array<Comment> = []
+  commentProxyDataList: Array<Comment> = [];
 
   isLoading: boolean = true;
 
+  // Observable subscription
+  subscription: Subscription;
 
-  constructor(public dialogRef: MatDialogRef<ViewPostModalComponent>,@Inject(MAT_DIALOG_DATA) public data: any,private provider:ProviderService) { }
+  sound = new Howl({
+    src: ['assets/sound/filling-your-inbox.mp3']
+  });
+
+
+  hasLiked: boolean = true;
+
+  // Comment Input
+  commentInput: string;
+
+  //
+  isCreatingCommentState: boolean = false;
+
+  // Temporarily holds user comment and discards when posted successfully
+  commentDataHolder : string = '';
+
+  // total comments
+  totalComments : number = 0;
+
+
+
+  constructor(public dialogRef: MatDialogRef<ViewPostModalComponent>,
+              @Inject(MAT_DIALOG_DATA) public data: any,
+              private provider:ProviderService,private snackBar: MatSnackBar) { }
 
   ngOnInit() {
       this.post = this.data;
-      this.likes = this.hasCurrentUserLiked() ? 
-            `You and ${this.post.likes.length - 1} people liked this`: 
-            `${this.post.likes.length} people liked this`;
-      this.loadComments()
+      this.populateLikes();
+      this.loadComments(LoadingStrategy.PARTIAL);
+      this.countComment();
 
+  }
+
+  populateLikes() {
+    this.likes = this.hasCurrentUserLiked() ?
+      `You and ${this.post.likes.length - 1} people liked this`:
+      `${this.post.likes.length} people liked this`;
   }
 
   hasCurrentUserLiked = (): Boolean =>{
@@ -62,12 +117,16 @@ export class ViewPostModalComponent implements OnInit {
   }
 
 
-  loadComments(){
-    let path = `${this.post._id}/comments?limit=${this.limit}&skip=${this.skip}`
-    this.provider.get(API_TYPE.POST,path,'')
-    .pipe(
-      switchMap((res:Array<Comment>) => this.addResultToArray(res)),
-      map((comments:Array<Comment>) => {
+
+
+  loadComments(loadingStrategy: LoadingStrategy){
+    this.isLoading = true;
+    let path = `${this.post._id}/comments?limit=${this.limit}&skip=${this.skip}`;
+    this.subscription = this.provider.get(API_TYPE.POST,path,'')
+      .pipe(
+        filter((res: Array<Comment>) => res.length > 0),
+        switchMap((res:Array<Comment>) => this.addResultToArray(res,loadingStrategy)),
+        map((comments:Array<Comment>) => {
           return comments.sort((a:Comment,b:Comment) => {
             let comp1 = new Date(a.createdDate.toString());
             let comp2 = new Date(b.createdDate.toString());
@@ -77,34 +136,131 @@ export class ViewPostModalComponent implements OnInit {
 
             return 0
           })
-      })
-    )
-    .subscribe(
+        })
+      )
+      .subscribe(
         (data:Array<Comment>) => {
-           this.isLoading = false
-           this.comments = data
+          this.isLoading = false;
+          if(data.length > 0) {
+            this.comments = data
+          }
         },
         (err)=> {
-          console.log(`Error Error`)
           this.isLoading = false
+        },
+        () => {
+           this.isLoading = false;
         }
-        
-    )
+
+        )
 
   }
 
-  addResultToArray(res:Array<Comment>):Observable<Array<Comment>>{
+  addResultToArray(res:Array<Comment>,loadingStrategy):Observable<Array<Comment>>{
     return new Observable<Array<Comment>>((resolve) => {
-       for (const comment of res) {
-          this.commentProxyDataList.push(comment)
+       if(loadingStrategy === LoadingStrategy.PARTIAL){
+           for (const comment of res) {
+             this.commentProxyDataList.push(comment)
+           }
+       }else {
+          this.commentProxyDataList = res;
        }
        resolve.next(this.commentProxyDataList)
     })
   }
 
-  
-  viewMore(){
+
+
+
+  viewMore($event: MouseEvent){
+    $event.preventDefault();
     this.skip += 1 * this.limit;
+    this.loadComments(LoadingStrategy.PARTIAL);
+
+    // scroll to bottom
+    let commentSection: HTMLElement = document.getElementById('commentSection');
+    commentSection.scrollTop = commentSection.scrollHeight;
   }
 
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
+
+  removeComment(comment$: Comment,event$: MouseEvent) {
+      event$.preventDefault();
+      let index = this.comments.findIndex((comment) => comment$._id === comment._id);
+      this.comments.splice(index,1);
+      let path = `${comment$.postId}/comments/${comment$._id}`;
+      this.provider.delete(API_TYPE.POST,path).subscribe(
+        (result) => {},
+        (error) => {
+            if(error){
+                this.provider.onTokenExpired(error.responseMessage,error.statusCode)
+            }
+          },
+        ()=>{
+          let snackBar$ = this.snackBar.open(`Comment Removed !`,'Ok');
+          this.sound.play()
+        }
+      )
+  }
+
+  createComment() {
+      let path = `${this.post._id}/user/${this.currentUser._id}/comments`;
+      let body = {
+        "content": this.commentInput
+      };
+      this.commentDataHolder = this.commentInput; // Assigns comment to the holder
+      this.isCreatingCommentState = true;
+      this.provider.post(API_TYPE.POST,path,body)
+        .subscribe((res) => {
+          let snackBar$ = this.snackBar.open(`Comment Posted!`, 'OK');
+          this.sound.play();
+        },(error => {
+            this.isCreatingCommentState = false;
+            this.snackBar.open('An Error Occured');
+            this.provider.onTokenExpired(error.responseMessage,error.statusCode)
+        }),() => {
+            this.commentInput = '';
+            // Refresh
+            this.skip = 0;
+            this.loadComments(LoadingStrategy.DEFAULT);
+            this.isCreatingCommentState = false;
+
+            // scroll to bottom
+            let commentSection: HTMLElement = document.getElementById('commentSection');
+            commentSection.scrollTop = commentSection.scrollHeight;
+        })
+  }
+
+  countComment(){
+    let path = `${this.post._id}/comments/count`;
+     this.provider.get(API_TYPE.POST,path)
+       .subscribe(
+         (result:TotalComments) => {
+              this.totalComments = result.comments
+         }
+       )
+  }
+
+  /**
+   * Like Feature
+   * @param action if true then user has liked else unliked
+   */
+  like(action: boolean) {
+      let path = `${this.post._id}/user/${this.currentUser._id}/likes`;
+      this.hasLiked = action;
+      if(action){
+        this.likes = `You and ${this.post.likes.length + 1} people liked this`;
+        let body = {};
+        this.provider.put(API_TYPE.POST, path,body)
+          .subscribe((res) => console.log(`Sent`))
+      }else {
+        this.likes = `${this.post.likes.length - 1} people liked this`;
+        this.provider.delete(API_TYPE.POST, path)
+          .subscribe((res) => console.log(`Unliked`))
+      }
+
+  }
 }

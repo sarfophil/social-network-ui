@@ -18,9 +18,9 @@ export class ProviderService {
 
   /**
    * Performs Post request
-   * @param apiType 
-   * @param pathName 
-   * @param body 
+   * @param apiType
+   * @param pathName
+   * @param body
    */
   post(apiType:API_TYPE,pathName,body){
     // concat url
@@ -34,7 +34,7 @@ export class ProviderService {
     return this.http.post(url,body,httpOptions)
           .pipe(
             catchError(this.config.handleError)
-          )   
+          )
   }
 
 
@@ -50,41 +50,46 @@ export class ProviderService {
     return this.http.put(url,body,httpOptions)
           .pipe(
             catchError(this.config.handleError)
-          )   
+          )
   }
 
 
   /**
-   * 
-   * @param apiType 
-   * @param pathName 
+   *
+   * @param apiType
+   * @param pathName
    * @param queryParam should start with [?example=value&example2=value2]
    */
-  get(apiType:API_TYPE,pathName,queryParam,httpOptions:Object = {headers:  this.config.getHeaders()}) {
+  get(apiType:API_TYPE,pathName,queryParam: string ='',httpOptions: Object = {headers:  this.config.getHeaders()}) {
     // concat url
     const url = `${environment.apiEndpoint}${apiType}${pathName}${queryParam}`;
-
-    // options
-    // const httpOptions = {
-    //    headers:  this.config.getHeaders()
-    // }
 
     return this.http.get(url,httpOptions).pipe(
       retry(2), // retries 2 times when request fails
       catchError(this.config.handleError)
-    )  
+    )
+  }
+
+
+  delete(apiType: API_TYPE,pathName,
+         httpOptions:Object = {headers:  this.config.getHeaders()}){
+
+    const url = `${environment.apiEndpoint}${apiType}${pathName}`;
+    return this.http.delete(url,httpOptions).pipe(
+      catchError(this.config.handleError)
+    )
   }
 
   onTokenExpired(content:string,statusCode:number): void{
-    let expired = content? true : false;
-        if(expired){
+    let expired = content == 'Token Expired'? true : false;
+        if(expired && statusCode === 403){
             // launch Modal
             let dialogRef = this.dialog.open(LoginWidgetComponent,{
               maxWidth: '500px',
               maxHeight: '300px',
               data: this
             })
-    
+
             dialogRef.afterClosed().subscribe((res) => {
               location.reload()
             })

@@ -13,7 +13,7 @@
             </div>
         </div>
     </div>
-    <div class="comment-section" >
+    <div class="comment-section" id="commentSection">
       <div class="scroll-area">
         <div>
             <ul class="like-page-list-wrapper">
@@ -27,7 +27,7 @@
                         </a>
                     </div>
                     <!-- profile picture end -->
-    
+
                     <div class="unorder-list-info">
                         <h3 class="list-title"><a href="#">{{post.postuname}}</a></h3>
                         <p class="list-subtitle"><a href="#">{{post.createdDate | moment}}</a></p>
@@ -41,36 +41,54 @@
         <!-- Likes -->
 
         <div class="post-meta">
-            <button class="post-meta-like">
+            <button *ngIf="hasLiked" class="post-meta-like" (click)="like(true)">
                 <i class="bi bi-heart-beat"></i>
                 <span>{{likes}}</span>
                 <strong></strong>
             </button>
+
+          <button *ngIf="!hasLiked" class="post-meta-like" (click)="like(false)">
+            <i class="bi bi-heart-beat"></i>
+            <span>{{likes}}</span>
+            <strong></strong>
+          </button>
+
             <ul class="comment-share-meta">
                 <li>
                     <button class="post-comment">
                         <i class="bi bi-chat-bubble"></i>
-                        <span>4</span>
+                        <span>{{totalComments}}</span>
                     </button>
                 </li>
             </ul>
         </div>
         <hr>
-        <form class="share-text-box">
-            <textarea name="content" class="share-text-field" aria-disabled="true"
-                placeholder="Say Something" id="content"></textarea>
-            <button class="btn-share" type="submit">Comment</button>
+        <form class="share-text-box" #CommentForm="ngForm"  (ngSubmit)="createComment()">
+            <textarea  class="share-text-field" aria-disabled="true"
+                placeholder="Say Something" id="content" [(ngModel)]="commentInput" name="commentInput"></textarea>
+            <button class="btn-share" type="submit" [disabled]="!CommentForm.valid">Comment</button>
         </form>
         <hr>
         <div class="comment-area">
-            <a href="javascript:void()" (click)="viewMore()">View more comments</a>
+            <a href="#" (click)="viewMore($event)" *ngIf="totalComments > 5">View more comments</a>
+
+            <div class="comment-box" [@makingRequestTrigger] = "isCreatingCommentState?'requesting':'done'">
+               <div class="msg">
+                 <p>{{commentDataHolder}}</p>
+               </div>
+               <div class="comment-action">
+                   <div class="comment-spinner-loader"></div>
+               </div>
+            </div>
+
             <div class="comment-box" *ngFor="let comment of comments">
                 <div class="msg">
                     <a>{{comment.user.username}}</a>
                     <p>{{comment.content}}</p>
                 </div>
                 <div class="comment-action">
-                    <a>Like</a>
+                    <a href="#"  (click)="removeComment(comment,$event)" *ngIf="comment.user._id === currentUser._id">Remove</a>
+                    <p>{{comment.createdDate | moment}}</p>
                 </div>
             </div>
 
@@ -78,8 +96,8 @@
             </mat-progress-spinner>
 
         </div>
-        
+
      </div>
-     
-    </div>  
+
+    </div>
 </div>
