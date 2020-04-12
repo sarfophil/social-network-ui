@@ -1,8 +1,5 @@
+
 export class Post {
-
-
-    constructor(private content :string ,private audienceCriteria:number,
-                private audienceFollowers:string,private notifyFollowers :boolean){};
-
-
+  constructor(private _content :string , private _audienceCriteria:number,
+                private _audienceFollowers:string, private _notifyFollowers :boolean){};
 }
