@@ -74,7 +74,7 @@ const socketConfig: SocketIoConfig = {url: environment.socketEndpoint,options: {
     SearchComponent,
     CreatePostComponent,
     ProfilePhotoComponent,
-    DateAgoPipe
+    DateAgoPipe,
     ViewPostModalComponent
 
   ],

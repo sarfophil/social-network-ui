@@ -8,4 +8,4 @@ export class Post {
           private imageLink: string){};
           
 
-
+    }
