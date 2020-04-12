@@ -74,8 +74,10 @@ export class ProviderService {
    * @param apiType
    * @param pathName
    * @param queryParam should start with [?example=value&example2=value2]
+   * @param httpOptions
    */
-  get(apiType:API_TYPE,pathName,queryParam?,httpOptions:Object = {headers:  this.config.getHeaders()}) {
+
+  get(apiType:API_TYPE,pathName,queryParam:string = '',httpOptions: Object = {headers:  this.config.getHeaders()}) {
     // concat url
     const url = `${environment.apiEndpoint}${apiType}${pathName}${queryParam}`;
 

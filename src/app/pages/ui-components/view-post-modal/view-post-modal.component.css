@@ -33,10 +33,13 @@
     background-color: black;
     padding: 30px;
     height: 100%
+
 }
 
 .navigation{
     z-index: 1000;
+    position: relative;
+    float: left;
 }
 
 .nav-btn{
@@ -122,4 +125,11 @@
 
 .comment-action > p{
   font-size: 10px;
+}
+
+.post-photo{
+  width: 400px;
+  height: 400px;
+  margin: auto;
+
 }

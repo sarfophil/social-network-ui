@@ -110,7 +110,7 @@ export class HeaderComponent implements OnInit,OnDestroy {
   viewPost(post:any){
       let dialogRef = this.dialog.open(ViewPostModalComponent,{
          width: '1000px',
-         height: '500px',
+         minHeight: '900px',
          position: {
            top: '0'
          },

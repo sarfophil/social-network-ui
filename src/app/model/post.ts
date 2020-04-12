@@ -1,3 +1,4 @@
+
 export class Post {
 
     constructor(private content :string ,  
@@ -8,4 +9,3 @@ export class Post {
           
 
 
-}
