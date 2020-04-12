@@ -1,5 +1,11 @@
 
 export class Post {
-  constructor(private _content :string , private _audienceCriteria:number,
-                private _audienceFollowers:string, private _notifyFollowers :boolean){};
-}
+
+    constructor(private content :string ,  
+        private audienceCriteria:{age: { min: Number, max: Number }}, 
+         private targetFollowers:any[],
+          private notifyFollowers :boolean,
+          private imageLink: string){};
+          
+
+
