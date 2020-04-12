@@ -1068,7 +1068,7 @@ textarea:focus {
 }
 
 .dropdown-msg-list li.msg-list-item .author a:hover {
-  color: #dc4734;
+  /* color: #dc4734; */
 }
 
 .header-top-search {
@@ -2069,7 +2069,6 @@ textarea:focus {
 .author-into-list li a {
   color: #333333;
   font-size: 14px;
-  font-weight: 500;
   line-height: 1.3;
 }
 

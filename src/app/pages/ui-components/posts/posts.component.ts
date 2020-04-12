@@ -29,6 +29,8 @@ export class PostsComponent implements OnInit {
 
   /** Useful when making a request to the server */
   showPlaceholder:Boolean = false;
+   page = 0;
+   limit = 1;
   
   /** 
    * @description loadPosts method will depend on this decorator to load contents
@@ -66,6 +68,7 @@ export class PostsComponent implements OnInit {
     if(postType === PostType.HOMEPAGE_POSTS){
       apiType = API_TYPE.POST;
       path = ''
+      queryParam= '?page='+this.page+'&limit='+this.limit+'';
     }
 
     // User posts
@@ -82,21 +85,38 @@ export class PostsComponent implements OnInit {
         queryParam = `?query=${this.postData}&limit=5`
     }
 
-    this.provider.get(API_TYPE.POST,`${path}`,queryParam).subscribe(
-      (res: Array<Post>) => {
-         console.log('Success'+res)
-      },
-      (error) => {
-         this.showPlaceholder = false;
-         this.provider.onTokenExpired(error.responseMessage,error.statusCode)
-      },
-      () => {
-        console.log(`Complete {}`)
-        this.showPlaceholder = true
-      }
-    )
+    this.load(path,queryParam);
+    this.page+=1;
+    
   }
 
-  
+  likeFilter(likes,id){
+    return likes.indexOf(id) !== -1;
+    }
 
+    loadMore(){
+     let query= '?page='+this.page+'&limit='+this.limit+'';
+     this.load('',query);
+     this.page+=1;
+    }
+
+
+     load(path,query) {
+       console.log('loading');
+      this.provider.get(API_TYPE.POST,`${path}`,query==''?'':query).subscribe(
+        (res: Array<Post>) => {
+           console.log('Success'+res)
+        this.post =  this.post.concat(res);
+           console.log("posts",this.post)
+        },
+        (error) => {
+           this.showPlaceholder = false;
+           this.provider.onTokenExpired(error.responseMessage,error.statusCode)
+        },
+        () => {
+          console.log(`Complete {}`)
+          this.showPlaceholder = true
+        }
+      )
+    }
 }

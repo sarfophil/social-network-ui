@@ -1,0 +1,114 @@
+
+<div class="modal-comment-row">
+    <div class="modal-picture">
+        <div class="image-bg">
+
+          <img class="post-photo" *ngIf="postImagesHolder.length > 0" [@makingRequestTrigger]="isFetchingImages ? 'doneloading':'loadingImage'" [src]="currentImagePreview">
+
+          <p style="color: #FFFFFF" *ngIf="postImagesHolder.length == 0" [@makingRequestTrigger]="isFetchingImages ? 'doneloading':'loadingImage'">No Image Available for this post</p>
+
+          <mat-progress-spinner [@makingRequestTrigger]="isFetchingImages ? 'loadingImage':'doneloading'" class="comment-spinner"  mode="indeterminate" value="10" strokeWidth="3" diameter="40">
+          </mat-progress-spinner>
+
+
+
+
+          <div class="navigation" >
+            <button class="nav-btn left-arrow" (click)="prevImage()">
+              <i class="bi bi-arrow-left-rounded"></i>
+            </button>
+            <button class="nav-btn right-arrow" (click)="nextImage()">
+              <i class="bi bi-arrow-right-rounded"></i>
+            </button>
+          </div>
+        </div>
+
+    </div>
+    <div class="comment-section" id="commentSection">
+      <div class="scroll-area">
+        <div>
+            <ul class="like-page-list-wrapper">
+                <li class="unorder-list">
+                    <!-- profile picture end -->
+                    <div class="profile-thumb">
+                        <a href="#">
+                            <figure class="profile-thumb-small">
+                                <app-profile-photo [fetchWithUserId]="post.user"></app-profile-photo>
+                            </figure>
+                        </a>
+                    </div>
+                    <!-- profile picture end -->
+
+                    <div class="unorder-list-info">
+                        <h3 class="list-title"><a href="#">{{post.postuname}}</a></h3>
+                        <p class="list-subtitle"><a href="#">{{post.createdDate | moment}}</a></p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="post-content">
+           <p>{{post.content}}</p>
+        </div>
+        <!-- Likes -->
+
+        <div class="post-meta">
+            <button *ngIf="hasLiked" class="post-meta-like" (click)="like(true)">
+                <i class="bi bi-heart-beat"></i>
+                <span>{{likes}}</span>
+                <strong></strong>
+            </button>
+
+          <button *ngIf="!hasLiked" class="post-meta-like" (click)="like(false)">
+            <i class="bi bi-heart-beat"></i>
+            <span>{{likes}}</span>
+            <strong></strong>
+          </button>
+
+            <ul class="comment-share-meta">
+                <li>
+                    <button class="post-comment">
+                        <i class="bi bi-chat-bubble"></i>
+                        <span>{{totalComments}}</span>
+                    </button>
+                </li>
+            </ul>
+        </div>
+        <hr>
+        <form class="share-text-box" #CommentForm="ngForm"  (ngSubmit)="createComment()">
+            <textarea  class="share-text-field" aria-disabled="true"
+                placeholder="Say Something" id="content" [(ngModel)]="commentInput" name="commentInput"></textarea>
+            <button class="btn-share" type="submit" [disabled]="!CommentForm.valid">Comment</button>
+        </form>
+        <hr>
+        <div class="comment-area">
+            <a href="#" (click)="viewMore($event)" *ngIf="totalComments > 5">View more comments</a>
+
+            <div class="comment-box" [@makingRequestTrigger] = "isCreatingCommentState?'requesting':'done'">
+               <div class="msg">
+                 <p>{{commentDataHolder}}</p>
+               </div>
+               <div class="comment-action">
+                   <div class="comment-spinner-loader"></div>
+               </div>
+            </div>
+
+            <div class="comment-box" *ngFor="let comment of comments">
+                <div class="msg">
+                    <a>{{comment.user.username}}</a>
+                    <p>{{comment.content}}</p>
+                </div>
+                <div class="comment-action">
+                    <a href="#"  (click)="removeComment(comment,$event)" *ngIf="comment.user._id === currentUser._id">Remove</a>
+                    <p>{{comment.createdDate | moment}}</p>
+                </div>
+            </div>
+
+            <mat-progress-spinner [@isLoadingTrigger]="isLoading?'open':'close'" class="comment-spinner"  mode="indeterminate" value="10" strokeWidth="3" diameter="40">
+            </mat-progress-spinner>
+
+        </div>
+
+     </div>
+
+    </div>
+</div>
