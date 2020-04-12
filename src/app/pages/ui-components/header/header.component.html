@@ -25,24 +25,15 @@
                                     <div class="message-dropdown" id="b" [@slideToggle]="isOpen? 'open':'close'">
                                             <div class="dropdown-title">
                                                 <p class="recent-msg">Search Results</p>
-                                                <button>
-                                                    <i class="flaticon-settings"></i>
-                                                </button>
+                                               
                                             </div>
                                             <ul class="dropdown-msg-list">
-                                                <!-- *ngFor="let result of search$ | async" -->
+                                               
                                                 <li class="msg-list-item d-flex justify-content-between" *ngFor="let result of search$ | async">
-                                                    <!-- profile picture end -->
-                                                    <!-- <div class="profile-thumb">
-                                                        <figure class="profile-thumb-middle"> -->
-                                                            <!-- <img src="assets/images/profile/profile-small-3.jpg" alt="profile picture"> -->
-                                                            <!-- <app-profile-photo [imageName]="result" [style]=""></app-profile-photo>
-                                                        </figure>
-                                                    </div> -->
-                                                    <!-- profile picture end -->
+                                                    
 
                                                     <!-- message content start -->
-                                                    <div class="msg-content">
+                                                    <div class="msg-content" (click)="viewPost(result)">
                                                         <h6 class="author"><a [routerLink]="'/profile/'+result.user+'/timeline'">{{result.postuname}} <span class="you">{{result.user == currentuser._id ? '.You':''}}</span></a></h6>
                                                         <p>{{result.content | shorten}}</p>
                                                     </div>
@@ -56,7 +47,7 @@
                                                 </li>
                                             </ul>
                                             <div class="msg-dropdown-footer">
-                                                <button  (click) = "seeAll()">See all</button>
+                                                <button  (click) = "seeAll()" class="pull-right">See all</button>
                                             </div>
                                     </div>
                                     </li>
