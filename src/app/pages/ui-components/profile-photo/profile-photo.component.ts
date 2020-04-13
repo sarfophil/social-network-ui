@@ -28,32 +28,43 @@ export class ProfilePhotoComponent implements OnInit,OnDestroy {
 
   reloadSubscription : Subscription;
 
+  profilePic$Cached = localStorage.getItem("profile_pic")
+
   constructor(private providerService: ProviderService,private sanitizer:DomSanitizer,
               private pubSub: NgxPubSubService) { }
 
   ngOnInit() {
-    this.loadImage()
+    this.displayImage();
     this.reloadSubscription = this.pubSub.subscribe('PROFILE_CHANGED',data => {
+        // refresh
         this.loadImage();
     })
   }
 
+  displayImage(){
+    this.loadImage()
+  }
+
   loadImage(){
-     let queryParam = `?imagename=${this.imageName}`
-     if(this.fetchWithUserId && !this.imageName) queryParam = `?userId=${this.fetchWithUserId}`
-     let headerOption = {responseType: 'blob'}
-     this.providerService.get(API_TYPE.DEFAULT,'download',queryParam,headerOption)
-     .subscribe(
-       (res) => {
-         let objectUrl = URL.createObjectURL(res)
-         this.imageSrc = this.sanitizer.bypassSecurityTrustUrl(objectUrl)
-       },
-       (error) => {
-       //  this.isLoading = false
-         this.imageSrc = 'assets/img/user.png'
-       },
-       () => this.isLoading = false
-     )
+    // Check value is not empty
+    if(this.imageName || this.fetchWithUserId){
+      let queryParam = `?imagename=${this.imageName}`
+      if(this.fetchWithUserId && !this.imageName) queryParam = `?userId=${this.fetchWithUserId}`
+      let headerOption = {responseType: 'blob'}
+      this.providerService.get(API_TYPE.DEFAULT,'download',queryParam,headerOption)
+        .subscribe(
+          (res) => {
+            let objectUrl = URL.createObjectURL(res)
+            localStorage.setItem('profile_pic',objectUrl)
+            this.imageSrc = this.sanitizer.bypassSecurityTrustUrl(objectUrl)
+          },
+          (error) => {
+            //  this.isLoading = false
+            this.imageSrc = 'assets/img/user.png'
+          },
+          () => this.isLoading = false
+        )
+    }
   }
 
   ngOnDestroy(): void {

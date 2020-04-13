@@ -101,10 +101,10 @@
                 <div class="post-thumb-gallery img-gallery">
                     <div class="row no-gutters">
 
-                
+
                         <div *ngIf="p.imageLink!='' && p.imageLink!=null" class="col-12">
 
-                            <figure class="post-thumb" (click)="showPostModal()">
+                            <figure class="post-thumb">
                                 <a class="gallery-selector" href="assets/images/post/post-large-2.jpg">
                                     <img *ngIf="p.imageLink!=[]" src='http://localhost:3000/download?imagename={{p.imageLink[0]}}'
                                         alt="post image">
@@ -147,5 +147,5 @@
     <div  class="modal fade" id="editPost">
         <app-edit-post (loadNewData)="loadNewData()"  [postId]="postId"></app-edit-post>
     </div>
-   
+
 </div>
