@@ -1,0 +1,14 @@
+.ads-card{
+
+   width: 100%;
+}
+
+.card-noshadow{
+  box-shadow: none;
+  border: 1px solid #f4f4f4;
+}
+
+.gallery-tem > p{
+  text-align: center;
+  font-size: 11px;
+}

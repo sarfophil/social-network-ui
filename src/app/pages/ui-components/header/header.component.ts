@@ -1,6 +1,6 @@
 import {Component, OnInit, HostListener, Input, ElementRef, OnDestroy} from '@angular/core';
 import {trigger,state,style,transition, animate} from '@angular/animations';
-import { Router } from '@angular/router';
+import {ActivatedRoute, Router, Routes} from '@angular/router';
 import {fromEvent, Observable, Subject, Subscription} from 'rxjs';
 import { map, filter, debounce, debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { ProviderService } from 'src/app/service/provider-service/provider.service';
@@ -58,7 +58,7 @@ export class HeaderComponent implements OnInit,OnDestroy {
   // View All Links from post search
   viewAllRoute:string = ''
 
-  constructor(private router:Router,private _eref: ElementRef,private provider : ProviderService,private dialog: MatDialog) { }
+  constructor(private router:Router,private route: ActivatedRoute,private _eref: ElementRef,private provider : ProviderService,private dialog: MatDialog) { }
 
   ngOnInit() {
     this.search$ = this.searchText$.pipe(
@@ -68,6 +68,9 @@ export class HeaderComponent implements OnInit,OnDestroy {
         switchMap((value) => this.provider.get(API_TYPE.POST,'search',`?query=${value}&limit=5&skip=0`))
     )
 
+    this.route.params.subscribe((param) => {
+        console.log(param)
+    })
   }
 
   expandNotification(){
@@ -92,7 +95,8 @@ export class HeaderComponent implements OnInit,OnDestroy {
     }
   }
 
-  signout(){
+  signout(event:MouseEvent){
+    event.preventDefault()
     localStorage.clear()
     this.router.navigateByUrl('/login')
   }
@@ -110,7 +114,7 @@ export class HeaderComponent implements OnInit,OnDestroy {
   viewPost(post:any){
       let dialogRef = this.dialog.open(ViewPostModalComponent,{
          width: '1000px',
-         height: '500px',
+         minHeight: '900px',
          position: {
            top: '0'
          },

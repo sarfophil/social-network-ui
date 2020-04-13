@@ -9,6 +9,8 @@ import {filter, map, switchMap} from 'rxjs/operators';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import {Howl} from 'howler';
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
+import {error} from "util";
 
 
 export enum LoadingStrategy {
@@ -39,6 +41,12 @@ export interface TotalComments {
        })),
        state('done',style({
            display: 'none'
+       })),
+       state('loadingImage',style({
+          display: 'block'
+       })),
+       state('doneloading',style({
+          display: 'none'
        })),
        transition('requesting => done',[
          animate('1s')
@@ -88,17 +96,30 @@ export class ViewPostModalComponent implements OnInit,OnDestroy {
   // total comments
   totalComments : number = 0;
 
+  // current Image in src
+  currentImagePreview: any;
+
+  postImagesHolder: Array<SafeUrl> = [];
+
+  // Flag to check state of fetching image
+  isFetchingImages: boolean = true;
+
+  // Current Index of the image
+  currentImageIndex: number = 0;
+
 
 
   constructor(public dialogRef: MatDialogRef<ViewPostModalComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any,
-              private provider:ProviderService,private snackBar: MatSnackBar) { }
+              private provider:ProviderService,private snackBar: MatSnackBar,
+              private sanitizer : DomSanitizer) { }
 
   ngOnInit() {
       this.post = this.data;
       this.populateLikes();
       this.loadComments(LoadingStrategy.PARTIAL);
       this.countComment();
+      this.previewPostImages();
 
   }
 
@@ -111,10 +132,11 @@ export class ViewPostModalComponent implements OnInit,OnDestroy {
   hasCurrentUserLiked = (): Boolean =>{
       let likes = this.post.likes;
       for(let userId of likes){
-         if(userId == this.currentUser._id) return true;
+         if(userId._id == this.currentUser._id) return true;
       }
       return false;
   }
+
 
 
 
@@ -236,6 +258,7 @@ export class ViewPostModalComponent implements OnInit,OnDestroy {
 
   countComment(){
     let path = `${this.post._id}/comments/count`;
+    let headerOption = {responseType: 'blob'}
      this.provider.get(API_TYPE.POST,path)
        .subscribe(
          (result:TotalComments) => {
@@ -244,23 +267,93 @@ export class ViewPostModalComponent implements OnInit,OnDestroy {
        )
   }
 
+
+
   /**
    * Like Feature
    * @param action if true then user has liked else unliked
    */
   like(action: boolean) {
       let path = `${this.post._id}/user/${this.currentUser._id}/likes`;
-      this.hasLiked = action;
+      this.hasLiked = !action;
+
       if(action){
-        this.likes = `You and ${this.post.likes.length + 1} people liked this`;
+        this.likeClicked();
         let body = {};
         this.provider.put(API_TYPE.POST, path,body)
           .subscribe((res) => console.log(`Sent`))
       }else {
-        this.likes = `${this.post.likes.length - 1} people liked this`;
+        this.unlikedClicked();
         this.provider.delete(API_TYPE.POST, path)
           .subscribe((res) => console.log(`Unliked`))
       }
-
   }
+
+  likeClicked(): void{
+    let totalLikes = this.post.likes.length + 1;
+    this.likes = totalLikes == 1? `You liked this`:`You and ${totalLikes-1} people liked this`;
+    console.log(totalLikes)
+  }
+
+  unlikedClicked(): void{
+    let totalLikes = this.post.likes.length == 0? 0 : this.post.likes.length-1;
+    this.likes = totalLikes == 0?'Be the first to like this':`${totalLikes} people liked this`;
+  }
+
+  nextImage(){
+    this.currentImagePreview = this.postImagesHolder[this.currentImageIndex == this.postImagesHolder.length-1?
+                                           this.postImagesHolder.length-1:this.currentImageIndex++]
+  }
+
+  prevImage(){
+    this.currentImagePreview = this.postImagesHolder[this.currentImageIndex == 0?0:this.currentImageIndex-1]
+  }
+
+  /**
+   * Preview Images
+   */
+  previewPostImages(){
+    this.isFetchingImages = true;
+    this.loadPostImages((res:boolean) =>{
+        this.isFetchingImages = false;
+        this.currentImagePreview = this.postImagesHolder[this.currentImageIndex]
+    })
+  }
+
+  private loadPostImages(callback: Function) {
+    let photos = this.post.imageLink;
+    let waiting = photos.length;
+    if (photos && photos.length > 0) {
+      for (let photo of photos) {
+        // @ts-ignore
+        this.doRequestImage(photo,(url:SafeUrl) => {
+            this.postImagesHolder.push(url);
+            waiting--;
+            this.complete(waiting,callback)
+        });
+      }
+    }
+    callback(false)
+  }
+
+  private complete(waiting:number,callback: Function){
+      if(waiting == 0) callback(true)
+  }
+
+  // @ts-ignore
+  private doRequestImage(image: string,callback: Function): void {
+    let queryParam = `?imagename=${image}`;
+    let headerOption = {responseType: 'blob'}
+    this.provider.get(API_TYPE.DEFAULT, 'download',queryParam,headerOption)
+      .subscribe(
+        (res)=> {
+           callback(this.sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(res)))
+        },
+        (error => {
+            callback(null)
+        })
+      )
+  }
+
+
 }

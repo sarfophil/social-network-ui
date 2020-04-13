@@ -1,3 +1,4 @@
+
 export class Post {
   [x: string]: any;
 
@@ -8,5 +9,9 @@ export class Post {
           private imageLink: string){};
           
 
+    }
 
-}
+
+
+    }
+

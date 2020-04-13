@@ -6,6 +6,7 @@ import { NotificationCode } from 'src/app/model/notificationcode';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import {  Router } from '@angular/router';
 import { Howl } from 'howler';
+import {NgxPubSubService} from "@pscoped/ngx-pub-sub";
 
 export interface SocketResponse {
    reason: NotificationCode;
@@ -24,12 +25,12 @@ export class SocketioService {
     src: ['../../../assets/sound/filling-your-inbox.mp3']
   })
 
-  constructor(private snackbar: MatSnackBar,private router: Router) { }
+  constructor(private snackbar: MatSnackBar,private router: Router,private pubSub: NgxPubSubService) { }
 
   initiazeSocketClient(){
     this.socket = io(environment.socketEndpoint)
   }
-  
+
   demoBroadcast() {
     this.socket.on('userDemo', (data) => console.log(`Socket Broadcastted ${data}`))
   }
@@ -41,8 +42,8 @@ export class SocketioService {
            case NotificationCode.FOLLOW:
               let followSnackRef = this.snackbar.open(`${data.follower.username} followed you`,'View Follower',
                     {politeness:"polite",horizontalPosition: "center",verticalPosition: "top"})
-              
-              
+
+
                 followSnackRef.onAction().subscribe((action) => {
                   this.router.navigateByUrl(`/profile/${data.follower._id}/timeline`)
               })
@@ -50,7 +51,7 @@ export class SocketioService {
            case NotificationCode.UNFOLLOW:
               let unfollowSnackRef = this.snackbar.open(`${data.follower.username} followed you`,'View Follower',
               {politeness:"polite",horizontalPosition: "center",verticalPosition: "top"})
-        
+
               unfollowSnackRef.onAction().subscribe((action) => {
                   this.router.navigateByUrl(`/profile/${data.follower._id}/timeline`)
               })
@@ -68,11 +69,16 @@ export class SocketioService {
            case NotificationCode.ACCOUNT_BLOCKED:
             this.snackbar.open(`Sorry your Account has been blocked.Please contact Administrator to review your account`)
            break;
+
+          case NotificationCode.PROFILE_PIC_UPDATE:
+            this.snackbar.open(`Profile Pic Updated`);
+            this.pubSub.publishEvent('PROFILE_CHANGED')
+            break;
         }
         this.sound.play()
     })
-   
+
   }
-  
+
 
 }

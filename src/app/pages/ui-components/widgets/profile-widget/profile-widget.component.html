@@ -3,16 +3,18 @@
     <div class="card card-profile widget-item p-0" [@loadingPlaceholder] = "showPlaceholder ? 'close':'show'">
         <div class="profile-banner">
             <figure class="profile-banner-small" >
-                <a href="profile.html">
-                    <img src="assets/images/banner/banner-small.jpg" alt="">
+                <a [routerLink]="'/profile/'+currentuser._id+'/timeline'">
+                  <img src="assets/images/banner/banner-small_ori.jpg" alt="">
                 </a>
-                <a href="profile.html" class="profile-thumb-2">
-                    <img src="assets/images/profile/profile-midle-1.jpg" alt="">
+                <a [routerLink]="'/profile/'+currentuser._id+'/timeline'" class="profile-thumb-2">
+                    <app-profile-photo id="home-profilePhoto" [imageName]="profilePicture" [style]=""></app-profile-photo>
                 </a>
             </figure>
             <div class="profile-desc text-center">
-                <h6 class="author"><a href="profile.html">Dimbel Lebmid</a></h6>
-                <p>Any one can join with but Social network us if you want Any one can join with us if you want</p>
+                <h6 class="author"><a [routerLink]="'/profile/'+currentuser._id+'/timeline'">{{currentuser.username}}</a></h6>
+                <p>{{currentuser.email}}</p>
+
+                <button class="submit-btn btn-sm" (click)="uploadPhoto()">Change Profile Picture</button>
             </div>
         </div>
     </div>
