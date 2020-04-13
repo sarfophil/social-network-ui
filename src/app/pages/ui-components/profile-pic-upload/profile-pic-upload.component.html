@@ -1,0 +1,11 @@
+<div class="profile-pic-area">
+    <img [src]="imagePreview" alt="profile-picture">
+   <input type="file" style="display: none" id="imageInput" [(ngModel)]="picture" accept="image/*" #file (change)="preview(file.files)" name="picture">
+  <button class="submit-btn btn-upload" (click)="changePicture()" >Change Picture</button>
+</div>
+<div class="profile-btn">
+  <button class="submit-btn btn-upload" [@uploadingTrigger]="isUploading?'close':'open'" *ngIf="picture" (click)="upload()">Upload</button>
+  <mat-progress-spinner [@uploadingTrigger]="isUploading?'open':'close'" class="comment-spinner"  mode="indeterminate" value="10" strokeWidth="3" diameter="40">
+  </mat-progress-spinner>
+
+</div>

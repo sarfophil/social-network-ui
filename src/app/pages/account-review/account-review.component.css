@@ -1,0 +1,12 @@
+.login-widget-inner input{
+  width: 100%;
+  border: none;
+  background-color: transparent;
+  border-bottom: 1px solid #999;
+  margin-bottom: 28px;
+  padding: 5px;
+}
+
+.loader{
+  margin: auto;
+}

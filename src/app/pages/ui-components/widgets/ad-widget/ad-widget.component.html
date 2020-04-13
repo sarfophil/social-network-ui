@@ -1,13 +1,33 @@
  <!-- widget single item start -->
- <br>
  <div class="card widget-item">
-    <h4 class="widget-title">Advertizement</h4>
-    <div class="widget-body">
-        <div class="add-thumb">
-            <a href="#">
-                <img src="assets/images/banner/advertise.jpg" alt="advertisement">
-            </a>
-        </div>
-    </div>
-</div>
+   <h4 class="widget-title">Advertizements</h4>
+   <div class="widget-body">
+     <div class="sweet-galley img-gallery" [@searchTrigger]="isLoading?'close':'open'">
+       <div class="row row-5">
+
+         <div class="col-4" *ngFor="let ad of adsList">
+           <div class="gallery-tem">
+             <figure class="post-thumb">
+               <a class="gallery-selector" href="" (click)="visit(ad)">
+                 <img src="assets/images/gallery/gallery-1.jpg" alt="sweet memory">
+
+               </a>
+             </figure>
+             <p>Posted  {{ad.createdDate | moment}}</p>
+           </div>
+         </div>
+
+       </div>
+     </div>
+
+     <div id="animy" [@searchTrigger]="isLoading?'open':'close'"></div>
+   </div>
+   <div class="row">
+     <div class="col-12">
+       <div class="load-more text-center">
+         <button class="load-more-btn">load more</button>
+       </div>
+     </div>
+   </div>
+ </div>
 <!-- widget single item end -->

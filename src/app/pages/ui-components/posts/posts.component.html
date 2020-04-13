@@ -1,4 +1,4 @@
-<app-create-post [pageType]="postState"></app-create-post>
+<app-create-post (loadNewData)="loadNewData()" [pageType]="postState"></app-create-post>
 <br>
 
 <!-- Modal start -->
@@ -59,9 +59,9 @@
                 <div class="profile-thumb">
                     <a href="#">
                         <figure class="profile-thumb-middle">
-                            <div *ngIf="p.user.profilePicture; then thenBlock else elseBlock"></div>
+                            <div *ngIf="p.userDetail[0].profilePicture; then thenBlock else elseBlock"></div>
                             <ng-template #thenBlock><img
-                                    src="http://localhost:3000/download?imagename={{p.profilePicture}}"
+                                    src="http://localhost:3000/download?imagename={{p.userDetail[0].profilePicture}}"
                                     alt="profile picture"></ng-template>
                             <ng-template #elseBlock> <img src="assets/images/profile/profile-small-3.jpg"
                                     alt="profile picture">
@@ -73,9 +73,8 @@
                     </a>
                 </div>
                 <!-- profile picture end -->
-
                 <div class="posted-author">
-                    <h6 class="author"><a href="profile.html">{{p.user.username}}</a></h6>
+                    <h6 class="author"><a href="profile.html">{{p.userDetail[0].username}}</a></h6>
                     <span class="post-time">{{p.createdDate| dateAgo}}</span>
                 </div>
 
@@ -86,8 +85,9 @@
                     <div class="post-settings arrow-shape">
                         <ul>
                             <li><button>copy link to adda</button></li>
-                            <li><button>edit post</button></li>
-                            <li><button>embed adda</button></li>
+
+                            <li *ngIf="p.user==userId"  (click)="setPostId(p._id)" data-toggle="modal" data-target="#editPost" ><button>edit post</button></li>
+                            <li *ngIf="p.user==userId"  (click)="deletePost(p._id)" ><button>Delete Post</button></li>
                         </ul>
                     </div>
                 </div>
@@ -100,11 +100,13 @@
                 </p>
                 <div class="post-thumb-gallery img-gallery">
                     <div class="row no-gutters">
-                        <div *ngIf="p.imageLink[0]!=null" class="col-12">
 
-                            <figure class="post-thumb" (click)="showPostModal()">
+
+                        <div *ngIf="p.imageLink!='' && p.imageLink!=null" class="col-12">
+
+                            <figure class="post-thumb">
                                 <a class="gallery-selector" href="assets/images/post/post-large-2.jpg">
-                                    <img src='http://localhost:3000/download?imagename={{p.imageLink}}'
+                                    <img *ngIf="p.imageLink!=[]" src='http://localhost:3000/download?imagename={{p.imageLink[0]}}'
                                         alt="post image">
                                 </a>
                             </figure>
@@ -138,8 +140,12 @@
         </div>
     </div>
 
-    
+
     <!-- post status end -->
-<button type="button" (click)="loadMore()"> Load more ...</button>
+    <button type="button" (click)="loadMore()"> Load more ...</button>
+
+    <div  class="modal fade" id="editPost">
+        <app-edit-post (loadNewData)="loadNewData()"  [postId]="postId"></app-edit-post>
+    </div>
 
 </div>
