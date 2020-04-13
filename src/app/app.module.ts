@@ -39,6 +39,7 @@ import { CreatePostComponent } from './pages/ui-components/widgets/create-post/c
 import { ProfilePhotoComponent } from './pages/ui-components/profile-photo/profile-photo.component';
 
 import { DateAgoPipe } from './pipe/dateAgoPipe';
+import { EditPostComponent } from './pages/ui-components/widgets/edit-post/edit-post.component';
 
 import { ViewPostModalComponent } from './pages/ui-components/view-post-modal/view-post-modal.component';
 import { ProfilePicUploadComponent } from './pages/ui-components/profile-pic-upload/profile-pic-upload.component';
@@ -79,9 +80,11 @@ const socketConfig: SocketIoConfig = {url: environment.socketEndpoint,options: {
     CreatePostComponent,
     ProfilePhotoComponent,
     DateAgoPipe,
+    EditPostComponent,
     ViewPostModalComponent,
     ProfilePicUploadComponent,
     AdBannerComponent
+
 
   ],
   imports: [

@@ -1,8 +1,8 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { PostType } from 'src/app/model/post-type';
 import { ProviderService } from 'src/app/service/provider-service/provider.service';
 import { API_TYPE } from 'src/app/model/apiType';
-import { NgForm, FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms'
+import { NgForm, FormGroup, FormBuilder, FormControl, Validators, NG_VALIDATORS, ValidationErrors, ValidatorFn  } from '@angular/forms'
 import { Post } from '../../../../model/post';
 import { error } from 'util';
 import { elementAt } from 'rxjs/operators';
@@ -27,11 +27,12 @@ export class CreatePostComponent implements OnInit {
   users: Array<any>;
   isShow = true;
   imageSrc: string;
-  myForm: FormGroup;
+  postform: FormGroup;
 
 
 
   @Input("pageType") pageType: PostType = PostType.HOMEPAGE_POSTS
+  @Input('editFlag') isEditPage: Boolean;
 
   isSearchPage: Boolean;
   errorMessage: string;
@@ -40,8 +41,9 @@ export class CreatePostComponent implements OnInit {
   user: User = JSON.parse(localStorage.getItem('active_user'));
 
   constructor(private config:ConfigService,private snackBar:MatSnackBar,private http: HttpClient, private formBuilder: FormBuilder, private providerService: ProviderService) {
-    this.myForm = this.formBuilder.group({
-      content: [''],
+    
+    this.postform = this.formBuilder.group({
+      content:new FormControl('', [Validators.minLength(5),Validators.maxLength(30),Validators.required]),
       avatar: [null],
       minAge: [''],
       maxAge: [''],
@@ -79,15 +81,17 @@ export class CreatePostComponent implements OnInit {
       }
     }
 
-    console.log(audienceFollowers);
-    let ageGroupTarget = { age: { minAge: this.myForm.get('minAge').value, maxAge: this.myForm.get('maxAge').value } }
+    let notifyfoll = this.postform.get('notifyFollowers').value!=''?this.postform.get('notifyFollowers').value:'false';
+    let ageGroupTarget =  { min: this.postform.get('minAge').value, max: this.postform.get('maxAge').value } 
     var formData: any = new FormData();
-    formData.append("content", this.myForm.get('content').value);
-    formData.append("imageLink", this.myForm.get('avatar').value);
+    formData.append("content", this.postform.get('content').value);
+    formData.append("imageLink", this.postform.get('avatar').value);
     formData.append("targetFollowers", JSON.stringify(audienceFollowers));
-    formData.append('ageGroupTarget', JSON.stringify(ageGroupTarget));
-    formData.append("notifyFollowers", new String(this.myForm.get('notifyFollowers').value));
 
+    formData.append('ageGroupTarget', JSON.stringify(ageGroupTarget)?JSON.stringify(ageGroupTarget):'');
+    formData.append("notifyFollowers",new String(notifyfoll))
+    console.log(this.postform.get('avatar').value)
+    console.log("notifyFollowers",new String(this.postform.get('notifyFollowers').value));
 
     const httpOptions = {
       headers:  this.config.getHeadersMultipart()
@@ -96,20 +100,21 @@ export class CreatePostComponent implements OnInit {
     this.http.post('http://localhost:3000/posts', formData,httpOptions).subscribe((data: Post) => {
       this.isCreated = true
       this.snackBar.open('post created successfully','Ok')
+      this.loadNewData();
     }, error => {
        this.snackBar.open(error.errorMessage,'Ok')
       this.errorMessage = error.responseMessage;
     });
 
-    this.myForm.reset()
+    this.postform.reset()
   }
 
   uploadFile(event) {
     const file = (event.target as HTMLInputElement).files[0];
-    this.myForm.patchValue({
+    this.postform.patchValue({
       avatar: file
     });
-    this.myForm.get('imageLink').updateValueAndValidity()
+    this.postform.get('imageLink').updateValueAndValidity()
 
     console.log(file)
   }
@@ -119,6 +124,13 @@ export class CreatePostComponent implements OnInit {
     this.isShow = !this.isShow;
   }
 
+ @Output("loadNewData") someEvent = new EventEmitter<string>();
 
+
+loadNewData(): void {
+  this.someEvent.next();
 }
 
+
+
+}

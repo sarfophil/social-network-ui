@@ -72,7 +72,6 @@ export class ProviderService {
    * @param queryParam should start with [?example=value&example2=value2]
    * @param httpOptions
    */
-
   get(apiType:API_TYPE,pathName,queryParam:string = '',httpOptions: Object = {headers:  this.config.getHeaders()}) {
     // concat url
     const url = `${environment.apiEndpoint}${apiType}${pathName}${queryParam}`;
@@ -90,6 +89,21 @@ export class ProviderService {
     return this.http.delete(url,httpOptions).pipe(
       catchError(this.config.handleError)
     )
+  }
+
+  delete(apiType:API_TYPE,pathName,queryParam,httpOptions:Object = {headers:  this.config.getHeaders()}) {
+    // concat url
+    const url = `${environment.apiEndpoint}${apiType}${pathName}${queryParam}`;
+
+    // options
+    // const httpOptions = {
+    //    headers:  this.config.getHeaders()
+    // }
+
+    return this.http.delete(url,httpOptions).pipe(
+      retry(2), // retries 2 times when request fails
+      catchError(this.config.handleError)
+    )  
   }
 
   onTokenExpired(content:string,statusCode:number): void{

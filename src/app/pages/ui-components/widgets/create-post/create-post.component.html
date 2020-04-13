@@ -1,8 +1,8 @@
 <!-- share box start -->
-<div class="card card-small" *ngIf="!isSearchPage">
-    <div class="share-box-inner">
+<div class="card card-small" *ngIf="!isSearchPage&&!isEditPage">
+    <div  class="share-box-inner">
         <!-- profile picture end -->
-        <div class="profile-thumb">
+        <div  class="profile-thumb">
             <a href="#">
                 <figure class="profile-thumb-middle">
 <!--                    <img src="assets/images/profile/profile-small-37.jpg" alt="profile picture">-->
@@ -13,7 +13,7 @@
         <!-- profile picture end -->
 
         <!-- share content box start -->
-        <div class="share-content-box w-100">
+        <div class="share-content-box w-100" >
             <form class="share-text-box">
                 <textarea name="content" class="share-text-field" aria-disabled="true" placeholder="Say Something"
                     data-toggle="modal" data-target="#textbox" required id="content"></textarea>
@@ -22,7 +22,7 @@
         </div>
         <!-- share content box end -->
         <!-- Modal start -->
-        <form [formGroup]="myForm" (ngSubmit)="  submit()">
+        <form [style.display]="block" [formGroup]="postform" (ngSubmit)="  submit()">
             <div class="modal fade" id="textbox" aria-labelledby="textbox">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -34,7 +34,13 @@
                         </div>
                         <div class="modal-body custom-scroll">
                             <textarea name="content" id="content" formControlName="content" required
-                                class="share-field-big custom-scroll" placeholder="Say Something"></textarea>
+                                class="share-field-big custom-scroll" minlength="5" maxlength="30" placeholder="Say Something" required></textarea>
+                                <div *ngIf="postform.controls['content'].errors" class="error-msg">
+                                    <div [hidden]="!postform.controls['content'].errors.required">Content is required.</div>
+                                    <div [hidden]="!postform.controls['content'].errors.minLength">Content min Length is 5.</div>
+                                    <div [hidden]="!postform.controls['content'].errors.maxLength">Content max Length is 30.</div>
+                                  </div>
+
                             <h6 class="modal-title">Insert your audience age</h6>
                             <input type="number" name="minAge" formControlName="minAge" placeholder="Min Age"
                                 class="mr-4 mt-2 single-field">
@@ -65,7 +71,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="post-share-btn" data-dismiss="modal">cancel</button>
-                            <button type="submit" class="post-share-btn">post</button>
+                            <button type="submit" [disabled]="postform.invalid" class="post-share-btn">post</button>
                         </div>
                     </div>
                 </div>
