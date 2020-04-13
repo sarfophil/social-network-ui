@@ -12,6 +12,7 @@ import { AdvertComponent } from './pages/admin-ui-components/advert/advert.compo
 import { AdminLoginComponent } from './pages/admin-login/admin-login.component'
 import { CanActivateTeamService } from './service/canActivateTeam/can-activate-team.service';
 import { SearchComponent } from './pages/search/search.component';
+import { NotfoundComponent } from './pages/404/notfound/notfound.component';
 
 const routes: Routes = [
   {
@@ -90,6 +91,12 @@ const routes: Routes = [
     component: SearchComponent,
     canActivate: [CanActivateTeamService],
     data: {role: ['USER_ROLE']}
+  },
+  {
+    path: '404/notfound',
+    component: NotfoundComponent,
+   // canActivate: [CanActivateTeamService],
+    data: {role: ['USER_ROLE','USER_ADMIN']}
   }
 ];
 
