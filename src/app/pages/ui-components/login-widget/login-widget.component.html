@@ -1,7 +1,7 @@
 <div style="overflow: hidden;">
     <h6 mat-dialog-title>Login into your Account</h6>
 
-    <div class="login-widget-inner text-center">                        
+    <div class="login-widget-inner text-center">
         <form [formGroup]="loginForm" (ngSubmit)="login()">
             <div class="row">
                     <div class="col-lg-6">
@@ -15,9 +15,8 @@
                         <mat-progress-spinner [@loadingState]="isLoading?'open':'close'" class="loader" color="white" mode="indeterminate" value="10" strokeWidth="3" diameter="40">
                         </mat-progress-spinner>
                     </div>
-                    
-            </div>    
+
+            </div>
         </form>
     </div>
 </div>
-   

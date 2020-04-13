@@ -1,0 +1,20 @@
+<div style="overflow: hidden;">
+  <h6 mat-dialog-title>Account Review Form</h6>
+
+  <div class="login-widget-inner text-center">
+    <form [formGroup]="reviewForm" (ngSubmit)="submit()">
+      <div class="row">
+        <div class="col-lg-12">
+          <input type="text" placeholder="Email" formControlName="email" class="single-field">
+        </div>
+        <div class="col-lg-12">
+          <button [@loadingState]="isLoading?'close':'open'"  class="submit-btn" type="submit" [disabled]="!reviewForm.valid">Submit</button>
+          <mat-progress-spinner [@loadingState]="isLoading?'open':'close'" class="loader" color="white" mode="indeterminate" value="10" strokeWidth="3" diameter="40">
+          </mat-progress-spinner>
+        </div>
+
+      </div>
+    </form>
+  </div>
+</div>
+

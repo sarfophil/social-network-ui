@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import {User} from "../../model/user";
 
 @Component({
   selector: 'app-profile',
@@ -9,11 +10,13 @@ import { ActivatedRoute } from '@angular/router';
 export class ProfileComponent implements OnInit {
 
   currentRoute:String = 'profile';
+  user: User;
 
   constructor(private route:ActivatedRoute) { }
 
   ngOnInit() {
     this.renderPage()
+    this.user = JSON.parse(localStorage.getItem("active_user"));
   }
 
   renderPage(){
