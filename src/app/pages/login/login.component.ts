@@ -7,7 +7,12 @@ import { trigger,state,style } from '@angular/animations';
 
 import {MatSnackBar} from '@angular/material/snack-bar';
 import { User } from 'src/app/model/user';
+
 import { stringify } from 'querystring';
+
+import {MatDialog} from "@angular/material/dialog";
+import {AccountReviewComponent} from "../account-review/account-review.component";
+
 
 export interface LoginResponse{
    access_token: string;
@@ -35,7 +40,9 @@ export class LoginComponent implements OnInit {
   signUpForm:FormGroup;
   loginForm: FormGroup;
   isLoading: Boolean = false;
-  constructor(private router:Router,private provider:ProviderService,private formBuilder:FormBuilder,private snackbar:MatSnackBar) { }
+  constructor(private router:Router,private provider:ProviderService,
+              private formBuilder:FormBuilder,private snackbar:MatSnackBar,
+              private dialog: MatDialog) { }
 
   ngOnInit() {
     
@@ -60,8 +67,8 @@ export class LoginComponent implements OnInit {
     this.isLoading = true;
     let body = this.loginForm.value;
     this.provider.post(API_TYPE.USER,'login',body)
-    .subscribe({      
-      next:(res:LoginResponse)=> {     
+    .subscribe({
+      next:(res:LoginResponse)=> {
         res.user.password = '';
         localStorage.setItem('access_token',res.access_token)
         localStorage.setItem('active_user',JSON.stringify(res.user))
@@ -74,7 +81,7 @@ export class LoginComponent implements OnInit {
       },
       complete: () => this.isLoading = false
     })
-    
+
   }
 signUp(){
   
@@ -83,4 +90,10 @@ signUp(){
   console.log(body)
 }
 
+  reviewForm($event: MouseEvent) {
+      $event.preventDefault();
+      this.dialog.open(AccountReviewComponent,{
+         maxWidth: '500px',
+      })
+  }
 }

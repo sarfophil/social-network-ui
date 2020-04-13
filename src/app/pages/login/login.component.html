@@ -19,9 +19,9 @@
                         </div>
 
                         <!-- Login Div -->
-                        <div class="col-lg-6">  
+                        <div class="col-lg-6">
                             <div class="login-area">
-                                
+
                                 <form [formGroup]="loginForm" (ngSubmit)="login()">
                                     <div class="row align-items-center">
                                             <div class="col-12 col-sm">
@@ -35,15 +35,15 @@
                                                 <mat-progress-spinner [@loadingState]="isLoading?'open':'close'" class="loader" color="white" mode="indeterminate" value="10" strokeWidth="3" diameter="40">
                                                 </mat-progress-spinner>
                                             </div>
-                                            
-                                    </div>    
+
+                                    </div>
                                 </form>
                             </div>
-                            
+
                         </div>
                         <!-- Login End -->
 
-                        
+
 
                     </div>
                 </div>
@@ -89,16 +89,16 @@
                                         </div>
                                         <!-- <h6 class="terms-condition">I have read & accepted the <a href="#">terms of use</a></h6> -->
                                         <div class="other-links">
-                                            <p>Account Locked? <a routerLink="/account/report">Click here</a></p>   
+                                            <p>Account Locked? <a href="#" (click)="reviewForm($event)">Click here</a></p>
                                             <a routerLink="/admin/login" >Login as an administrator</a>
                                         </div>
                                     </form>
                                 </div>
                             </div>
-                            
+
                         </div>
                         <!-- Sign up End -->
-                        
+
                     </div>
                 </div>
             </div>

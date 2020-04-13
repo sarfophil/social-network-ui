@@ -22,7 +22,7 @@ import { MenuComponent } from './pages/admin-ui-components/menu/menu.component';
 import { AdvertComponent } from './pages/admin-ui-components/advert/advert.component';
 import { KeywordComponent } from './pages/admin-ui-components/keyword/keyword.component';
 import { PostReviewComponent } from './pages/admin-ui-components/post-review/post-review.component';
-import { AccountReviewComponent } from './pages/admin-ui-components/account-review/account-review.component';
+import { AccountReviewComponent } from './pages/account-review/account-review.component';
 import { SocketIoModule,SocketIoConfig } from 'ngx-socket-io'
 import { environment } from 'src/environments/environment';
 import { AdminLoginComponent } from './pages/admin-login/admin-login.component';
@@ -41,6 +41,9 @@ import { ProfilePhotoComponent } from './pages/ui-components/profile-photo/profi
 import { DateAgoPipe } from './pipe/dateAgoPipe';
 
 import { ViewPostModalComponent } from './pages/ui-components/view-post-modal/view-post-modal.component';
+import { ProfilePicUploadComponent } from './pages/ui-components/profile-pic-upload/profile-pic-upload.component';
+import { NgxPubSubModule } from '@pscoped/ngx-pub-sub';
+import { AdBannerComponent } from './pages/ui-components/ad-banner/ad-banner.component';
 
 
 
@@ -76,11 +79,13 @@ const socketConfig: SocketIoConfig = {url: environment.socketEndpoint,options: {
     CreatePostComponent,
     ProfilePhotoComponent,
     DateAgoPipe,
-    ViewPostModalComponent
+    ViewPostModalComponent,
+    ProfilePicUploadComponent,
+    AdBannerComponent
 
   ],
   imports: [
-    BrowserModule,  
+    BrowserModule,
     HttpClientModule,
     MatProgressSpinnerModule,
     FormsModule,
@@ -89,11 +94,11 @@ const socketConfig: SocketIoConfig = {url: environment.socketEndpoint,options: {
     AppRoutingModule,
     BrowserAnimationsModule,
     SocketIoModule.forRoot(socketConfig),
-    MatDialogModule
-    
+    MatDialogModule,
+    NgxPubSubModule
   ],
   providers: [],
   bootstrap: [AppComponent],
-  entryComponents: [LoginWidgetComponent,ViewPostModalComponent]
+  entryComponents: [LoginWidgetComponent,ViewPostModalComponent,ProfilePicUploadComponent,AccountReviewComponent]
 })
 export class AppModule { }

@@ -10,6 +10,7 @@ import { ViewEncapsulation } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import { ConfigService } from 'src/app/service/config/config-service';
+import {User} from "../../../../model/user";
 
 
 @Component({
@@ -36,7 +37,7 @@ export class CreatePostComponent implements OnInit {
   errorMessage: string;
   uploadForm: FormGroup;
 
-
+  user: User = JSON.parse(localStorage.getItem('active_user'));
 
   constructor(private config:ConfigService,private snackBar:MatSnackBar,private http: HttpClient, private formBuilder: FormBuilder, private providerService: ProviderService) {
     this.myForm = this.formBuilder.group({
@@ -86,7 +87,7 @@ export class CreatePostComponent implements OnInit {
     formData.append("targetFollowers", JSON.stringify(audienceFollowers));
     formData.append('ageGroupTarget', JSON.stringify(ageGroupTarget));
     formData.append("notifyFollowers", new String(this.myForm.get('notifyFollowers').value));
-    console.log(this.myForm.get('avatar').value)
+
 
     const httpOptions = {
       headers:  this.config.getHeadersMultipart()
@@ -117,7 +118,7 @@ export class CreatePostComponent implements OnInit {
   toggleDisplay() {
     this.isShow = !this.isShow;
   }
- 
+
 
 }
 

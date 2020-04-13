@@ -302,8 +302,7 @@ export class ViewPostModalComponent implements OnInit,OnDestroy {
 
   nextImage(){
     this.currentImagePreview = this.postImagesHolder[this.currentImageIndex == this.postImagesHolder.length-1?
-                                                                                            this.postImagesHolder.length-1:
-                                                                                            this.currentImageIndex++]
+                                           this.postImagesHolder.length-1:this.currentImageIndex++]
   }
 
   prevImage(){
