@@ -12,7 +12,7 @@
                                     <li class="active"><a [routerLink]="headerType == 'user'?'/home':'/admin/dashboard'">home</a></li>
 
                                     <li class="notification-trigger" *ngIf="headerType == 'user'">
-                                   
+
                                      <!-- header top search start -->
                                     <div class="header-top-search" *ngIf="headerType == 'user'">
                                         <form class="top-search-box">
@@ -25,12 +25,12 @@
                                     <div class="message-dropdown" id="b" [@slideToggle]="isOpen? 'open':'close'">
                                             <div class="dropdown-title">
                                                 <p class="recent-msg">Search Results</p>
-                                               
+
                                             </div>
                                             <ul class="dropdown-msg-list">
-                                               
+
                                                 <li class="msg-list-item d-flex justify-content-between" *ngFor="let result of search$ | async">
-                                                    
+
 
                                                     <!-- message content start -->
                                                     <div class="msg-content" (click)="viewPost(result)">
@@ -62,7 +62,7 @@
                         <div class="brand-logo text-center">
                             <a href="index.html">
                                 <img src="assets/images/logo/logo.png" alt="brand logo">
-                                
+
                             </a>
                         </div>
                         <!-- brand logo end -->
@@ -70,7 +70,7 @@
 
                     <div class="col-md-5">
                         <div class="header-top-right d-flex align-items-center justify-content-end">
-                           
+
 
                             <!-- profile picture start -->
                             <div class="profile-setting-box">
@@ -83,16 +83,16 @@
                                     </a>
                                     <div class="profile-dropdown" [@slideToggle] = "isProfileOpen ? 'openProfile':'closeProfile'">
                                         <div class="profile-head">
-                                            <h5 class="name"><a href="#">Madison Howard</a></h5>
-                                            <a class="mail" href="#">mailnam@mail.com</a>
+                                            <h5 class="name"><a href="#">{{currentuser.username}}</a></h5>
+                                            <a class="mail" href="#">{{currentuser.email}}</a>
                                         </div>
                                         <div class="profile-body">
                                             <ul>
-                                                <li *ngIf="headerType == 'user'"><a routerLink="/profile/1/timeline"><i class="flaticon-user"></i>Profile</a></li>
+                                                <li *ngIf="headerType == 'user'"><a [routerLink]="'/profile/'+currentuser._id+'/timeline'"><i class="flaticon-user"></i>Profile</a></li>
                                                 <li *ngIf="headerType == 'admin'"><a routerLink="/admin/dashboard/profile/"><i class="flaticon-user"></i>Profile</a></li>
                                             </ul>
                                             <ul>
-                                                <li><a href="javascript:void()" (click)="signout()"><i class="flaticon-unlock"></i>Sign out</a></li>
+                                                <li><a href="#" (click)="signout($event)"><i class="flaticon-unlock"></i>Sign out</a></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -119,8 +119,8 @@
             </div>
             <div class="mobile-menu w-100">
                 <ul>
-                    
-                  
+
+
                     <!-- Search -->
                     <li *ngIf="headerType == 'user'">
                         <button class="search-trigger" (click) = "toggleSearch()">

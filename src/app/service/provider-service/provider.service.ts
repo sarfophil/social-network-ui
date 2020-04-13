@@ -36,19 +36,15 @@ export class ProviderService {
             catchError(this.config.handleError)
           )
   }
-  formDatapost(apiType:API_TYPE,body){
-    // concat url
-    const url = `${environment.apiEndpoint}${apiType}`;
 
-    // options
-    const httpOptions = {
-       headers:  this.config.getHeaders()
-    }
 
-    return this.http.post(url,body,httpOptions)
-          .pipe(
+  upload(apiType:API_TYPE,pathName:string = '',formData: FormData,
+         httpOptions = { headers: this.config.getHeadersMultipart() }){
+      const url = `${environment.apiEndpoint}${apiType}${pathName}`
+      return this.http.put(url,formData,httpOptions)
+        .pipe(
             catchError(this.config.handleError)
-          )   
+        )
   }
 
 
@@ -90,7 +86,6 @@ export class ProviderService {
 
   delete(apiType: API_TYPE,pathName,
          httpOptions:Object = {headers:  this.config.getHeaders()}){
-
     const url = `${environment.apiEndpoint}${apiType}${pathName}`;
     return this.http.delete(url,httpOptions).pipe(
       catchError(this.config.handleError)

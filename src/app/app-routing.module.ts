@@ -8,7 +8,6 @@ import { PostsComponent } from './pages/ui-components/posts/posts.component';
 import { AdminComponent } from './pages/admin/admin.component';
 import { KeywordComponent } from './pages/admin-ui-components/keyword/keyword.component';
 import { PostReviewComponent } from './pages/admin-ui-components/post-review/post-review.component';
-import { AccountReviewComponent } from './pages/admin-ui-components/account-review/account-review.component';
 import { AdvertComponent } from './pages/admin-ui-components/advert/advert.component';
 import { AdminLoginComponent } from './pages/admin-login/admin-login.component'
 import { CanActivateTeamService } from './service/canActivateTeam/can-activate-team.service';
@@ -43,14 +42,14 @@ const routes: Routes = [
       },
       {
         path: 'timeline',
-        component: PostsComponent,  
+        component: PostsComponent,
         data: {role: ['USER_ROLE']},
         canActivateChild: [CanActivateTeamService]
       },
       {
         path: 'followers',
-        component: FollowersComponent,   
-        data: {role: ['USER_ROLE']},      
+        component: FollowersComponent,
+        data: {role: ['USER_ROLE']},
         canActivateChild: [CanActivateTeamService]
       }
     ]
@@ -82,7 +81,7 @@ const routes: Routes = [
       },
       {
         path: 'accounts/reviews',
-        component: AccountReviewComponent
+        component: PostReviewComponent //TODO: Add a new Component
       }
     ]
   },
