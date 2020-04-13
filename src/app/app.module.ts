@@ -37,6 +37,7 @@ import { SearchComponent } from './pages/search/search.component';
 import { CreatePostComponent } from './pages/ui-components/widgets/create-post/create-post.component';
 import { ProfilePhotoComponent } from './pages/ui-components/profile-photo/profile-photo.component';
 import { DateAgoPipe } from './pipe/dateAgoPipe';
+import { EditPostComponent } from './pages/ui-components/widgets/edit-post/edit-post.component';
 
 
 // socket config
@@ -70,7 +71,8 @@ const socketConfig: SocketIoConfig = {url: environment.socketEndpoint,options: {
     SearchComponent,
     CreatePostComponent,
     ProfilePhotoComponent,
-    DateAgoPipe
+    DateAgoPipe,
+    EditPostComponent,
   ],
   imports: [
     BrowserModule,  

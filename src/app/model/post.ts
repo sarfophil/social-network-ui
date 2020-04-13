@@ -1,4 +1,5 @@
 export class Post {
+  [x: string]: any;
 
     constructor(private content :string ,  
         private audienceCriteria:{age: { min: Number, max: Number }}, 
