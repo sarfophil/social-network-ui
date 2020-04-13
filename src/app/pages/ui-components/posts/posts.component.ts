@@ -31,10 +31,10 @@ export class PostsComponent implements OnInit {
   page = 0;
   limit = 4;
 
-  /** 
+  /**
    * @description loadPosts method will depend on this decorator to load contents
    * Default value will home
-   * 
+   *
    */
   @Input('postState') postState: PostType = PostType.HOMEPAGE_POSTS
 
@@ -57,7 +57,7 @@ export class PostsComponent implements OnInit {
 
   /**
    * @description Depends on postState to load data from the webservice
-   * @param postType 
+   * @param postType
    */
   loadPosts(postType: PostType) {
 

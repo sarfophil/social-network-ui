@@ -91,20 +91,6 @@ export class ProviderService {
     )
   }
 
-  delete(apiType:API_TYPE,pathName,queryParam,httpOptions:Object = {headers:  this.config.getHeaders()}) {
-    // concat url
-    const url = `${environment.apiEndpoint}${apiType}${pathName}${queryParam}`;
-
-    // options
-    // const httpOptions = {
-    //    headers:  this.config.getHeaders()
-    // }
-
-    return this.http.delete(url,httpOptions).pipe(
-      retry(2), // retries 2 times when request fails
-      catchError(this.config.handleError)
-    )  
-  }
 
   onTokenExpired(content:string,statusCode:number): void{
     let expired = content == 'Token Expired'? true : false;
