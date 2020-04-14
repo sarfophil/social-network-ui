@@ -10,12 +10,12 @@
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <th scope="row">1</th>
-        <td>Mark Otto</td>
-        <td>20</td>
-        <td><button class="btn btn-primary">Review Account</button></td>
-        <td><button class="btn ">Activate Account</button></td>
-      </tr>
+        <tr *ngFor="let user of users ">
+            <th scope="row">1</th>
+            <td>{{user.name}}</td>
+            <td>{{user.unhealtyPosts}}</td>
+            <td><button (click)="reviewAccount(user.id)" class="btn btn-primary">Review Account</button></td>
+            <td><button (click)="activateAccount(user.id)" class="btn ">Activate Account</button></td>
+            </tr>
     </tbody>
   </table>
