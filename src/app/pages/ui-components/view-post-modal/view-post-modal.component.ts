@@ -214,7 +214,7 @@ export class ViewPostModalComponent implements OnInit,OnDestroy {
       let index = this.comments.findIndex((comment) => comment$._id === comment._id);
       this.comments.splice(index,1);
       let path = `${comment$.postId}/comments/${comment$._id}`;
-      this.provider.delete(API_TYPE.POST,path).subscribe(
+      this.provider.delete(API_TYPE.POST,path,'').subscribe(
         (result) => {},
         (error) => {
             if(error){
@@ -284,7 +284,7 @@ export class ViewPostModalComponent implements OnInit,OnDestroy {
           .subscribe((res) => console.log(`Sent`))
       }else {
         this.unlikedClicked();
-        this.provider.delete(API_TYPE.POST, path)
+        this.provider.delete(API_TYPE.POST, path,'')
           .subscribe((res) => console.log(`Unliked`))
       }
   }

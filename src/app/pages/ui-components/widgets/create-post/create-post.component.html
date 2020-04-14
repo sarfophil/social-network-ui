@@ -24,6 +24,7 @@
         <!-- Modal start -->
         <form [style.display]="block" [formGroup]="postform" (ngSubmit)="  submit()">
             <div class="modal fade" id="textbox" aria-labelledby="textbox">
+                <button  type="button" data-dismiss="modal" #closeModal ></button>
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">

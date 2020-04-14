@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input,AfterContentInit,OnChanges } from '@angular/core';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { ProviderService } from 'src/app/service/provider-service/provider.service';
 import { API_TYPE } from 'src/app/model/apiType';
@@ -25,7 +25,7 @@ import { PostType } from 'src/app/model/post-type';
     ])
   ]
 })
-export class PostsComponent implements OnInit {
+export class PostsComponent implements OnInit,AfterContentInit,OnChanges {
   /** Useful when making a request to the server */
   showPlaceholder: Boolean = false;
   page = 0;
@@ -36,7 +36,7 @@ export class PostsComponent implements OnInit {
    * Default value will home
    *
    */
-  @Input('postState') postState: PostType = PostType.HOMEPAGE_POSTS
+  @Input('postState') postState: PostType;
 
   /**
    * @description postData will recieve data from any parent component
@@ -48,8 +48,17 @@ export class PostsComponent implements OnInit {
   private currentUser: User = JSON.parse(localStorage.getItem('active_user'))
   private userId = JSON.parse(localStorage.getItem('active_user'))._id;
   private postId: {} = null;
+  private path ;
+  private apiType : API_TYPE;
+  private queryParam;
 
   constructor(private provider: ProviderService) { }
+  ngOnChanges(changes: import("@angular/core").SimpleChanges): void {
+    console.log("Post state",this.postState);
+  }
+  ngAfterContentInit(): void {
+    console.log("Post state",this.postState);
+  }
 
   ngOnInit() {
     this.loadPosts(this.postState)
@@ -61,23 +70,22 @@ export class PostsComponent implements OnInit {
    */
   loadPosts(postType: PostType) {
 
-    let apiType: API_TYPE;
-    let path = '';
-    let queryParam = `?user=${this.currentUser._id}&page=0&limit=5`
+     this.path = '';
+     this.queryParam = `?user=${this.currentUser._id}&page=0&limit=5`
 
 
     // Homepage posts
     if (postType === PostType.HOMEPAGE_POSTS) {
-      apiType = API_TYPE.POST;
-      path = ''
-      queryParam = '?page=' + this.page + '&limit=' + this.limit + '';
+      this.apiType = API_TYPE.POST;
+      this.path = ''
+      this.queryParam = '?page=' + this.page + '&limit=' + this.limit + '';
     }
 
     // User posts
     if (postType === PostType.USER_POSTS) {
       apiType = API_TYPE.POST
       path = `search`
-     queryParam = `?query=${this.postData}&limit= ${this.limit}`
+      queryParam = `?query=${this.postData}&limit= ${this.limit}`
 
     }
 
@@ -86,10 +94,10 @@ export class PostsComponent implements OnInit {
       apiType = API_TYPE.POST;
       path = 'search'
       queryParam = `?query=${this.postData}&limit= ${this.limit}`
+
     }
 
-    this.load(path, queryParam);
-    this.page += 1;
+    this.load(this.apiType, this.path, this.queryParam);
 
   }
 
@@ -99,21 +107,25 @@ export class PostsComponent implements OnInit {
 
   loadMore() {
     let query = '?page=' + this.page + '&limit=' + this.limit + '';
-    this.load('', query);
+    this.load('','', query);
     this.page += 1;
   }
 
 
-  load(path, query) {
-    this.provider.get(API_TYPE.POST, `${path}`, query == '' ? '' : query).subscribe(
+
+  load(apiType,path, query) {
+    console.log('loading',apiType  +   "  "  + path  + "  " + query);
+    this.provider.get(apiType, path, query == '' ? '' : query).subscribe(
+      
       (res: Array<any>) => {
-        console.log(res)
-      //  this.post = this.post.concat(res);
+        console.log("res",res)
+        this.post = this.post.concat(res);
+
 
         // const sortedActivities = this.post.sort((a, b) => b.createdDate - a.createdDate)
       },
       (error) => {
-        console.log('Success' + error)
+        console.log('Error' , error)
 
         this.showPlaceholder = false;
         this.provider.onTokenExpired(error.responseMessage, error.statusCode)
@@ -133,8 +145,8 @@ export class PostsComponent implements OnInit {
     this.limit = 4;
     let apiType = API_TYPE.POST;
     let path = ''
-    let queryParam = '?page=' + this.page + '&limit=' + this.limit + '';
-    this.load(path, queryParam);
+    let queryParam = '?page=' + this.page + '&limit=' + this.limit;
+    this.load(this.apiType,this.path, queryParam);
     this.page += 1;
   }
 
@@ -161,4 +173,6 @@ export class PostsComponent implements OnInit {
     )
 
   }
+
+
 }
