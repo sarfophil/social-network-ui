@@ -1,6 +1,11 @@
-import { Component, OnInit, Output } from '@angular/core';
-import { User } from 'src/app/model/user';
-import { UserService } from 'src/app/service/user.service';
+
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute} from "@angular/router";
+import {ProviderService} from "../../../service/provider-service/provider.service";
+import {API_TYPE} from "../../../model/apiType";
+import {User} from "../../../model/user";
+import {NgxPubSubService} from "@pscoped/ngx-pub-sub";
+import {FollowerResponse} from "../../../model/follower-response";
 
 
 @Component({
@@ -10,65 +15,70 @@ import { UserService } from 'src/app/service/user.service';
 })
 export class FollowersComponent implements OnInit {
 
-  constructor(private userService: UserService) { }
 
-  pp: boolean;
-  user: User;
-  people: Array<User>;
-  followers: Array<User>;
-  loading = false;
-  userId = JSON.parse(localStorage.getItem('active_user'))._id;
+  followers:Array<FollowerResponse> = [];
+  tempFollowersHolder: Array<FollowerResponse> = []
+  user: User = JSON.parse(localStorage.getItem("active_user"))
+  isLoading: Boolean = true;
+  constructor(private route: ActivatedRoute,private providerService: ProviderService,private pubSub: NgxPubSubService) { }
 
-  ngOnInit(): void {
-    this.people = this.getPeople();
-    this.followers = this.followUser();
-
+  ngOnInit() {
+      setTimeout(() => this.loadFollowers(),2000)
   }
 
-  // tslint:disable-next-line: use-lifecycle-interface
-  ngOnDestroy() {
+
+  loadFollowers(){
+      let path = `followers`;
+      // @ts-ignore
+    this.providerService.get(API_TYPE.USER, `${path}`,'')
+       .subscribe(
+          (response: Array<any>) => {
+            this.followers = []
+            for(let res of response){
+              let followerResponse: FollowerResponse = res.userId;
+              followerResponse.isFollowing = this.isFollowing(followerResponse)
+              this.followers.push(followerResponse)
+            }
+            this.tempFollowersHolder = this.followers
+            this.isLoading = false
+          },
+         (error => {
+             this.providerService.onTokenExpired(error.error,error.status)
+             this.isLoading = false
+         })
+
+       )
   }
 
-  getUser() {
-    this.loading = true;
-    return this.userService
-      .getUserById(this.user._id);
-  }
-  getPeople() {
-    this.loading = true;
-    return this.userService
-      .getUsers();
+  /**
+   * Method performs a checkup if current user follows a specific user.
+   * @param follower$
+   */
+  isFollowing(follower$: FollowerResponse): boolean{
+    let findCurrentUser = follower$.followers.find((follower) => follower.userId == this.user._id)
+    return findCurrentUser? true : false;
   }
 
-  followUser() {
-    this.loading = true;
-    return this.userService
-      .getFollowers(this.userId);
-  }
-  isFollowing(person): boolean {
-    if (!person || !person.followers) {
-      return false;
-    }
-    const id = this.user._id;
-    return person.followers.indexOf(id) > -1;
+  search(value: String) {
+      this.followers = this.followers.filter((follower) => {
+         return follower.username.toLowerCase().indexOf(value.toLowerCase()) > -1
+      })
+      if(value.length == 0) this.followers = this.tempFollowersHolder;
   }
 
-  // unFollowUser(personId, index) {
-  //   this.userService
-  //     .unFollowUser(personId)
-  //     .subscribe((data: IUser) => this.people.splice(index, 1, data));
-  // }
+  follow(follower$: FollowerResponse) {
 
-  // searchPeople() {
-  //   let type = this.getFeedType();
-  //   this.userService
-  //     .searchPeople(this.query.value, type)
-  //     .finally(() => (this.loading = false))
-  //     .subscribe(
-  //       (data: Array<IUser>) => (this.people = data),
-  //       (err) => console.error(err)
-  //     );
-  // }
+    follower$.isFollowing = true
+    let path = `${this.user._id}/follow/${follower$._id}`;
 
+    this.providerService.put(API_TYPE.USER,path,{})
+      .subscribe((res) => {
+        this.pubSub.publishEvent('FOLLOWED_USER_EVENT', {
+          friendId: follower$._id
+        })
+        this.loadFollowers()
+      },(error => console.log(`An error occured`)))
+
+  }
 
 }

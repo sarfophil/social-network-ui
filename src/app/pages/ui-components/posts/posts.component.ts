@@ -75,16 +75,17 @@ export class PostsComponent implements OnInit {
 
     // User posts
     if (postType === PostType.USER_POSTS) {
-      apiType = API_TYPE.USER
-      path = `${this.currentUser._id}/posts`
-      queryParam = `?limit=5&skip=5`
+      apiType = API_TYPE.POST
+      path = `search`
+     queryParam = `?query=${this.postData}&limit= ${this.limit}`
+
     }
 
     // Search posts
     if (postType === PostType.SEARCH_POSTS) {
-      apiType = API_TYPE.USER;
+      apiType = API_TYPE.POST;
       path = 'search'
-      queryParam = `?query=${this.postData}&limit=5`
+      queryParam = `?query=${this.postData}&limit= ${this.limit}`
     }
 
     this.load(path, queryParam);
@@ -104,11 +105,10 @@ export class PostsComponent implements OnInit {
 
 
   load(path, query) {
-    console.log('loading');
     this.provider.get(API_TYPE.POST, `${path}`, query == '' ? '' : query).subscribe(
       (res: Array<any>) => {
         console.log(res)
-        this.post = this.post.concat(res);
+      //  this.post = this.post.concat(res);
 
         // const sortedActivities = this.post.sort((a, b) => b.createdDate - a.createdDate)
       },
