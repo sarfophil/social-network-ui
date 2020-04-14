@@ -55,7 +55,6 @@ export class ProfilePhotoComponent implements OnInit,OnDestroy {
         .subscribe(
           (res) => {
             let objectUrl = URL.createObjectURL(res)
-            localStorage.setItem('profile_pic',objectUrl)
             this.imageSrc = this.sanitizer.bypassSecurityTrustUrl(objectUrl)
           },
           (error) => {

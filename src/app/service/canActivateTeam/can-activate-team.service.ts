@@ -22,7 +22,7 @@ export class CanActivateTeamService implements CanActivate{
             // check role
             let checkRole = role.find((r:string) => r == user.role);
 
-            return checkRole? true: false;
+            return !!checkRole;
           }else{
             this.router.navigate(['/login']);
             return false;

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import { ProviderService } from 'src/app/service/provider-service/provider.service';
 import { API_TYPE } from 'src/app/model/apiType';
 import { FormBuilder,Validators, FormGroup } from '@angular/forms'
@@ -40,28 +40,43 @@ export class LoginComponent implements OnInit {
   signUpForm:FormGroup;
   loginForm: FormGroup;
   isLoading: Boolean = false;
+  user: User = JSON.parse(localStorage.getItem("active_user"))
   constructor(private router:Router,private provider:ProviderService,
               private formBuilder:FormBuilder,private snackbar:MatSnackBar,
-              private dialog: MatDialog) { }
+              private dialog: MatDialog,private activeRoute: ActivatedRoute) { }
 
   ngOnInit() {
-    
     this.loginForm = this.formBuilder.group({
       username: ['',Validators.required],
       password: ['',Validators.required]
        })
+
     this.signUpForm=this.formBuilder.group({
       username: ['',Validators.required],
       password: ['',Validators.required],
       email:['',Validators.required],
       age:['',Validators.required],
       conformpassword:['',Validators.required]
-
-
-
     })
+
+
+    this.implicitLogin()
+
   }
 
+  // Verifies TOken before logging in
+  implicitLogin(){
+    if(this.user){
+      this.activeRoute.data.subscribe(
+        (res) => {
+          this.router.navigateByUrl('/home')
+        },
+        (error => {
+          console.log('Error Here')
+        })
+      )
+    }
+  }
 
   login() {
     this.isLoading = true;
@@ -84,7 +99,7 @@ export class LoginComponent implements OnInit {
 
   }
 signUp(){
-  
+
   let body = this.signUpForm.value;
   this.provider.post(API_TYPE.USER,'account',body)
   console.log(body)

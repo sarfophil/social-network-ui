@@ -7,7 +7,8 @@
     username: String;
     email: String;
     role: String;
-    followers: Array<User>;
+    followers: Array<String>;
+    following: Array<String>;
     totalVoilation: Number;
     location: Array<Number>;
     age: Number;

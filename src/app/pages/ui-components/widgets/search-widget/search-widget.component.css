@@ -1,0 +1,20 @@
+.unorder-list-info{
+   padding: 5px;
+}
+
+.list-detail{
+  padding: 3px;
+}
+.follow-link{
+  margin-left: 40px;
+}
+
+.list-info{
+  word-break: break-word;
+  float: left;
+  color: #0b2e13;
+}
+
+.loader{
+  margin: auto;
+}

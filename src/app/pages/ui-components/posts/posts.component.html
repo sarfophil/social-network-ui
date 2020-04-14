@@ -49,7 +49,7 @@
     </div>
 </div>
 
-<div>
+<div class="zoomIn">
     <!-- post status start -->
     <div *ngFor="let p of post ">
         <div class="card">
@@ -58,18 +58,18 @@
                 <!-- profile picture end -->
                 <div class="profile-thumb">
                     <a href="#">
-                        <figure class="profile-thumb-middle">
-                            <div *ngIf="p.userDetail[0].profilePicture; then thenBlock else elseBlock"></div>
-                            <ng-template #thenBlock><img
-                                    src="http://localhost:3000/download?imagename={{p.userDetail[0].profilePicture}}"
-                                    alt="profile picture"></ng-template>
-                            <ng-template #elseBlock> <img src="assets/images/profile/profile-small-3.jpg"
-                                    alt="profile picture">
-                            </ng-template>
+<!--                        <figure class="profile-thumb-middle">-->
+<!--                            <div *ngIf="p.userDetail[0].profilePicture; then thenBlock else elseBlock"></div>-->
+<!--                            <ng-template #thenBlock><img-->
+<!--                                    src="http://localhost:3000/download?imagename={{p.userDetail[0].profilePicture}}"-->
+<!--                                    alt="profile picture"></ng-template>-->
+<!--                            <ng-template #elseBlock> <img src="assets/images/profile/profile-small-3.jpg"-->
+<!--                                    alt="profile picture">-->
+<!--                            </ng-template>-->
 
-                            <ng-template #placeholder>
-                            </ng-template>
-                        </figure>
+<!--                            <ng-template #placeholder>-->
+<!--                            </ng-template>-->
+<!--                        </figure>-->
                     </a>
                 </div>
                 <!-- profile picture end -->
