@@ -32,9 +32,9 @@
                                 <!-- profile picture end -->
 
                                 <div class="posted-author">
-                                    <h6 class="author"><a [routerLink]="'/profile/'+follower.id+'/timeline'">{{follower.name}}</a></h6>
-                                    <p>{{follower.followers+' followers'}}</p>
-                                    <button class="add-frnd">Unfollow</button>
+                                    <h6 class="author"><a [routerLink]="'/profile/'+follower.id+'/timeline'">{{follower.userId.username}}</a></h6>
+                                    <p>{{follower.userId.followers.length +' followers'}}</p> 
+                                    <button class="add-frnd">{{pp}}</button>
                                 </div>
                             </div>
                         </div>
