@@ -50,6 +50,7 @@ import { NotfoundComponent } from './pages/404/notfound/notfound.component';
 
 import { TimelineComponent } from './pages/ui-components/timeline/timeline.component';
 import { FollowingComponent } from './pages/ui-components/following/following.component';
+import { AdminAccountReviewComponent } from './pages/admin-ui-components/admin-account-review/admin-account-review.component';
 
 
 
@@ -91,7 +92,8 @@ const socketConfig: SocketIoConfig = {url: environment.socketEndpoint,options: {
     AdBannerComponent,
     NotfoundComponent,
     TimelineComponent,
-    FollowingComponent
+    FollowingComponent,
+    AdminAccountReviewComponent
 
   ],
   imports: [
