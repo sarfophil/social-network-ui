@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import {User} from "../../model/user";
+import { PostType } from 'src/app/model/post-type';
 
 @Component({
   selector: 'app-profile',
@@ -11,6 +12,7 @@ export class ProfileComponent implements OnInit {
 
   currentRoute:String = 'profile';
   user: User;
+  postState: PostType = PostType.USER_POSTS
 
   constructor(private route:ActivatedRoute) { }
 
