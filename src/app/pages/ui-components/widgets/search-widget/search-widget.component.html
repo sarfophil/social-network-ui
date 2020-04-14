@@ -1,31 +1,37 @@
 <!-- widget single item start -->
 <div class="card widget-item">
     <h4 class="widget-title">
-        <input type="search" placeholder="Search New Friends"  class="form-control">
+        <input type="search" placeholder="Search New Friends" (keyup)="onSearch($event.target.value)"  class="form-control">
     </h4>
     <div class="widget-body">
-        <div id="searchBox"></div>
-        
-        <!-- <ul class="like-page-list-wrapper">
-            <li class="unorder-list"> -->
+        <div id="searchBox" [@animationTrigger]="onKeyUpEvent?'open':'close'"></div>
+
+        <ul class="like-page-list-wrapper" [@animationTrigger]="onKeyUpEvent?'close':'open'">
+
+            <li class="unorder-list" *ngFor="let result of search$ | async">
                 <!-- profile picture end -->
-                <!-- <div class="profile-thumb">
+                <div class="profile-thumb">
                     <a href="#">
                         <figure class="profile-thumb-small">
-                            <img src="assets/images/profile/profile-small-9.jpg" alt="profile picture">
+                          <app-profile-photo [imageName]="result.user.profilePicture" [style]="" class="profile-pic"></app-profile-photo>
                         </figure>
                     </a>
-                </div> -->
+                </div>
                 <!-- profile picture end -->
 
-                <!-- <div class="unorder-list-info">
-                    <h3 class="list-title"><a href="#">Any one can join with us if you want</a></h3>
-                    <p class="list-subtitle">5 min ago</p>
+                <div class="unorder-list-info">
+                    <div class="list-detail">
+                      <a [routerLink]="'/profile/'+result.user._id+'/timeline'" class="list-info">{{result.user.username}}</a>
+                      <a href="#" class="follow-link" *ngIf="!result.isAFollower" (click)="follow(result.user,$event)">Follow</a>
+                      <a href="#" class="follow-link" *ngIf="result.isAFollower" (click)="unfollow(result.user,$event)">UnFollow</a>
+                    </div>
                 </div>
             </li>
-           
-            -->
-        <!-- </ul> -->
+
+          <mat-progress-spinner [@animationTrigger]="showProgressSpinner?'showloader':'close'" class="loader" color="white" mode="indeterminate" value="10" strokeWidth="3" diameter="40">
+          </mat-progress-spinner>
+
+        </ul>
     </div>
 </div>
 <!-- widget single item end -->

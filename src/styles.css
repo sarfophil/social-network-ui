@@ -1,4 +1,19 @@
 /* Animations */
+.fadeIn{
+  animation-name: fadeIn;
+  animation-duration: 2s;
+}
+
+.zoomIn{
+  animation-name: zoomIn;
+  animation-duration: 2s;
+}
+
+.loader{
+   margin: auto;
+}
+
+
 @keyframes fadeIn {
     0% {
       opacity:0;
@@ -7,7 +22,7 @@
       opacity:1;
     }
   }
-  
+
   @keyframes fadeOut {
     0% {
       opacity:1;
@@ -21,7 +36,7 @@
  @keyframes zoomIn {
      0% {
          scale: 1;
-     },
+     }
      100% {
          scale: 10
      }
