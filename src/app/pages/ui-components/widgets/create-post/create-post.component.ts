@@ -1,8 +1,8 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, AfterContentInit,AfterViewInit, ContentChild, ElementRef, ViewChild } from '@angular/core';
 import { PostType } from 'src/app/model/post-type';
 import { ProviderService } from 'src/app/service/provider-service/provider.service';
 import { API_TYPE } from 'src/app/model/apiType';
-import { NgForm, FormGroup, FormBuilder, FormControl, Validators, NG_VALIDATORS, ValidationErrors, ValidatorFn  } from '@angular/forms'
+import { NgForm, FormGroup, FormBuilder, FormControl, Validators, NG_VALIDATORS,ValidationErrors, ValidatorFn  } from '@angular/forms'
 import { Post } from '../../../../model/post';
 import { error } from 'util';
 import { elementAt } from 'rxjs/operators';
@@ -22,18 +22,15 @@ import {User} from "../../../../model/user";
   encapsulation: ViewEncapsulation.None
 
 })
-export class CreatePostComponent implements OnInit {
+export class CreatePostComponent implements OnInit ,AfterContentInit,AfterViewInit {
   isCreated = false;
   users: Array<any>;
   isShow = true;
   imageSrc: string;
   postform: FormGroup;
-
-
-
   @Input("pageType") pageType: PostType = PostType.HOMEPAGE_POSTS
   @Input('editFlag') isEditPage: Boolean;
-
+  @ViewChild ("closeModal",{static:false}) closeModall :ElementRef
   isSearchPage: Boolean;
   errorMessage: string;
   uploadForm: FormGroup;
@@ -50,6 +47,7 @@ export class CreatePostComponent implements OnInit {
       notifyFollowers: ['']
     })
   }
+  
 
   ngOnInit() {
 
@@ -107,9 +105,12 @@ export class CreatePostComponent implements OnInit {
     });
 
     this.postform.reset()
+    this.closeModall.nativeElement.click();
   }
 
   uploadFile(event) {
+    console.log("ng on after Content Init : " + this.closeModall);
+
     const file = (event.target as HTMLInputElement).files[0];
     this.postform.patchValue({
       avatar: file
@@ -131,6 +132,12 @@ loadNewData(): void {
   this.someEvent.next();
 }
 
+ngAfterContentInit(): void {
+  console.log("ng on after Content Init : " + this.closeModall);
+}
+ngAfterViewInit():void{
+  console.log("ng on after Content Init : " + this.closeModall);
 
+}
 
 }

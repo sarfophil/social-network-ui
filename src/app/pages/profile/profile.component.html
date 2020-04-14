@@ -10,7 +10,7 @@
                 <div class="col-lg-3 col-md-3">
                     <div class="profile-picture-box">
                         <figure class="profile-picture">
-                            <a href="#">
+                            <a>
 <!--                                <img src="assets/images/profile/profile-1.jpg" alt="profile picture">-->
                               <app-profile-photo [imageName]="user.profilePicture" [style]="" class="profile-pic"></app-profile-photo>
                             </a>
@@ -22,10 +22,11 @@
                         <div class="main-menu-inner header-top-navigation">
                             <nav>
                                 <ul class="main-menu">
-                                    <li routerLinkActive="active"><a routerLink="/profile/1/timeline">timeline</a></li>
-                                    <li><a href="photos.html">photos</a></li>
-                                    <li  routerLinkActive="active"><a routerLink="/profile/1/followers">Followers (20)</a></li>
-                                    <!-- <li class="d-inline-block d-md-none"><a href="profile.html">edit profile</a></li> -->
+
+                                    <li routerLinkActive="active"><a [routerLink]="'/profile/'+user._id+'/timeline'">timeline</a></li>
+                                    <li a routerLinkActive="active"><a [routerLink]="'/profile/'+user._id+'/following'">Following ({{following}})</a></li>
+                                    <li  routerLinkActive="active"><a [routerLink]="'/profile/'+user._id+'/followers'">Followers ({{followers}})</a></li>
+
                                 </ul>
                             </nav>
                         </div>
@@ -48,13 +49,13 @@
                         <h4 class="widget-title">{{user.username}}</h4>
                         <div class="widget-body">
                             <div class="about-author">
-                                <p></p>
-                                <ul class="author-into-list">
-                                    <li><a href="#"><i class="bi bi-office-bag"></i>Graphic Designer</a></li>
-                                    <li><a href="#"><i class="bi bi-home"></i>Melbourne, Australia</a></li>
-                                    <li><a href="#"><i class="bi bi-location-pointer"></i>Pulshar, Melbourne</a></li>
-                                    <li><a href="#"><i class="bi bi-heart-beat"></i>Travel, Swimming</a></li>
-                                </ul>
+                                <p class="status"><span class="dot"></span>Active</p>
+<!--                                <ul class="author-into-list">-->
+<!--                                    <li><a href="#"><i class="bi bi-email"></i>Graphic Designer</a></li>-->
+<!--                                    <li><a href="#"><i class="bi bi-home"></i>Melbourne, Australia</a></li>-->
+<!--                                    <li><a href="#"><i class="bi bi-location-pointer"></i>Pulshar, Melbourne</a></li>-->
+<!--                                    <li><a href="#"><i class="bi bi-heart-beat"></i>Travel, Swimming</a></li>-->
+<!--                                </ul>-->
                             </div>
                         </div>
                     </div>
@@ -65,7 +66,7 @@
 
             <div class="col-lg-6 order-1 order-lg-2">
 
-                <router-outlet></router-outlet>
+                <app-posts  [postState]="postState" ></app-posts>
 
 
             </div>

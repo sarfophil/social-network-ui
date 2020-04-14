@@ -4,5 +4,6 @@ export enum API_TYPE {
     ADMIN = "/admin/",
     USER = "/user/",
     POST = "/posts/",
+    TOKEN = "/token/",
     DEFAULT = "/"
 }

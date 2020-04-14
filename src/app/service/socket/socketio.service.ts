@@ -22,7 +22,7 @@ export class SocketioService {
   user: User = JSON.parse(localStorage.getItem('active_user'));
 
   sound = new Howl({
-    src: ['../../../assets/sound/filling-your-inbox.mp3']
+    src: ['assets/sound/filling-your-inbox.mp3']
   })
 
   constructor(private snackbar: MatSnackBar,private router: Router,private pubSub: NgxPubSubService) { }
