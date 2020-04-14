@@ -22,9 +22,11 @@
                         <div class="main-menu-inner header-top-navigation">
                             <nav>
                                 <ul class="main-menu">
+
                                     <li routerLinkActive="active"><a [routerLink]="'/profile/'+user._id+'/timeline'">timeline</a></li>
                                     <li a routerLinkActive="active"><a [routerLink]="'/profile/'+user._id+'/following'">Following ({{following}})</a></li>
                                     <li  routerLinkActive="active"><a [routerLink]="'/profile/'+user._id+'/followers'">Followers ({{followers}})</a></li>
+
                                 </ul>
                             </nav>
                         </div>

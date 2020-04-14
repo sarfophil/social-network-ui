@@ -2,8 +2,8 @@
  * User Response Interface
  */
 
- export interface User{
-    _id: String,
+export interface User {
+    _id: String;
     username: String;
     email: String;
     role: String;

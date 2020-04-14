@@ -1,3 +1,4 @@
+
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {ProviderService} from "../../../service/provider-service/provider.service";
@@ -5,7 +6,6 @@ import {API_TYPE} from "../../../model/apiType";
 import {User} from "../../../model/user";
 import {NgxPubSubService} from "@pscoped/ngx-pub-sub";
 import {FollowerResponse} from "../../../model/follower-response";
-
 
 
 @Component({
@@ -78,6 +78,7 @@ export class FollowersComponent implements OnInit {
         })
         this.loadFollowers()
       },(error => console.log(`An error occured`)))
+
   }
 
 }
