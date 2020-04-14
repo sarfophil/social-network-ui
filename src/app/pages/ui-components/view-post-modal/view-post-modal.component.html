@@ -3,15 +3,26 @@
     <div class="modal-picture">
         <div class="image-bg">
 
-            <div class="navigation">
-                <button class="nav-btn left-arrow">
-                    <i class="bi bi-arrow-left-rounded"></i>
-                </button>
-                <button class="nav-btn right-arrow">
-                    <i class="bi bi-arrow-right-rounded"></i>
-                </button>
-            </div>
+          <img class="post-photo" *ngIf="postImagesHolder.length > 0" [@makingRequestTrigger]="isFetchingImages ? 'doneloading':'loadingImage'" [src]="currentImagePreview">
+
+          <p style="color: #FFFFFF" *ngIf="postImagesHolder.length == 0" [@makingRequestTrigger]="isFetchingImages ? 'doneloading':'loadingImage'">No Image Available for this post</p>
+
+          <mat-progress-spinner [@makingRequestTrigger]="isFetchingImages ? 'loadingImage':'doneloading'" class="comment-spinner"  mode="indeterminate" value="10" strokeWidth="3" diameter="40">
+          </mat-progress-spinner>
+
+
+
+
+          <div class="navigation" >
+            <button class="nav-btn left-arrow" (click)="prevImage()">
+              <i class="bi bi-arrow-left-rounded"></i>
+            </button>
+            <button class="nav-btn right-arrow" (click)="nextImage()">
+              <i class="bi bi-arrow-right-rounded"></i>
+            </button>
+          </div>
         </div>
+
     </div>
     <div class="comment-section" id="commentSection">
       <div class="scroll-area">

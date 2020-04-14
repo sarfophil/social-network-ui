@@ -19,9 +19,9 @@
                         </div>
 
                         <!-- Login Div -->
-                        <div class="col-lg-6">  
+                        <div class="col-lg-6">
                             <div class="login-area">
-                                
+
                                 <form [formGroup]="loginForm" (ngSubmit)="login()">
                                     <div class="row align-items-center">
                                             <div class="col-12 col-sm">
@@ -35,15 +35,15 @@
                                                 <mat-progress-spinner [@loadingState]="isLoading?'open':'close'" class="loader" color="white" mode="indeterminate" value="10" strokeWidth="3" diameter="40">
                                                 </mat-progress-spinner>
                                             </div>
-                                            
-                                    </div>    
+
+                                    </div>
                                 </form>
                             </div>
-                            
+
                         </div>
                         <!-- Login End -->
 
-                        
+
 
                     </div>
                 </div>
@@ -62,25 +62,25 @@
                                 <h1 class="create-acc text-center">Create An Account</h1>
                                 <div class="signup-inner text-center">
                                     <h5 class="title">Wellcome to Adda</h5>
-                                    <form class="signup-inner--form">
+                                    <form class="signup-inner--form" [formGroup]="signUpForm" (ngSubmit)="signUp()">
                                         <div class="row">
                                             <div class="col-6">
-                                                <input type="email" class="single-field" placeholder="Email">
+                                                <input type="email"  formControlName="email" class="single-field" placeholder="Email">
                                             </div>
                                             <div class="col-md-6">
-                                                <input type="text" class="single-field" placeholder="Username">
+                                                <input type="text" formControlName="username" class="single-field" placeholder="Username">
                                             </div>
                                             <div class="col-md-6">
-                                                <input type="password" class="single-field" placeholder="Password">
+                                                <input type="password" formControlName="password" class="single-field" placeholder="Password">
                                             </div>
                                             <div class="col-md-6">
-                                                <input type="password" class="single-field" placeholder="Password">
+                                                <input type="conformpassword"  formControlName="conformpassword" class="single-field" placeholder="confirm password">
                                             </div>
                                             <div class="col-md-12">
-                                                <select class="nice-select" name="sortby">
+                                                <select class="nice-select" name="sortby" [(value)]="selcetedValue">
                                                     <option value="trending">Age</option>
-                                                    <option value="sales">18+</option>
-                                                    <option value="sales">18-</option>
+                                                    <option value="old">18+</option>
+                                                    <option value="young">18-</option>
                                                 </select>
                                             </div>
                                             <div class="col-12">
@@ -89,16 +89,16 @@
                                         </div>
                                         <!-- <h6 class="terms-condition">I have read & accepted the <a href="#">terms of use</a></h6> -->
                                         <div class="other-links">
-                                            <p>Account Locked? <a routerLink="/account/report">Click here</a></p>   
+                                            <p>Account Locked? <a href="#" (click)="reviewForm($event)">Click here</a></p>
                                             <a routerLink="/admin/login" >Login as an administrator</a>
                                         </div>
                                     </form>
                                 </div>
                             </div>
-                            
+
                         </div>
                         <!-- Sign up End -->
-                        
+
                     </div>
                 </div>
             </div>

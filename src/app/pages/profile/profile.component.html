@@ -10,8 +10,9 @@
                 <div class="col-lg-3 col-md-3">
                     <div class="profile-picture-box">
                         <figure class="profile-picture">
-                            <a href="profile.html">
-                                <img src="assets/images/profile/profile-1.jpg" alt="profile picture">
+                            <a href="#">
+<!--                                <img src="assets/images/profile/profile-1.jpg" alt="profile picture">-->
+                              <app-profile-photo [imageName]="user.profilePicture" [style]="" class="profile-pic"></app-profile-photo>
                             </a>
                         </figure>
                     </div>
@@ -44,10 +45,10 @@
                 <aside class="widget-area profile-sidebar">
                     <!-- widget single item start -->
                     <div class="card widget-item">
-                        <h4 class="widget-title">kate palson</h4>
+                        <h4 class="widget-title">{{user.username}}</h4>
                         <div class="widget-body">
                             <div class="about-author">
-                                <p>I Don’t know how? But i believe that it is possible one day if i stay with my dream all time</p>
+                                <p></p>
                                 <ul class="author-into-list">
                                     <li><a href="#"><i class="bi bi-office-bag"></i>Graphic Designer</a></li>
                                     <li><a href="#"><i class="bi bi-home"></i>Melbourne, Australia</a></li>
@@ -63,7 +64,7 @@
             </div>
 
             <div class="col-lg-6 order-1 order-lg-2">
-            
+
                 <router-outlet></router-outlet>
 
 

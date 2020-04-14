@@ -1,0 +1,19 @@
+.profile-pic-area{
+  width: 100%;
+}
+
+.profile-pic-area > img {
+   width: 100px; height: 100px;
+   border-radius: 56px;
+   border: 1px solid #f4f4f4;
+   margin: auto;
+  display: block;
+}
+
+.btn-upload{
+  padding: 10px;
+}
+
+.comment-spinner{
+  margin: auto;
+}

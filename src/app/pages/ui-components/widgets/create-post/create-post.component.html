@@ -5,7 +5,8 @@
         <div  class="profile-thumb">
             <a href="#">
                 <figure class="profile-thumb-middle">
-                    <img src="assets/images/profile/profile-small-37.jpg" alt="profile picture">
+<!--                    <img src="assets/images/profile/profile-small-37.jpg" alt="profile picture">-->
+                  <app-profile-photo [imageName]="user.profilePicture" [style]="" class="profile-pic"></app-profile-photo>
                 </figure>
             </a>
         </div>
@@ -23,6 +24,7 @@
         <!-- Modal start -->
         <form [style.display]="block" [formGroup]="postform" (ngSubmit)="  submit()">
             <div class="modal fade" id="textbox" aria-labelledby="textbox">
+                <button  type="button" data-dismiss="modal" #closeModal ></button>
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
