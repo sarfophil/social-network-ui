@@ -55,8 +55,8 @@ const routes: Routes = [
       {
         path: 'timeline',
         component: TimelineComponent,
-       data: {role: ['USER_ROLE']},
-       canActivateChild: [CanActivateTeamService]
+        data: {role: ['USER_ROLE']},
+        canActivateChild: [CanActivateTeamService]
       },
       {
         path: 'followers',
