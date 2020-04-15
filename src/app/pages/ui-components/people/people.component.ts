@@ -36,10 +36,9 @@ export class PeopleComponent implements OnInit {
   }
 
   isFollowing(person): boolean {
-    const id = this.userId;
     // tslint:disable-next-line: prefer-for-of
     for (let i = 0; i < person.followers.length; i++) {
-      if (person.followers[i].userId === id) {
+      if (person.followers[i].userId === this.userId) {
         return true;
       }
 

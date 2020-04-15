@@ -29,10 +29,10 @@
                 <h6 class="author"><a [routerLink]="'/profile/'+person._id+'/timeline'">{{person.username}}</a>
                 </h6>
                 <p> {{person.followers.length +' followers'}}</p>
-                <button class="ui basic green button" (click)="
+                <div class="post-share-btn" (click)="
                     isFollowing(person)? unFollowUser(person): followUser(person) ">
                     {{ isFollowing(person) ? "Unfollow" : "Follow" }}
-                </button>
+                </div>
             </div>
         </div>
     </div>

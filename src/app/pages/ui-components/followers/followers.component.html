@@ -37,10 +37,9 @@
                                             [routerLink]="'/profile/'+follower.userId._id+'/timeline'">{{follower.userId.username}}</a>
                                     </h6>
                                     <p>{{follower.userId.followers.length +' followers'}}</p>
-                                    <!-- <button class="add-frnd">{{pp}}</button> -->
 
 
-                                    <button class="ui basic green button" (click)="
+                                    <button class="post-share-btn" (click)="
                                         isFollowing(follower.userId)
                                           ? unFollowUser(follower.userId)
                                           : followUser(follower.userId)

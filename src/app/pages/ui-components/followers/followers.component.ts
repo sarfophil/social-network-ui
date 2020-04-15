@@ -17,7 +17,7 @@ export class FollowersComponent implements OnInit {
   loading = false;
   userId = JSON.parse(localStorage.getItem('active_user'))._id;
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.followers = this.getFollowers();
 
   }
@@ -38,10 +38,9 @@ export class FollowersComponent implements OnInit {
   }
 
   isFollowing(follower): boolean {
-    const id = this.userId;
     // tslint:disable-next-line: prefer-for-of
     for (let i = 0; i < follower.userId.followers.length; i++) {
-      if (follower.userId.followers[i].userId === id) {
+      if (follower.userId.followers[i].userId === this.userId) {
         return true;
       }
 
@@ -50,6 +49,7 @@ export class FollowersComponent implements OnInit {
   }
 
   followUser(person) {
+    console.log(person);
     this.userService
       .followUser(person)
       .subscribe((data: User) => {
@@ -58,6 +58,7 @@ export class FollowersComponent implements OnInit {
   }
 
   unFollowUser(person) {
+    console.log(person);
     this.userService
       .unFollowUser(person)
       .subscribe((data: User) => {
