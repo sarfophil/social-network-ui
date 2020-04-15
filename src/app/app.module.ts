@@ -47,6 +47,7 @@ import { NgxPubSubModule } from '@pscoped/ngx-pub-sub';
 import { AdBannerComponent } from './pages/ui-components/ad-banner/ad-banner.component';
 import { AdminAccountReviewComponent } from './pages/admin-ui-components/admin-account-review/admin-account-review.component';
 
+import { FollowingComponent } from './pages/ui-components/following/following.component';
 
 
 // socket config
@@ -85,9 +86,8 @@ const socketConfig: SocketIoConfig = {url: environment.socketEndpoint,options: {
     ViewPostModalComponent,
     ProfilePicUploadComponent,
     AdBannerComponent,
-    AdminAccountReviewComponent
-
-
+    AdminAccountReviewComponent,
+    FollowingComponent
   ],
   imports: [
     BrowserModule,

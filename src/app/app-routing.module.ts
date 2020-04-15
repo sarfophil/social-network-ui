@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { LoginComponent } from '../app/pages/login/login.component';
-import { HomeComponent } from '../app/pages/home/home.component';
-import { ProfileComponent } from '../app/pages/profile/profile.component';
+import { LoginComponent } from './pages/login/login.component';
+import { HomeComponent } from './pages/home/home.component';
+import { ProfileComponent } from './pages/profile/profile.component';
 import { FollowersComponent } from './pages/ui-components/followers/followers.component'
 import { PostsComponent } from './pages/ui-components/posts/posts.component';
 import { AdminComponent } from './pages/admin/admin.component';
@@ -13,6 +13,11 @@ import { AdminLoginComponent } from './pages/admin-login/admin-login.component'
 import { CanActivateTeamService } from './service/canActivateTeam/can-activate-team.service';
 import { SearchComponent } from './pages/search/search.component';
 import { AdminAccountReviewComponent } from './pages/admin-ui-components/admin-account-review/admin-account-review.component';
+import {TimelineComponent} from "./pages/ui-components/timeline/timeline.component";
+import {UserResolverService} from "./service/user-resolver/user-resolver.service";
+import {AuthguardService} from "./service/auth-guard/authguard.service";
+import {FollowingComponent} from "./pages/ui-components/following/following.component";
+
 
 const routes: Routes = [
   {
@@ -22,7 +27,8 @@ const routes: Routes = [
   },
   {
     path: 'login',
-    component: LoginComponent
+    component: LoginComponent,
+    canActivate: [AuthguardService]
   },
   {
     path: 'home',
@@ -35,21 +41,25 @@ const routes: Routes = [
     component: ProfileComponent,
     data: {role: ['USER_ROLE']},
     canActivate: [CanActivateTeamService],
+    resolve: {
+      user: UserResolverService
+    },
     children: [
       {
         path: '',
         redirectTo:'/timeline',
         pathMatch:'full'
       },
+      
       {
-        path: 'timeline',
-        component: PostsComponent,
+        path: 'followers',
+        component: FollowersComponent,
         data: {role: ['USER_ROLE']},
         canActivateChild: [CanActivateTeamService]
       },
       {
-        path: 'followers',
-        component: FollowersComponent,
+        path: 'following',
+        component: FollowingComponent,
         data: {role: ['USER_ROLE']},
         canActivateChild: [CanActivateTeamService]
       }
@@ -96,7 +106,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes,{enableTracing: false})],
+  imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

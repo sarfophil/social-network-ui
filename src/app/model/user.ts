@@ -2,12 +2,13 @@
  * User Response Interface
  */
 
- export interface User{
-    _id: String,
+export interface User {
+    _id: String;
     username: String;
     email: String;
     role: String;
-    followers: Array<User>;
+    followers: Array<String>;
+    following: Array<String>;
     totalVoilation: Number;
     location: Array<Number>;
     age: Number;

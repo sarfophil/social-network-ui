@@ -1,3 +1,21 @@
 .profile-banner-large{
     background-image: url('../../../assets/images/banner/profile-banner.jpg');
 }
+
+.status{
+   padding-left: 5px;
+}
+.dot{
+  background: green;
+  width: 5px;
+  height: 5px;
+  border-radius: 9px;
+  float: right;
+  padding: 4px;
+  margin: 9px;
+}
+
+.profile-pic{
+  padding: 6px;
+  /*border: 2px solid #0b2e13;*/
+}

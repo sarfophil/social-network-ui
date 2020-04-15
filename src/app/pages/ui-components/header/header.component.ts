@@ -53,7 +53,7 @@ export class HeaderComponent implements OnInit,OnDestroy {
   @Input() headerType: string;
   search$: Observable<any>;
   private searchText$ = new Subject<string>()
-  currentuser: User = JSON.parse(localStorage.getItem('active_user'))
+  currentuser: User;
 
   // View All Links from post search
   viewAllRoute:string = ''
@@ -61,6 +61,7 @@ export class HeaderComponent implements OnInit,OnDestroy {
   constructor(private router:Router,private route: ActivatedRoute,private _eref: ElementRef,private provider : ProviderService,private dialog: MatDialog) { }
 
   ngOnInit() {
+    this.currentuser = JSON.parse(localStorage.getItem('active_user'));
     this.search$ = this.searchText$.pipe(
         filter(text => text.length > 2),
         debounceTime(10),
