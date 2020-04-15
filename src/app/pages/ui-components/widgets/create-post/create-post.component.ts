@@ -109,7 +109,6 @@ export class CreatePostComponent implements OnInit ,AfterContentInit,AfterViewIn
   }
 
   uploadFile(event) {
-    console.log("ng on after Content Init : " + this.closeModall);
 
     const file = (event.target as HTMLInputElement).files[0];
     this.postform.patchValue({

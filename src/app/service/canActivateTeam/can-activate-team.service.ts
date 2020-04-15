@@ -16,6 +16,7 @@ export class CanActivateTeamService implements CanActivate{
   permission(role: Array<String>): boolean {
       let user: User = JSON.parse(localStorage.getItem('active_user'));
       let accessToken = localStorage.getItem('access_token');
+      let isAdmin = localStorage.getItem('isAdmin');
       if(accessToken){
           // check user's state
           if(user && user.isActive){
@@ -23,7 +24,11 @@ export class CanActivateTeamService implements CanActivate{
             let checkRole = role.find((r:string) => r == user.role);
 
             return checkRole? true: false;
-          }else{
+          }
+          else if(isAdmin=="true"){
+            return true;
+          }
+          else{
             this.router.navigate(['/login']);
             return false;
           }

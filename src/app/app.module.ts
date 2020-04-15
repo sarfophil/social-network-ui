@@ -45,6 +45,7 @@ import { ViewPostModalComponent } from './pages/ui-components/view-post-modal/vi
 import { ProfilePicUploadComponent } from './pages/ui-components/profile-pic-upload/profile-pic-upload.component';
 import { NgxPubSubModule } from '@pscoped/ngx-pub-sub';
 import { AdBannerComponent } from './pages/ui-components/ad-banner/ad-banner.component';
+import { AdminAccountReviewComponent } from './pages/admin-ui-components/admin-account-review/admin-account-review.component';
 
 
 
@@ -83,7 +84,8 @@ const socketConfig: SocketIoConfig = {url: environment.socketEndpoint,options: {
     EditPostComponent,
     ViewPostModalComponent,
     ProfilePicUploadComponent,
-    AdBannerComponent
+    AdBannerComponent,
+    AdminAccountReviewComponent
 
 
   ],
