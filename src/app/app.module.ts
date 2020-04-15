@@ -48,6 +48,7 @@ import { AdBannerComponent } from './pages/ui-components/ad-banner/ad-banner.com
 import { AdminAccountReviewComponent } from './pages/admin-ui-components/admin-account-review/admin-account-review.component';
 
 import { FollowingComponent } from './pages/ui-components/following/following.component';
+import { TimelineComponent } from './pages/ui-components/timeline/timeline.component';
 
 
 // socket config
@@ -87,7 +88,7 @@ const socketConfig: SocketIoConfig = {url: environment.socketEndpoint,options: {
     ProfilePicUploadComponent,
     AdBannerComponent,
     AdminAccountReviewComponent,
-    FollowingComponent
+    FollowingComponent,TimelineComponent
   ],
   imports: [
     BrowserModule,

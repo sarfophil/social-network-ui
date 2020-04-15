@@ -21,7 +21,7 @@ export class EditPostComponent implements OnInit {
   private isShow = true;
   private post;
   private users = [];
-  private userId = JSON.parse(localStorage.getItem('active_user'))._id;
+  // private userId = JSON.parse(localStorage.getItem('active_user'))._id;
   private imageName;
   private imageUrl;
   private deleteImage = false;

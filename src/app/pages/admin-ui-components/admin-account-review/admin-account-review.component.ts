@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { ProviderService } from 'src/app/service/provider-service/provider.service';
 import { PostType } from 'src/app/model/post-type';
@@ -10,8 +10,10 @@ import { PostType } from 'src/app/model/post-type';
 })
 export class AdminAccountReviewComponent implements OnInit {
 
-  private postState : PostType = PostType.USER_POSTS
-  private accountreview =true;
+  private postState : PostType = PostType.UNHELATHY_POST
+  private accountreview =false;
+  private userId =''
+  @ViewChild('modal',{static:false}) modal : ElementRef;
 
   constructor(private router :Router, private service :ProviderService) { }
 
@@ -20,6 +22,7 @@ export class AdminAccountReviewComponent implements OnInit {
 
   reviewAccount(id){
   this.accountreview=true
+  this.userId=id;
   }
 
   activateAccount(){

@@ -42,11 +42,11 @@ export class PostsComponent implements OnInit,AfterContentInit,OnChanges {
    * @description postData will recieve data from any parent component
    */
   @Input('postData') postData: any = '';
+  @Input('userIdAdmin') userIdAdmin;
 
   post: Array<any> = []
 
   private currentUser: User = JSON.parse(localStorage.getItem('active_user'))
-  private userId = JSON.parse(localStorage.getItem('active_user'))._id;
   private postId: {} = null;
   private path ;
   private apiType : API_TYPE;
@@ -71,7 +71,7 @@ export class PostsComponent implements OnInit,AfterContentInit,OnChanges {
   loadPosts(postType: PostType) {
 
      this.path = '';
-     this.queryParam = `?user=${this.currentUser._id}&page=0&limit=5`
+     this.queryParam =  `?user=${this.userIdAdmin ? this.userIdAdmin :this.currentUser._id}&page=0&limit=5`
 
 
     // Homepage posts
@@ -84,7 +84,15 @@ export class PostsComponent implements OnInit,AfterContentInit,OnChanges {
     // User posts
     if (postType === PostType.USER_POSTS) {
       this.apiType = API_TYPE.POST
-      this.path = `search`
+      this.path = ``
+      this.queryParam = `?query=${this.postData}&limit= ${this.limit}`
+
+    }
+
+    if (postType === PostType.UNHELATHY_POST) {
+      console.log("userIdAdmin");
+      this.apiType = API_TYPE.POST
+      this.path = `${this.userIdAdmin}/unhealthy`;
       this.queryParam = `?query=${this.postData}&limit= ${this.limit}`
 
     }
