@@ -36,7 +36,7 @@ export class PostsComponent implements OnInit {
   /** Useful when making a request to the server */
   showPlaceholder: Boolean = false;
   skip = 0;
-  limit = 1;
+  limit = 5;
 
   /**
    * @description loadPosts method will depend on this decorator to load contents
@@ -54,16 +54,17 @@ export class PostsComponent implements OnInit {
   post: Array<PostResponse> = []
 
   private currentUser: User = JSON.parse(localStorage.getItem('active_user'));
+  private userId = this.userIdAdmin?'': JSON.parse(localStorage.getItem('active_user'))._id;
 
-<<<<<<< HEAD
-  private currentUser: User = JSON.parse(localStorage.getItem('active_user'))
-=======
->>>>>>> 2c4c8f25a6ea53ad279c71c716b7f6fa4765b078
+
+
   private postId: {} = null;
   private path ;
   private apiType : API_TYPE;
   private queryParam;
   private openSpinner: boolean = false
+  private current_date;
+  private review_id;
   constructor(private provider: ProviderService,private sanitizer: DomSanitizer,private dialog: MatDialog) { }
 
   ngOnInit() {
@@ -90,21 +91,26 @@ export class PostsComponent implements OnInit {
     // User posts
     if (postType === PostType.USER_POSTS) {
       this.apiType = API_TYPE.POST
-<<<<<<< HEAD
       this.path = ``
       this.queryParam = `?query=${this.postData}&limit= ${this.limit}`
 
     }
 
-    if (postType === PostType.UNHELATHY_POST) {
+    if (postType === PostType.ACCOUNT_REVIEW) {
       console.log("userIdAdmin");
       this.apiType = API_TYPE.POST
       this.path = `${this.userIdAdmin}/unhealthy`;
-      this.queryParam = `?query=${this.postData}&limit= ${this.limit}`
-=======
-      this.path = `search`
-      this.queryParam = `?query=${this.postData}&limit= ${this.limit}&skip= ${this.skip}`
->>>>>>> 2c4c8f25a6ea53ad279c71c716b7f6fa4765b078
+      // this.queryParam = `?query=${this.postData}&limit= ${this.limit}`
+      this.queryParam = `?limit= ${this.limit}&skip= ${this.skip}`
+
+    }
+
+    if (postType === PostType.POST_REVIEW) {
+      console.log("userIdAdmin");
+      this.apiType = API_TYPE.ADMIN
+      this.path = `/blacklist/posts/reviews`;
+      // this.queryParam = `?query=${this.postData}&limit= ${this.limit}`
+      this.queryParam = `?limit= ${this.limit}&skip= ${this.skip}`
 
     }
 
@@ -112,11 +118,7 @@ export class PostsComponent implements OnInit {
     if (postType === PostType.SEARCH_POSTS) {
       this.apiType = API_TYPE.POST;
       this.path = 'search'
-<<<<<<< HEAD
-     this.queryParam = `?query=${this.postData}&limit= ${this.limit}`
-=======
       this.queryParam = `?query=${this.postData}&limit= ${this.limit}&skip=${this.skip}`
->>>>>>> 2c4c8f25a6ea53ad279c71c716b7f6fa4765b078
 
     }
 
@@ -129,7 +131,7 @@ export class PostsComponent implements OnInit {
   }
 
   loadMore() {
-    this.skip += this.limit;
+    this.skip ++;
     console.log(this.skip)
     this.openSpinner = true;
     this.loadPosts(this.postState)
@@ -139,21 +141,22 @@ export class PostsComponent implements OnInit {
 
   load(apiType,path, query) {
     this.provider.get(apiType, path, query == '' ? '' : query)
-      .pipe(
-          map((response: Array<any>) => {
-              let postsArr: Array<PostResponse> = [];
-              for(let data of response){
-                  let post = new PostResponse(data._id,data.imageLink[0],data.userDetail[0]._id,data.createdDate,data.isHealthy,data.userDetail[0].profilePicture,data.userDetail[0].username,data.likes,data.content);
-                  postsArr.push(post)
-              }
-              return postsArr
-          }),
-          switchMap((postArr: Array<PostResponse>) => this.requestImages(postArr))
-      )
       .subscribe(
         (res: Array<PostResponse>) => {
-         //   this.post = res;
+         console.log(res);
+
+         if(this.userIdAdmin){
+           
+           res.map(r=>this.post.push(r.post));
+           console.log(this.post);
+
+         }
+
+         else 
          this.post = this.post.concat(res);
+
+
+
 
         },
         (error) => {
@@ -190,9 +193,7 @@ export class PostsComponent implements OnInit {
   loadNewData() {
     this.post=[];
     this.skip = 0;
-    this.limit = 4;
-    let apiType = API_TYPE.POST;
-    let path = ''
+    this.limit = 5;
     let queryParam = '?page=' + this.skip + '&limit=' + this.limit;
     this.load(this.apiType,this.path, queryParam);
     this.skip += 1;
@@ -240,5 +241,16 @@ export class PostsComponent implements OnInit {
 
   sanitize(downloadedImageBlob: any) {
     return this.sanitizer.bypassSecurityTrustUrl(downloadedImageBlob);
+  }
+
+  acceptBlacklistedPost(reviewId){
+    console.log(reviewId)
+    this.provider.put(API_TYPE.ADMIN,`blacklist/posts/reviews/${reviewId}`,'').subscribe((res:{err:boolean,message:string})=>{
+      this.loadNewData() ;
+    },(err)=>{
+        console.log(err);
+    },()=>{
+
+    })
   }
 }

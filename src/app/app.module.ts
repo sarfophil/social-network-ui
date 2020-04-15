@@ -45,15 +45,10 @@ import { ViewPostModalComponent } from './pages/ui-components/view-post-modal/vi
 import { ProfilePicUploadComponent } from './pages/ui-components/profile-pic-upload/profile-pic-upload.component';
 import { NgxPubSubModule } from '@pscoped/ngx-pub-sub';
 import { AdBannerComponent } from './pages/ui-components/ad-banner/ad-banner.component';
-<<<<<<< HEAD
 import { AdminAccountReviewComponent } from './pages/admin-ui-components/admin-account-review/admin-account-review.component';
 
-=======
 
 import { NotfoundComponent } from './pages/404/notfound/notfound.component';
-
-import { TimelineComponent } from './pages/ui-components/timeline/timeline.component';
->>>>>>> 2c4c8f25a6ea53ad279c71c716b7f6fa4765b078
 import { FollowingComponent } from './pages/ui-components/following/following.component';
 import { TimelineComponent } from './pages/ui-components/timeline/timeline.component';
 
@@ -95,15 +90,12 @@ const socketConfig: SocketIoConfig = {url: environment.socketEndpoint,options: {
     ViewPostModalComponent,
     ProfilePicUploadComponent,
     AdBannerComponent,
-<<<<<<< HEAD
     AdminAccountReviewComponent,
-    FollowingComponent,TimelineComponent
-=======
+    FollowingComponent,TimelineComponent,
     NotfoundComponent,
     TimelineComponent,
     FollowingComponent
 
->>>>>>> 2c4c8f25a6ea53ad279c71c716b7f6fa4765b078
   ],
   imports: [
     BrowserModule,

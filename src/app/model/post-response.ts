@@ -1,3 +1,5 @@
+import { Optional } from '@angular/core';
+
 /** Response Model for post */
 export interface Like {
   _id: string
@@ -15,6 +17,11 @@ export class PostResponse {
     private _likes: Array<Like>;
     private _content: string;
     private _downloadedImageBlob: any;
+    post: PostResponse;
+    private userdetail: any;
+  reactedUsers: any;
+  eportedDate: PostResponse;
+  reportedDate: PostResponse;
 
   constructor(id: string, image: string, userId: string, createdDate: string, isHealthy: boolean, userProfilePicture: string, username: string, likes: Array<Like>, content: string) {
     this._id = id;
@@ -28,7 +35,7 @@ export class PostResponse {
     this._content = content;
   }
 
-
+  
   get id(): string {
     return this._id;
   }
@@ -72,5 +79,14 @@ export class PostResponse {
 
   get downloadedImageBlob(): any {
     return this._downloadedImageBlob;
+  }
+
+  get _userdetail(): any {
+    return this.userdetail;
+  }
+
+
+  set _userdetail(value: any) {
+    this.userdetail = value;
   }
 }

@@ -2,6 +2,11 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { ProviderService } from 'src/app/service/provider-service/provider.service';
 import { PostType } from 'src/app/model/post-type';
+import { API_TYPE } from 'src/app/model/apiType';
+import { User } from 'src/app/model/user';
+import { error } from 'protractor';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ok } from 'assert';
 
 @Component({
   selector: 'app-admin-account-review',
@@ -10,22 +15,53 @@ import { PostType } from 'src/app/model/post-type';
 })
 export class AdminAccountReviewComponent implements OnInit {
 
-  private postState : PostType = PostType.UNHELATHY_POST
-  private accountreview =false;
-  private userId =''
-  @ViewChild('modal',{static:false}) modal : ElementRef;
+  private postState: PostType = PostType.ACCOUNT_REVIEW
+  private accountreview = false;
+  private userId = ''
+  private blockedAccounts;
+  private blockedAccount;
 
-  constructor(private router :Router, private service :ProviderService) { }
+  limit = 10;
+  @ViewChild('modal', { static: false }) modal: ElementRef;
+
+  constructor(private router: Router, private service: ProviderService ,private snackBar:MatSnackBar) {
+    this.load();
+  }
 
   ngOnInit() {
   }
 
-  reviewAccount(id){
-  this.accountreview=true
-  this.userId=id;
+  reviewAccount(id, blockedAccount) {
+    this.blockedAccount = blockedAccount;
+    this.accountreview = true;
+    this.userId = id;
   }
+load(){
+  this.accountreview=false
+  this.service.get(API_TYPE.ADMIN, 'accounts/reviews', `?limit=${this.limit}`).subscribe(
+    (blockedAccount) => {
+      this.blockedAccounts = blockedAccount;
+      console.log(this.blockedAccounts);
+    },
+    (err) => {
+      console.log(err)
+    },
+    () => {
 
-  activateAccount(){
-          
+      console.log("complete")
+    })
+}
+  activateAccount(reviewId) {
+    this.service.put(API_TYPE.ADMIN, `/accounts/reviews/${reviewId}`, '').subscribe((res: { error: boolean, message: string }) => {
+      console.log(res.message);
+      this.snackBar.open("account activated",'',{
+        duration: 3000
+      })
+        this.load();
+    }, (err) => {
+      console.log(err)
+    }, () => {
+      console.log("complate");
+    })
   }
 }

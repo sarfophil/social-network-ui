@@ -1,6 +1,6 @@
 <h1 class="display-4" >Account-review</h1> <span class="display-5">Deactivated-user-Accounts</span>
 
-<table *ngIf="!accountreview" class="mt-4 table">
+<table  class="mt-4 table">
     <thead class="thead-light">
       <tr>
         <th scope="col">#</th>
@@ -12,28 +12,35 @@
         <th scope="col"></th>
       </tr>
     </thead>
-    <tbody>
-      <tr  >
-        <th scope="row">1</th>
-        <td>Yome fisseha</td>
-        <td>20</td>
-        <td>2 min ago</td>
-        <td><button (click)="reviewAccount('5e92762ae4850aa409195200')" class="btn btn-primary">Unhealthy Posts</button></td>
-        <td><button (click)="activateAccount()" class="btn ">Activate Account</button></td>
-        <td><button (click)="activateAccount()" class="btn ">Reject Account</button></td>
-
+    <tbody *ngIf="accountreview==false" >
+      <tr  *ngFor="let blockedAccount of blockedAccounts ; let i=index"  >
+        <th   scope="row">{{i}}</th>
+        <td >{{blockedAccount.account.username}}</td>
+        <td>{{blockedAccount.account.totalviolation}}</td>
+        <td>{{blockedAccount.createdDate|dateAgo}}</td>
+        <td><button (click)="reviewAccount(blockedAccount.account._id,blockedAccount)" class="btn btn-primary">Unhealthy Posts</button></td>
+        <td><button (click)="activateAccount(blockedAccount._id)" class="btn ">Activate Account</button></td>
+        <td><button class="btn ">Reject Account</button></td>
       </tr>
+
+    </tbody>
+
+    <tbody *ngIf="accountreview==true" >
+      <tr>
+        <th  scope="row"></th>
+        <td >{{blockedAccount.account.username}}</td>
+        <td>{{blockedAccount.account.totalviolation}}</td>
+        <td>{{blockedAccount.createdDate|dateAgo}}</td>
+        <td><button (click)="reviewAccount(blockedAccount.account._id,blockedAccount)" class="btn btn-primary">Unhealthy Posts</button></td>
+        <td><button (click)="activateAccount(blockedAccount._id)" class="btn ">Activate Account</button></td>
+        <td><button class="btn ">Reject Account</button></td>
+      </tr>
+      
     </tbody>
   </table>
-
-  <div class="row">
-      <div class="col-md-12">
-
-      </div>
-      <div class="col-md-12">
-        <div  *ngIf="accountreview">
-            <a  class="btn btn-primary" (click)="accountreview = !accountreview" >&laquo; Back</a>
-            <app-posts [userIdAdmin]="userId"  [postState] = "postState" [postData]="username"></app-posts>
-          </div>
-      </div>
+  <div *ngIf="accountreview==true">
+    <a  class="btn btn-primary" (click)="accountreview = !accountreview" >&laquo; Back</a>
+    <app-posts [userIdAdmin]="userId"  [postState] = "postState" [postData]="username"></app-posts>
   </div>
+  
+ 

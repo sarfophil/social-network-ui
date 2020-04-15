@@ -1,19 +1,20 @@
 <!-- share box start -->
 <div class="card card-small" *ngIf="!isSearchPage&&!isEditPage">
-    <div  class="share-box-inner">
+    <div class="share-box-inner">
         <!-- profile picture end -->
-        <div  class="profile-thumb">
+        <div class="profile-thumb">
             <a href="#">
                 <figure class="profile-thumb-middle">
-<!--                    <img src="assets/images/profile/profile-small-37.jpg" alt="profile picture">-->
-                  <app-profile-photo [imageName]="user.profilePicture" [style]="" class="profile-pic"></app-profile-photo>
+                    <!--                    <img src="assets/images/profile/profile-small-37.jpg" alt="profile picture">-->
+                    <app-profile-photo [imageName]="user.profilePicture" [style]="" class="profile-pic">
+                    </app-profile-photo>
                 </figure>
             </a>
         </div>
         <!-- profile picture end -->
 
         <!-- share content box start -->
-        <div class="share-content-box w-100" >
+        <div class="share-content-box w-100">
             <form class="share-text-box">
                 <textarea name="content" class="share-text-field" aria-disabled="true" placeholder="Say Something"
                     data-toggle="modal" data-target="#textbox" required id="content"></textarea>
@@ -24,7 +25,7 @@
         <!-- Modal start -->
         <form [style.display]="block" [formGroup]="postform" (ngSubmit)="  submit()">
             <div class="modal fade" id="textbox" aria-labelledby="textbox">
-                <button  type="button" data-dismiss="modal" #closeModal ></button>
+                <button type="button" data-dismiss="modal" #closeModal></button>
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -35,12 +36,15 @@
                         </div>
                         <div class="modal-body custom-scroll">
                             <textarea name="content" id="content" formControlName="content" required
-                                class="share-field-big custom-scroll"  maxlength="1000" placeholder="Say Something" required></textarea>
-                                <div *ngIf="postform.controls['content'].errors" class="error-msg">
-                                    <div [hidden]="!postform.controls['content'].errors.required">Content is required.</div>
-                                    <div [hidden]="!postform.controls['content'].errors.minLength">Content min Length is 5.</div>
-                                    <div [hidden]="!postform.controls['content'].errors.maxLength">Content max Length is 30.</div>
-                                  </div>
+                                class="share-field-big custom-scroll" maxlength="1000" placeholder="Say Something"
+                                required></textarea>
+                            <div *ngIf="postform.controls['content'].errors" class="error-msg">
+                                <div [hidden]="!postform.controls['content'].errors.required">Content is required.</div>
+                                <div [hidden]="!postform.controls['content'].errors.minLength">Content min Length is 5.
+                                </div>
+                                <div [hidden]="!postform.controls['content'].errors.maxLength">Content max Length is 30.
+                                </div>
+                            </div>
 
                             <h6 class="modal-title">Insert your audience age</h6>
                             <input type="number" name="minAge" formControlName="minAge" placeholder="Min Age"
@@ -64,11 +68,14 @@
                             <hr [hidden]=isShow>
 
                             <br>
-                            <h4>Upload Image</h4>
-                            <input type="file" (change)="uploadFile($event)">
+                            <h4>Uload Image</h4>
+                            <input accept="image/*" id="output" type="file" (change)="uploadFile($event)">
+                            <div *ngIf="imageUrl">
+                                <img [src]="imageUrl" style="width: 300px;" class="mx-auto">
+                            </div>
                             <input type="checkbox" name="notifyFollowers" formControlName="notifyFollowers"
                                 value="true"> <label for="notifyFollowers">NotifyFollowers</label>
-                               
+
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="post-share-btn" data-dismiss="modal">cancel</button>
