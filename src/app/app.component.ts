@@ -10,15 +10,11 @@ import {User} from "./model/user";
 })
 export class AppComponent implements OnInit{
   title = 'social-network';
-  user: User = JSON.parse(localStorage.getItem("active_user"))
   constructor(private socketioService:SocketioService,private viewportScroller: ViewportScroller){}
 
 
   ngOnInit(): void {
-   if(this.user){
-     this.socketioService.initiazeSocketClient()
-     this.socketioService.onNotificationReceivedEvent()
-   }
+
   }
 
   scrollUp(){

@@ -12,6 +12,7 @@ import { stringify } from 'querystring';
 
 import {MatDialog} from "@angular/material/dialog";
 import {AccountReviewComponent} from "../account-review/account-review.component";
+import {SocketioService} from "../../service/socket/socketio.service";
 
 
 export interface LoginResponse{
@@ -43,7 +44,8 @@ export class LoginComponent implements OnInit {
   user: User = JSON.parse(localStorage.getItem("active_user"))
   constructor(private router:Router,private provider:ProviderService,
               private formBuilder:FormBuilder,private snackbar:MatSnackBar,
-              private dialog: MatDialog,private activeRoute: ActivatedRoute) { }
+              private dialog: MatDialog,private activeRoute: ActivatedRoute,
+              private socketService: SocketioService) { }
 
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
@@ -87,19 +89,23 @@ export class LoginComponent implements OnInit {
         res.user.password = '';
         localStorage.setItem('access_token',res.access_token)
         localStorage.setItem('active_user',JSON.stringify(res.user))
-        this.router.navigateByUrl('/home')
       },
       error:(err) => {
+        console.log(`Login Failed`)
         this.isLoading = false
         if(err.statusCode == 403) this.snackbar.open(`Invalid Username / Password`,'Ok')
         else this.snackbar.open(`${err.message}`)
       },
-      complete: () => this.isLoading = false
+      complete: () => {
+         console.log(`Login Complete`)
+        this.socketService.connect()
+        this.isLoading = false
+        this.router.navigateByUrl('/home')
+      }
     })
 
   }
 signUp(){
-
   let body = this.signUpForm.value;
   this.provider.post(API_TYPE.USER,'account',body)
   console.log(body)
