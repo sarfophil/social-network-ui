@@ -1,4 +1,6 @@
 /** Response Model for post */
+import {Comment} from "./comment";
+
 export interface Like {
   _id: string
 }
@@ -15,8 +17,9 @@ export class PostResponse {
     private _likes: Array<Like>;
     private _content: string;
     private _downloadedImageBlob: any;
+    private _comments: Array<Comment>;
 
-  constructor(id: string, image: string, userId: string, createdDate: string, isHealthy: boolean, userProfilePicture: string, username: string, likes: Array<Like>, content: string) {
+  constructor(id: string, image: string, userId: string, createdDate: string, isHealthy: boolean, userProfilePicture: string, username: string, likes: Array<Like>, content: string,comments: Array<Comment>) {
     this._id = id;
     this._image = image;
     this._userId = userId;
@@ -26,6 +29,7 @@ export class PostResponse {
     this._username = username;
     this._likes = likes;
     this._content = content;
+    this._comments = comments
   }
 
 
@@ -72,5 +76,10 @@ export class PostResponse {
 
   get downloadedImageBlob(): any {
     return this._downloadedImageBlob;
+  }
+
+
+  get comments(): Array<Comment> {
+    return this._comments;
   }
 }
