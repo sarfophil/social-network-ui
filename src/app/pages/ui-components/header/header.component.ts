@@ -10,6 +10,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ViewPostModalComponent } from '../view-post-modal/view-post-modal.component';
 import { Post } from 'src/app/model/post';
 import {PostResponse} from "../../../model/post-response";
+import {SocketioService} from "../../../service/socket/socketio.service";
 
 
 @Component({
@@ -59,7 +60,7 @@ export class HeaderComponent implements OnInit,OnDestroy {
   // View All Links from post search
   viewAllRoute:string = ''
 
-  constructor(private router:Router,private route: ActivatedRoute,private _eref: ElementRef,private provider : ProviderService,private dialog: MatDialog) { }
+  constructor(private router:Router,private route: ActivatedRoute,private _eref: ElementRef,private provider : ProviderService,private dialog: MatDialog,private socketioService: SocketioService) { }
 
   ngOnInit() {
     this.currentuser = JSON.parse(localStorage.getItem('active_user'));
@@ -71,7 +72,7 @@ export class HeaderComponent implements OnInit,OnDestroy {
         map((result: Array<any>) => {
           let postsArr: Array<PostResponse> = [];
           for(let data of result){
-            let post = new PostResponse(data._id,data.imageLink[0],data.userDetail[0]._id,data.createdDate,data.isHealthy,data.userDetail[0].profilePicture,data.userDetail[0].username,data.likes,data.content);
+            let post = new PostResponse(data._id,data.imageLink[0],data.userDetail[0]._id,data.createdDate,data.isHealthy,data.userDetail[0].profilePicture,data.userDetail[0].username,data.likes,data.content,data.comments);
             postsArr.push(post)
           }
           return postsArr
@@ -109,6 +110,7 @@ export class HeaderComponent implements OnInit,OnDestroy {
     event.preventDefault()
     localStorage.clear()
     this.router.navigateByUrl('/login')
+    this.socketioService.disconnect()
   }
 
   search(keyword:string){

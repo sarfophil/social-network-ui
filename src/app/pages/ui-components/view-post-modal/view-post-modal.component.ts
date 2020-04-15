@@ -201,6 +201,12 @@ export class ViewPostModalComponent implements OnInit,OnDestroy {
       event$.preventDefault();
       let index = this.comments.findIndex((comment) => comment$._id === comment._id);
       this.comments.splice(index,1);
+
+      // lookup for comment in the post object
+      let lookup = this.post.comments.findIndex((comment) => comment$._id == comment._id)
+      this.post.comments.splice(lookup,1);
+
+
       let path = `${comment$.postId}/comments/${comment$._id}`;
       this.provider.delete(API_TYPE.POST,path,'').subscribe(
         (result) => {},
@@ -218,6 +224,9 @@ export class ViewPostModalComponent implements OnInit,OnDestroy {
 
   createComment() {
     if(!this.commentInput){
+      // @ts-ignore
+      this.post.comments.push({content: this.commentInput,postId: this.post._id})
+
       let path = `${this.post.id}/user/${this.currentUser._id}/comments`;
       let body = {
         "content": this.commentInput
@@ -240,13 +249,16 @@ export class ViewPostModalComponent implements OnInit,OnDestroy {
           this.isCreatingCommentState = false;
 
           // scroll to bottom
-          let commentSection: HTMLElement = document.getElementById('commentSection');
-          commentSection.scrollTop = commentSection.scrollHeight;
+        //  let commentSection: HTMLElement = document.getElementById('commentSection');
+         // commentSection.scrollTop = commentSection.scrollHeight;
         })
     }
 
   }
 
+  /**
+   * @deprecated
+   */
   countComment(){
     let path = `${this.post.id}/comments/count`;
     let headerOption = {responseType: 'blob'}
@@ -261,6 +273,7 @@ export class ViewPostModalComponent implements OnInit,OnDestroy {
 
 
   /**
+   * @deprecated
    * Like Feature
    * @param action if true then user has liked else unliked
    */
@@ -280,12 +293,18 @@ export class ViewPostModalComponent implements OnInit,OnDestroy {
       }
   }
 
+  /**
+   * @deprecated
+   */
   likeClicked(): void{
     let totalLikes = this.post.likes.length + 1;
     this.likes = totalLikes == 1? `You liked this`:`You and ${totalLikes-1} people liked this`;
 
   }
 
+  /**
+   * @deprecated
+   */
   unlikedClicked(): void{
     let totalLikes = this.post.likes.length == 0? 0 : this.post.likes.length-1;
     this.likes = totalLikes == 0?'Be the first to like this':`${totalLikes} people liked this`;
@@ -378,4 +397,30 @@ export class ViewPostModalComponent implements OnInit,OnDestroy {
   }
 
 
+  react(post: PostResponse) {
+    let lookup = post.likes.findIndex(like => this.currentUser._id == like._id)
+    let path = `${post.id}/user/${this.currentUser._id}/likes`;
+    if(lookup != -1) {
+      // id found
+      // unlike
+      post.likes.splice(lookup,1)
+      this.provider.delete(API_TYPE.POST, path,'')
+        .subscribe((res) => console.log(`Unliked`))
+    }else{
+      // id not found
+      // like
+      // @ts-ignore
+      post.likes.push({_id: this.currentUser._id})
+
+      // send  a request
+      let body = {};
+      this.provider.put(API_TYPE.POST,path,body)
+        .subscribe((res) => console.log(`liked`))
+    }
+  }
+
+  likeFilter(likes: any) {
+    let lookup = likes.find((like) => like._id == this.currentUser._id);
+    return !!lookup;
+  }
 }
