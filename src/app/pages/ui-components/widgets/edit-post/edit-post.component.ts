@@ -27,7 +27,7 @@ export class EditPostComponent implements OnInit {
   private deleteImage = false;
   @Input() _postId: { pid: null };
   @Output() closeModalEvent = new EventEmitter<boolean>();
-  @ViewChild('closebutton',{static: false}) closebutton;
+  @ViewChild('closebutton', { static: false }) closebutton;
 
   constructor(private config: ConfigService, private snackBar: MatSnackBar, private http: HttpClient, private formBuilder: FormBuilder, private providerService: ProviderService) {
     this.editForm = this.formBuilder.group({
@@ -36,7 +36,7 @@ export class EditPostComponent implements OnInit {
       minAge: [''],
       maxAge: [''],
       notifyFollowers: [''],
-      deleteImg:['']
+      deleteImg: ['']
     })
   }
   ngOnInit() {
@@ -49,21 +49,16 @@ export class EditPostComponent implements OnInit {
   }
 
   @Input()
-  set postId(val: any) {
-    console.log(val);
-    this._postId = val;
+  set postId(postId: any) {
+    this._postId = postId;
     this.onChanges();
-    this.imageUrl=null;
-    
+    this.imageUrl = null;
     this.editForm.get('avatar').setValue(null);
   }
 
 
 
   async onChanges() {
-
-
-
     if (this._postId != null) {
       await this.providerService.get(API_TYPE.POST, this.postId.pid, '').subscribe(
         (res: any) => {
@@ -74,10 +69,8 @@ export class EditPostComponent implements OnInit {
           console.log("error", error);
         },
         () => {
-
           this.populateData();
         }
-
       )
       console.log("Post", this.post);
     }
@@ -92,13 +85,11 @@ export class EditPostComponent implements OnInit {
       minAge: this.post.audienceCriteria.age.min,
       maxAge: this.post.audienceCriteria.age.max,
       notifyFollowers: this.post.notifyFollowers,
-      deleteImg:false
+      deleteImg: false
     });
 
-    this.imageName = this.post.imageLink?this.post.imageLink[0]:null;
+    this.imageName = this.post.imageLink ? this.post.imageLink[0] : null;
     let audienceFollowers = this.post.audienceFollowers;
-    console.log("audience followers", audienceFollowers);
-
     await this.providerService.get(API_TYPE.USER, '/followers', '').subscribe((Listusers: Array<any>) => {
       this.users = Listusers;
       for (var i = 0; i < this.users.length; i++) {
@@ -116,9 +107,6 @@ export class EditPostComponent implements OnInit {
         }
       }
     });
-
-
-
   }
   submit() {
     let audienceFollowers = [];
@@ -138,9 +126,9 @@ export class EditPostComponent implements OnInit {
     formData.append("content", this.editForm.get('content').value);
     formData.append("imageLink", this.editForm.get('avatar').value);
     formData.append("targetFollowers", JSON.stringify(audienceFollowers));
-    formData.append('ageGroupTarget', JSON.stringify(ageGroupTarget)?JSON.stringify(ageGroupTarget):'');
-    formData.append("notifyFollowers", new String(this.editForm.get('notifyFollowers').value)!=""?this.editForm.get('notifyFollowers').value:'false');
-   formData.append("deleteImg",this.deleteImage);
+    formData.append('ageGroupTarget', JSON.stringify(ageGroupTarget) ? JSON.stringify(ageGroupTarget) : '');
+    formData.append("notifyFollowers", new String(this.editForm.get('notifyFollowers').value) != "" ? this.editForm.get('notifyFollowers').value : 'false');
+    formData.append("deleteImg", this.deleteImage);
     console.log(this.editForm.get('avatar').value)
 
     const httpOptions = {
@@ -155,7 +143,7 @@ export class EditPostComponent implements OnInit {
     });
 
     this.editForm.reset()
-    this.deleteImage=false;
+    this.deleteImage = false;
     this.closebutton.nativeElement.click();
     this.snackBar.dismiss();
   }
@@ -166,17 +154,17 @@ export class EditPostComponent implements OnInit {
       avatar: file
     });
 
-  var mimeType = file.type;
-  if (mimeType.match(/image\/*/) == null) {
-    this.snackBar.open('only images are allowed','Ok')
-    return;
-  }
+    var mimeType = file.type;
+    if (mimeType.match(/image\/*/) == null) {
+      this.snackBar.open('only images are allowed', 'Ok')
+      return;
+    }
 
-  var reader = new FileReader();
-  reader.readAsDataURL(file); 
-  reader.onload = (_event) => { 
-    this.imageUrl = reader.result; 
-  }
+    var reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = (_event) => {
+      this.imageUrl = reader.result;
+    }
   }
 
 
@@ -190,11 +178,11 @@ export class EditPostComponent implements OnInit {
     this.someEvent.next();
   }
 
-Imagedelete(){
+  Imagedelete() {
 
-  this.deleteImage =!this.deleteImage;
-  console.log(this.deleteImage);
-  return this.deleteImage;
-}
+    this.deleteImage = !this.deleteImage;
+    console.log(this.deleteImage);
+    return this.deleteImage;
+  }
 
 }

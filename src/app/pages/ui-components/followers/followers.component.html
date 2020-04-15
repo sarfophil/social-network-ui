@@ -4,9 +4,14 @@
         <!-- share content box start -->
         <div class="share-content-box w-100">
             <form class="share-text-box">
+<<<<<<< HEAD
                 <textarea name="share" class="share-text-field" aria-disabled="true" placeholder="Search Followers"
                     id="email"></textarea>
                 <button class="btn-share" type="submit">Search</button>
+=======
+                <textarea name="share" (keyup)="search($event.target.value)" class="share-text-field" aria-disabled="true" placeholder="Search Followers" id="email"></textarea>
+<!--                <button class="btn-share" type="submit">Search</button>-->
+>>>>>>> 2c4c8f25a6ea53ad279c71c716b7f6fa4765b078
             </form>
         </div>
 
@@ -19,39 +24,45 @@
         <div class="row">
             <div class="col-12">
                 <div class="content-box friends-zone">
+<<<<<<< HEAD
                     <div class="row mt--20 friends-list">
                         <div class="col-lg-6 col-sm-6 recently request" *ngFor="let follower of followers index as i">
+=======
+                    <div class="row mt--20 friends-list zoomIn" *ngIf="!isLoading">
+                        <p style="text-align: center; margin: auto" *ngIf="followers.length == 0">No Followers yet</p>
+                        <div class="col-lg-6 col-sm-6 recently request"  *ngFor="let follower of followers">
+>>>>>>> 2c4c8f25a6ea53ad279c71c716b7f6fa4765b078
                             <div class="friend-list-view">
                                 <!-- profile picture end -->
                                 <div class="profile-thumb">
                                     <a href="#">
                                         <figure class="profile-thumb-middle">
-                                            <img src="assets/images/profile/profile-small-1.jpg" alt="profile picture">
+                                          <app-profile-photo [imageName]="follower.profilePicture" [style]="" class="profile-pic"></app-profile-photo>
                                         </figure>
                                     </a>
                                 </div>
                                 <!-- profile picture end -->
 
                                 <div class="posted-author">
-                                    <h6 class="author"><a
-                                            [routerLink]="'/profile/'+follower.userId._id+'/timeline'">{{follower.userId.username}}</a>
-                                    </h6>
-                                    <p>{{follower.userId.followers.length +' followers'}}</p>
 
+                                    <h6 class="author"><a [routerLink]="'/profile/'+follower._id+'/timeline'">{{follower.username}}</a></h6>
+                                    <small>{{follower.followers.length+' followers'}} &nbsp;  {{follower.following.length+' following'}}</small>
+                                    <button class="add-frnd" *ngIf="!follower.isFollowing" (click)="follow(follower)">Follow</button>
 
-                                    <button class="post-share-btn" (click)="
-                                        isFollowing(follower.userId)
-                                          ? unFollowUser(follower.userId)
-                                          : followUser(follower.userId)
-                                      ">
-                                        {{ isFollowing(follower) ? "Unfollow" : "Follow" }}
-                                    </button>
                                 </div>
                             </div>
                         </div>
+
+
                     </div>
+                    <mat-progress-spinner *ngIf="isLoading" class="loader" color="white" mode="indeterminate" value="10" strokeWidth="3" diameter="40">
+                    </mat-progress-spinner>
                 </div>
             </div>
         </div>
     </div>
+<<<<<<< HEAD
 </div>
+=======
+</div>
+>>>>>>> 2c4c8f25a6ea53ad279c71c716b7f6fa4765b078

@@ -1,6 +1,11 @@
-import { Component, OnInit, Output } from '@angular/core';
-import { User } from 'src/app/model/user';
-import { UserService } from 'src/app/service/user.service';
+
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from "@angular/router";
+import { ProviderService } from "../../../service/provider-service/provider.service";
+import { API_TYPE } from "../../../model/apiType";
+import { User } from "../../../model/user";
+import { NgxPubSubService } from "@pscoped/ngx-pub-sub";
+import { FollowerResponse } from "../../../model/follower-response";
 
 
 @Component({
@@ -10,66 +15,70 @@ import { UserService } from 'src/app/service/user.service';
 })
 export class FollowersComponent implements OnInit {
 
-  constructor(private userService: UserService) { }
 
-  user: User;
-  followers: Array<User>;
-  loading = false;
-  userId = JSON.parse(localStorage.getItem('active_user'))._id;
+  followers: Array<FollowerResponse> = [];
+  tempFollowersHolder: Array<FollowerResponse> = []
+  user: User = JSON.parse(localStorage.getItem("active_user"))
+  isLoading: Boolean = true;
+  constructor(private route: ActivatedRoute, private providerService: ProviderService, private pubSub: NgxPubSubService) { }
 
   ngOnInit() {
-    this.followers = this.getFollowers();
-
+    setTimeout(() => this.loadFollowers(), 2000)
   }
 
-  ngOnDestroy() {
+
+  loadFollowers() {
+    let path = `followers`;
+    // @ts-ignore
+    this.providerService.get(API_TYPE.USER, `${path}`, '')
+      .subscribe(
+        (response: Array<any>) => {
+          this.followers = []
+          for (let res of response) {
+            let followerResponse: FollowerResponse = res.userId;
+            followerResponse.isFollowing = this.isFollowing(followerResponse)
+            this.followers.push(followerResponse)
+          }
+          this.tempFollowersHolder = this.followers
+          this.isLoading = false
+        },
+        (error => {
+          this.providerService.onTokenExpired(error.error, error.status)
+          this.isLoading = false
+        })
+
+      )
   }
 
-  getUser() {
-    this.loading = true;
-    return this.userService
-      .getUserById(this.user._id);
+  /**
+   * Method performs a checkup if current user follows a specific user.
+   * @param follower$
+   */
+  isFollowing(follower$: FollowerResponse): boolean {
+    let findCurrentUser = follower$.followers.find((follower) => follower.userId == this.user._id)
+    return findCurrentUser ? true : false;
   }
 
-  getFollowers(): Array<User> {
-    this.loading = true;
-    return this.userService
-      .getFollowers(this.userId);
+  search(value: String) {
+    this.followers = this.followers.filter((follower) => {
+      return follower.username.toLowerCase().indexOf(value.toLowerCase()) > -1
+    })
+    if (value.length == 0) this.followers = this.tempFollowersHolder;
   }
 
-  isFollowing(follower): boolean {
-    // tslint:disable-next-line: prefer-for-of
-    for (let i = 0; i < follower.userId.followers.length; i++) {
-      if (follower.userId.followers[i].userId === this.userId) {
-        return true;
-      }
+  follow(follower$: FollowerResponse) {
 
-    }
-    return false;
+    follower$.isFollowing = true
+    let path = `${this.user._id}/follow/${follower$._id}`;
+
+    this.providerService.put(API_TYPE.USER, path, {})
+      .subscribe((res) => {
+        this.pubSub.publishEvent('FOLLOWED_USER_EVENT', {
+          friendId: follower$._id
+        })
+        this.loadFollowers()
+      }, (error => console.log(`An error occured`)))
+
   }
-
-  followUser(person) {
-    console.log(person);
-    this.userService
-      .followUser(person)
-      .subscribe((data: User) => {
-        this.followers.push(data);
-      });
-  }
-
-  unFollowUser(person) {
-    console.log(person);
-    this.userService
-      .unFollowUser(person)
-      .subscribe((data: User) => {
-        this.followers.splice(this.followers.indexOf(data), 1);
-      });
-  }
-
-  searchFriend(friend) {
-    this.userService
-      .searchFriend(friend);
-  }
-
 
 }

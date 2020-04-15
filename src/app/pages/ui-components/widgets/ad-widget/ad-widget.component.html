@@ -1,33 +1,61 @@
  <!-- widget single item start -->
- <div class="card widget-item">
-   <h4 class="widget-title">Advertizements</h4>
-   <div class="widget-body">
-     <div class="sweet-galley img-gallery" [@searchTrigger]="isLoading?'close':'open'">
-       <div class="row row-5">
+     <div class="card widget-item fadeInRight">
+       <h4 class="widget-title">Advertizements</h4>
+       <div class="widget-body">
 
-         <div class="col-4" *ngFor="let ad of adsList">
-           <div class="gallery-tem">
-             <figure class="post-thumb">
-               <a class="gallery-selector" href="" (click)="visit(ad)">
-                 <img src="assets/images/gallery/gallery-1.jpg" alt="sweet memory">
 
-               </a>
-             </figure>
-             <p>Posted  {{ad.createdDate | moment}}</p>
+         <div id="animy" [@searchTrigger]="isLoading?'open':'close'"></div>
+
+
+
+         <div class="card advert-card" [@searchTrigger]="isLoading?'close':'open'"  *ngFor="let advert of adsList">
+
+           <div class="post-content">
+
+             <div class="post-thumb-gallery img-gallery">
+               <div class="row no-gutters">
+                 <div class="col-3">
+                   <figure class="post-thumb">
+                     <a (click)="redirect(advert.link)" class="gallery-selector">
+                       <img [src]="sanitize(advert.bannerImageUrl)" alt="post image">
+                     </a>
+                   </figure>
+                   <hr>
+                 </div>
+                 <div class="col-9"></div>
+                 <div class="col-12">
+
+                   <div class="ad-description">
+                     <p>{{advert.content | shorten}}</p>
+                     <small>{{advert.createdDate | moment}}</small>
+                   </div>
+                 </div>
+
+               </div>
+             </div>
+
+
+             <div class="post-meta">
+               <ul class="comment-share-meta">
+                 <li>
+                   <button class="btn-share btn-orange" (click)="redirect(advert.link)">
+                     <span>Learn More</span>
+                   </button>
+                 </li>
+               </ul>
+             </div>
            </div>
          </div>
 
        </div>
-     </div>
-
-     <div id="animy" [@searchTrigger]="isLoading?'open':'close'"></div>
-   </div>
-   <div class="row">
-     <div class="col-12">
-       <div class="load-more text-center">
-         <button class="load-more-btn">load more</button>
+       <div class="row">
+         <div class="col-12">
+           <div class="load-more text-center">
+             <mat-progress-spinner *ngIf="isLoadingMore"  class="loader" color="white" mode="indeterminate" value="10" strokeWidth="3" diameter="40">
+             </mat-progress-spinner>
+             <button class="load-more-btn" *ngIf="adsList.length > 2" (click)="loadMore()">load more</button>
+           </div>
+         </div>
        </div>
      </div>
-   </div>
- </div>
 <!-- widget single item end -->

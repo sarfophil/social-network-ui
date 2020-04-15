@@ -33,14 +33,14 @@
                     <div class="profile-thumb">
                         <a href="#">
                             <figure class="profile-thumb-small">
-                                <app-profile-photo [fetchWithUserId]="post.user"></app-profile-photo>
+                                <app-profile-photo [fetchWithUserId]="post.username"></app-profile-photo>
                             </figure>
                         </a>
                     </div>
                     <!-- profile picture end -->
 
                     <div class="unorder-list-info">
-                        <h3 class="list-title"><a href="#">{{post.postuname}}</a></h3>
+                        <h3 class="list-title"><a href="#">{{post.username}}</a></h3>
                         <p class="list-subtitle"><a href="#">{{post.createdDate | moment}}</a></p>
                     </div>
                 </li>

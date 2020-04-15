@@ -22,7 +22,7 @@ export class SocketioService {
   user: User = JSON.parse(localStorage.getItem('active_user'));
 
   sound = new Howl({
-    src: ['../../../assets/sound/filling-your-inbox.mp3']
+    src: ['assets/sound/filling-your-inbox.mp3']
   })
 
   constructor(private snackbar: MatSnackBar,private router: Router,private pubSub: NgxPubSubService) { }
@@ -67,6 +67,7 @@ export class SocketioService {
             verifiedSnackRef.onAction().subscribe((action) => this.router.navigateByUrl('/home'))
            break;
            case NotificationCode.ACCOUNT_BLOCKED:
+             this.router.navigateByUrl('/login')
             this.snackbar.open(`Sorry your Account has been blocked.Please contact Administrator to review your account`)
            break;
 

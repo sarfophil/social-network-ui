@@ -11,6 +11,7 @@ import {Howl} from 'howler';
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
 import {error} from "util";
+import {PostResponse} from "../../../model/post-response";
 
 
 export enum LoadingStrategy {
@@ -56,7 +57,7 @@ export interface TotalComments {
 })
 export class ViewPostModalComponent implements OnInit,OnDestroy {
 
-  post: any;
+  post: PostResponse;
 
   likes: string = '';
 
@@ -110,7 +111,7 @@ export class ViewPostModalComponent implements OnInit,OnDestroy {
 
 
   constructor(public dialogRef: MatDialogRef<ViewPostModalComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: any,
+              @Inject(MAT_DIALOG_DATA) public data: PostResponse,
               private provider:ProviderService,private snackBar: MatSnackBar,
               private sanitizer : DomSanitizer) { }
 
@@ -119,7 +120,7 @@ export class ViewPostModalComponent implements OnInit,OnDestroy {
       this.populateLikes();
       this.loadComments(LoadingStrategy.PARTIAL);
       this.countComment();
-      this.previewPostImages();
+      this.previewPostImages()
 
   }
 
@@ -131,10 +132,8 @@ export class ViewPostModalComponent implements OnInit,OnDestroy {
 
   hasCurrentUserLiked = (): Boolean =>{
       let likes = this.post.likes;
-      for(let userId of likes){
-         if(userId._id == this.currentUser._id) return true;
-      }
-      return false;
+      let flag = likes.find((like) => like._id == this.currentUser._id);
+      return !!flag;
   }
 
 
@@ -143,22 +142,11 @@ export class ViewPostModalComponent implements OnInit,OnDestroy {
 
   loadComments(loadingStrategy: LoadingStrategy){
     this.isLoading = true;
-    let path = `${this.post._id}/comments?limit=${this.limit}&skip=${this.skip}`;
+    let path = `${this.post.id}/comments?limit=${this.limit}&skip=${this.skip}`;
     this.subscription = this.provider.get(API_TYPE.POST,path,'')
       .pipe(
         filter((res: Array<Comment>) => res.length > 0),
-        switchMap((res:Array<Comment>) => this.addResultToArray(res,loadingStrategy)),
-        map((comments:Array<Comment>) => {
-          return comments.sort((a:Comment,b:Comment) => {
-            let comp1 = new Date(a.createdDate.toString());
-            let comp2 = new Date(b.createdDate.toString());
-            if(comp1 < comp2) return -1;
-
-            if(comp1 < comp2) return 1;
-
-            return 0
-          })
-        })
+        switchMap((res:Array<Comment>) => this.addResultToArray(res,loadingStrategy))
       )
       .subscribe(
         (data:Array<Comment>) => {
@@ -214,7 +202,7 @@ export class ViewPostModalComponent implements OnInit,OnDestroy {
       let index = this.comments.findIndex((comment) => comment$._id === comment._id);
       this.comments.splice(index,1);
       let path = `${comment$.postId}/comments/${comment$._id}`;
-      this.provider.delete(API_TYPE.POST,path).subscribe(
+      this.provider.delete(API_TYPE.POST,path,'').subscribe(
         (result) => {},
         (error) => {
             if(error){
@@ -229,7 +217,8 @@ export class ViewPostModalComponent implements OnInit,OnDestroy {
   }
 
   createComment() {
-      let path = `${this.post._id}/user/${this.currentUser._id}/comments`;
+    if(!this.commentInput){
+      let path = `${this.post.id}/user/${this.currentUser._id}/comments`;
       let body = {
         "content": this.commentInput
       };
@@ -240,24 +229,26 @@ export class ViewPostModalComponent implements OnInit,OnDestroy {
           let snackBar$ = this.snackBar.open(`Comment Posted!`, 'OK');
           this.sound.play();
         },(error => {
-            this.isCreatingCommentState = false;
-            this.snackBar.open('An Error Occured');
-            this.provider.onTokenExpired(error.responseMessage,error.statusCode)
+          this.isCreatingCommentState = false;
+          this.snackBar.open('An Error Occured');
+          this.provider.onTokenExpired(error.responseMessage,error.statusCode)
         }),() => {
-            this.commentInput = '';
-            // Refresh
-            this.skip = 0;
-            this.loadComments(LoadingStrategy.DEFAULT);
-            this.isCreatingCommentState = false;
+          this.commentInput = '';
+          // Refresh
+          this.skip = 0;
+          this.loadComments(LoadingStrategy.DEFAULT);
+          this.isCreatingCommentState = false;
 
-            // scroll to bottom
-            let commentSection: HTMLElement = document.getElementById('commentSection');
-            commentSection.scrollTop = commentSection.scrollHeight;
+          // scroll to bottom
+          let commentSection: HTMLElement = document.getElementById('commentSection');
+          commentSection.scrollTop = commentSection.scrollHeight;
         })
+    }
+
   }
 
   countComment(){
-    let path = `${this.post._id}/comments/count`;
+    let path = `${this.post.id}/comments/count`;
     let headerOption = {responseType: 'blob'}
      this.provider.get(API_TYPE.POST,path)
        .subscribe(
@@ -274,7 +265,7 @@ export class ViewPostModalComponent implements OnInit,OnDestroy {
    * @param action if true then user has liked else unliked
    */
   like(action: boolean) {
-      let path = `${this.post._id}/user/${this.currentUser._id}/likes`;
+      let path = `${this.post.id}/user/${this.currentUser._id}/likes`;
       this.hasLiked = !action;
 
       if(action){
@@ -284,7 +275,7 @@ export class ViewPostModalComponent implements OnInit,OnDestroy {
           .subscribe((res) => console.log(`Sent`))
       }else {
         this.unlikedClicked();
-        this.provider.delete(API_TYPE.POST, path)
+        this.provider.delete(API_TYPE.POST, path,'')
           .subscribe((res) => console.log(`Unliked`))
       }
   }
@@ -292,7 +283,7 @@ export class ViewPostModalComponent implements OnInit,OnDestroy {
   likeClicked(): void{
     let totalLikes = this.post.likes.length + 1;
     this.likes = totalLikes == 1? `You liked this`:`You and ${totalLikes-1} people liked this`;
-    console.log(totalLikes)
+
   }
 
   unlikedClicked(): void{
@@ -309,19 +300,27 @@ export class ViewPostModalComponent implements OnInit,OnDestroy {
     this.currentImagePreview = this.postImagesHolder[this.currentImageIndex == 0?0:this.currentImageIndex-1]
   }
 
+
+
   /**
+   *
    * Preview Images
    */
   previewPostImages(){
     this.isFetchingImages = true;
-    this.loadPostImages((res:boolean) =>{
+    this.loadSingleImage((res:boolean) =>{
         this.isFetchingImages = false;
         this.currentImagePreview = this.postImagesHolder[this.currentImageIndex]
+        console.log(this.currentImagePreview)
     })
   }
 
+  /**
+   * @Deprecated
+   * @param callback
+   */
   private loadPostImages(callback: Function) {
-    let photos = this.post.imageLink;
+    let photos = this.post.image;
     let waiting = photos.length;
     if (photos && photos.length > 0) {
       for (let photo of photos) {
@@ -336,11 +335,34 @@ export class ViewPostModalComponent implements OnInit,OnDestroy {
     callback(false)
   }
 
+  private loadSingleImage(callback: Function) {
+    let waiting = 1;
+
+    if(this.post.image){
+      this.doRequestImage(this.post.image,(url: SafeUrl) => {
+        this.postImagesHolder.push(url)
+        waiting--;
+        this.complete(waiting,callback)
+      })
+    }else{
+      this.postImagesHolder.push('assets/img/placeholder.png')
+      waiting--;
+      this.complete(waiting,callback)
+    }
+
+  }
+
+
   private complete(waiting:number,callback: Function){
       if(waiting == 0) callback(true)
   }
 
   // @ts-ignore
+  /**
+   * @Deprecated
+   * @param image
+   * @param callback
+   */
   private doRequestImage(image: string,callback: Function): void {
     let queryParam = `?imagename=${image}`;
     let headerOption = {responseType: 'blob'}
@@ -350,7 +372,7 @@ export class ViewPostModalComponent implements OnInit,OnDestroy {
            callback(this.sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(res)))
         },
         (error => {
-            callback(null)
+            callback('assets/img/placeholder.png')
         })
       )
   }

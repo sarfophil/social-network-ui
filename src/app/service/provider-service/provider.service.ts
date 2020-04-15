@@ -83,10 +83,13 @@ export class ProviderService {
   }
 
 
-  delete(apiType: API_TYPE, pathName,
-    httpOptions: Object = { headers: this.config.getHeaders() }) {
-    const url = `${environment.apiEndpoint}${apiType}${pathName}`;
+
+
+  delete(apiType: API_TYPE, pathName, queryParam, httpOptions: Object = { headers: this.config.getHeaders() }) {
+    // concat url
+    const url = `${environment.apiEndpoint}${apiType}${pathName}${queryParam}`;
     return this.http.delete(url, httpOptions).pipe(
+      retry(2), // retries 2 times when request fails
       catchError(this.config.handleError)
     )
   }

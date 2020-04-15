@@ -24,6 +24,7 @@
         <!-- Modal start -->
         <form [style.display]="block" [formGroup]="postform" (ngSubmit)="  submit()">
             <div class="modal fade" id="textbox" aria-labelledby="textbox">
+                <button  type="button" data-dismiss="modal" #closeModal ></button>
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -34,7 +35,7 @@
                         </div>
                         <div class="modal-body custom-scroll">
                             <textarea name="content" id="content" formControlName="content" required
-                                class="share-field-big custom-scroll" minlength="5" maxlength="30" placeholder="Say Something" required></textarea>
+                                class="share-field-big custom-scroll"  maxlength="1000" placeholder="Say Something" required></textarea>
                                 <div *ngIf="postform.controls['content'].errors" class="error-msg">
                                     <div [hidden]="!postform.controls['content'].errors.required">Content is required.</div>
                                     <div [hidden]="!postform.controls['content'].errors.minLength">Content min Length is 5.</div>
@@ -63,7 +64,7 @@
                             <hr [hidden]=isShow>
 
                             <br>
-                            <h4>Uload Image</h4>
+                            <h4>Upload Image</h4>
                             <input type="file" (change)="uploadFile($event)">
                             <input type="checkbox" name="notifyFollowers" formControlName="notifyFollowers"
                                 value="true"> <label for="notifyFollowers">NotifyFollowers</label>
