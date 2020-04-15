@@ -83,17 +83,17 @@ export class PostsComponent implements OnInit,AfterContentInit,OnChanges {
 
     // User posts
     if (postType === PostType.USER_POSTS) {
-      apiType = API_TYPE.POST
-      path = `search`
-      queryParam = `?query=${this.postData}&limit= ${this.limit}`
+     this.apiType = API_TYPE.POST
+     this. path = `search`
+     this.queryParam = `?query=${this.postData}&limit= ${this.limit}`
 
     }
 
     // Search posts
     if (postType === PostType.SEARCH_POSTS) {
-      apiType = API_TYPE.POST;
-      path = 'search'
-      queryParam = `?query=${this.postData}&limit= ${this.limit}`
+      this.apiType = API_TYPE.POST;
+      this.path = 'search'
+      this.queryParam = `?query=${this.postData}&limit= ${this.limit}`
 
     }
 
