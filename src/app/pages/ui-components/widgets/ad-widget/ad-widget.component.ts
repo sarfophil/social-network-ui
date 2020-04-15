@@ -31,7 +31,7 @@ export class AdWidgetComponent implements OnInit {
 
   user: User;
 
-  adsList : Array<Advert>;
+  adsList : Array<Advert> = [];
 
   isLoading: boolean = true;
 
@@ -64,7 +64,7 @@ export class AdWidgetComponent implements OnInit {
     this.isLoading = true;
     let url = `${this.user._id}/ads`;
     let queryParam = `?skip=${this.skip}&limit=${this.limit}`;
-    this.provider.get(API_TYPE.USER, url)
+    this.provider.get(API_TYPE.USER, url,queryParam)
       .pipe(
           switchMap((data: Array<Advert>) => this.requestImage(data))
       )

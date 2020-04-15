@@ -1,10 +1,17 @@
-import { Component, OnInit, Input,AfterContentInit,OnChanges } from '@angular/core';
-import { trigger, state, style, transition, animate } from '@angular/animations';
-import { ProviderService } from 'src/app/service/provider-service/provider.service';
-import { API_TYPE } from 'src/app/model/apiType';
-import { User } from 'src/app/model/user';
-import { Post } from 'src/app/model/post';
-import { PostType } from 'src/app/model/post-type';
+import {Component, HostListener, Input, OnInit} from '@angular/core';
+import {animate, state, style, transition, trigger} from '@angular/animations';
+import {ProviderService} from 'src/app/service/provider-service/provider.service';
+import {API_TYPE} from 'src/app/model/apiType';
+import {User} from 'src/app/model/user';
+import {PostType} from 'src/app/model/post-type';
+import {ViewportScroller} from "@angular/common";
+import {Advert} from "../../../model/advert";
+import {of} from "rxjs";
+import {map, switchMap} from "rxjs/operators";
+import {PostResponse} from "../../../model/post-response";
+import {DomSanitizer} from "@angular/platform-browser";
+import {ViewPostModalComponent} from "../view-post-modal/view-post-modal.component";
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-posts',
@@ -25,40 +32,34 @@ import { PostType } from 'src/app/model/post-type';
     ])
   ]
 })
-export class PostsComponent implements OnInit,AfterContentInit,OnChanges {
+export class PostsComponent implements OnInit {
   /** Useful when making a request to the server */
   showPlaceholder: Boolean = false;
-  page = 0;
-  limit = 4;
+  skip = 0;
+  limit = 1;
 
   /**
    * @description loadPosts method will depend on this decorator to load contents
    * Default value will home
    *
    */
-  @Input('postState') postState: PostType;
+  @Input('postState') postState: PostType = PostType.HOMEPAGE_POSTS;
 
   /**
    * @description postData will recieve data from any parent component
    */
   @Input('postData') postData: any = '';
 
-  post: Array<any> = []
+  post: Array<PostResponse> = []
 
-  private currentUser: User = JSON.parse(localStorage.getItem('active_user'))
-  private userId = JSON.parse(localStorage.getItem('active_user'))._id;
+  private currentUser: User = JSON.parse(localStorage.getItem('active_user'));
+
   private postId: {} = null;
   private path ;
   private apiType : API_TYPE;
   private queryParam;
-
-  constructor(private provider: ProviderService) { }
-  ngOnChanges(changes: import("@angular/core").SimpleChanges): void {
-    console.log("Post state",this.postState);
-  }
-  ngAfterContentInit(): void {
-    console.log("Post state",this.postState);
-  }
+  private openSpinner: boolean = false
+  constructor(private provider: ProviderService,private sanitizer: DomSanitizer,private dialog: MatDialog) { }
 
   ngOnInit() {
     this.loadPosts(this.postState)
@@ -78,14 +79,20 @@ export class PostsComponent implements OnInit,AfterContentInit,OnChanges {
     if (postType === PostType.HOMEPAGE_POSTS) {
       this.apiType = API_TYPE.POST;
       this.path = ''
-      this.queryParam = '?page=' + this.page + '&limit=' + this.limit + '';
+      this.queryParam = '?page=' + this.skip + '&limit=' + this.limit + '';
     }
 
     // User posts
     if (postType === PostType.USER_POSTS) {
+<<<<<<< HEAD
      this.apiType = API_TYPE.POST
      this. path = `search`
      this.queryParam = `?query=${this.postData}&limit= ${this.limit}`
+=======
+      this.apiType = API_TYPE.POST
+      this.path = `search`
+      this.queryParam = `?query=${this.postData}&limit= ${this.limit}&skip= ${this.skip}`
+>>>>>>> 2c4c8f25a6ea53ad279c71c716b7f6fa4765b078
 
     }
 
@@ -93,7 +100,11 @@ export class PostsComponent implements OnInit,AfterContentInit,OnChanges {
     if (postType === PostType.SEARCH_POSTS) {
       this.apiType = API_TYPE.POST;
       this.path = 'search'
+<<<<<<< HEAD
       this.queryParam = `?query=${this.postData}&limit= ${this.limit}`
+=======
+      this.queryParam = `?query=${this.postData}&limit= ${this.limit}&skip=${this.skip}`
+>>>>>>> 2c4c8f25a6ea53ad279c71c716b7f6fa4765b078
 
     }
 
@@ -106,48 +117,73 @@ export class PostsComponent implements OnInit,AfterContentInit,OnChanges {
   }
 
   loadMore() {
-    let query = '?page=' + this.page + '&limit=' + this.limit + '';
-    this.load('','', query);
-    this.page += 1;
+    this.skip += this.limit;
+    console.log(this.skip)
+    this.openSpinner = true;
+    this.loadPosts(this.postState)
   }
 
 
 
   load(apiType,path, query) {
-    console.log('loading',apiType  +   "  "  + path  + "  " + query);
-    this.provider.get(apiType, path, query == '' ? '' : query).subscribe(
-      
-      (res: Array<any>) => {
-        console.log("res",res)
-        this.post = this.post.concat(res);
+    this.provider.get(apiType, path, query == '' ? '' : query)
+      .pipe(
+          map((response: Array<any>) => {
+              let postsArr: Array<PostResponse> = [];
+              for(let data of response){
+                  let post = new PostResponse(data._id,data.imageLink[0],data.userDetail[0]._id,data.createdDate,data.isHealthy,data.userDetail[0].profilePicture,data.userDetail[0].username,data.likes,data.content);
+                  postsArr.push(post)
+              }
+              return postsArr
+          }),
+          switchMap((postArr: Array<PostResponse>) => this.requestImages(postArr))
+      )
+      .subscribe(
+        (res: Array<PostResponse>) => {
+         //   this.post = res;
+         this.post = this.post.concat(res);
 
+        },
+        (error) => {
 
-        // const sortedActivities = this.post.sort((a, b) => b.createdDate - a.createdDate)
-      },
-      (error) => {
-        console.log('Error' , error)
-
-        this.showPlaceholder = false;
-        this.provider.onTokenExpired(error.responseMessage, error.statusCode)
-      },
-      () => {
-        console.log(`Complete {}`)
-        console.log(this.post)
-
-        this.showPlaceholder = true
-      }
+          this.showPlaceholder = false;
+          this.provider.onTokenExpired(error.responseMessage, error.statusCode)
+        },
+        () => {
+          this.openSpinner = false;
+          this.showPlaceholder = true
+        }
     )
+  }
+
+  requestImages(posts: Array<PostResponse>){
+    for(let post of posts){
+      let queryParam = `?imagename=${post.image}`;
+      let headerOption = {responseType: 'blob'};
+      this.provider.get(API_TYPE.DEFAULT,'download',queryParam,headerOption)
+        .subscribe(
+          (res) => {
+            let objectUrl = URL.createObjectURL(res);
+            post.downloadedImageBlob = objectUrl;
+          },
+          (error => post.downloadedImageBlob = 'assets/img/placeholder.png')
+        )
+    }
+
+
+    return of(posts)
+
   }
 
   loadNewData() {
     this.post=[];
-    this.page = 0;
+    this.skip = 0;
     this.limit = 4;
     let apiType = API_TYPE.POST;
     let path = ''
-    let queryParam = '?page=' + this.page + '&limit=' + this.limit;
+    let queryParam = '?page=' + this.skip + '&limit=' + this.limit;
     this.load(this.apiType,this.path, queryParam);
-    this.page += 1;
+    this.skip += 1;
   }
 
   setPostId(pid){
@@ -175,4 +211,22 @@ export class PostsComponent implements OnInit,AfterContentInit,OnChanges {
   }
 
 
+  openPost($event: MouseEvent,post:PostResponse) {
+    $event.preventDefault()
+    let dialogRef = this.dialog.open(ViewPostModalComponent,{
+      width: '1000px',
+      height: '500px',
+      position: {
+        top: '0'
+      },
+      data: post
+    })
+  }
+
+
+
+
+  sanitize(downloadedImageBlob: any) {
+    return this.sanitizer.bypassSecurityTrustUrl(downloadedImageBlob);
+  }
 }
