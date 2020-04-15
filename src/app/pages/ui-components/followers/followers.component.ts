@@ -12,20 +12,16 @@ export class FollowersComponent implements OnInit {
 
   constructor(private userService: UserService) { }
 
-  pp: boolean;
   user: User;
-  people: Array<User>;
   followers: Array<User>;
   loading = false;
   userId = JSON.parse(localStorage.getItem('active_user'))._id;
 
   ngOnInit(): void {
-    this.people = this.getPeople();
-    this.followers = this.followUser();
+    this.followers = this.getFollowers();
 
   }
 
-  // tslint:disable-next-line: use-lifecycle-interface
   ngOnDestroy() {
   }
 
@@ -34,41 +30,45 @@ export class FollowersComponent implements OnInit {
     return this.userService
       .getUserById(this.user._id);
   }
-  getPeople() {
-    this.loading = true;
-    return this.userService
-      .getUsers();
-  }
 
-  followUser() {
+  getFollowers(): Array<User> {
     this.loading = true;
     return this.userService
       .getFollowers(this.userId);
   }
-  isFollowing(person): boolean {
-    if (!person || !person.followers) {
-      return false;
+
+  isFollowing(follower): boolean {
+    const id = this.userId;
+    // tslint:disable-next-line: prefer-for-of
+    for (let i = 0; i < follower.userId.followers.length; i++) {
+      if (follower.userId.followers[i].userId === id) {
+        return true;
+      }
+
     }
-    const id = this.user._id;
-    return person.followers.indexOf(id) > -1;
+    return false;
   }
 
-  // unFollowUser(personId, index) {
-  //   this.userService
-  //     .unFollowUser(personId)
-  //     .subscribe((data: IUser) => this.people.splice(index, 1, data));
-  // }
+  followUser(person) {
+    this.userService
+      .followUser(person)
+      .subscribe((data: User) => {
+        this.followers.push(data);
+      });
+  }
 
-  // searchPeople() {
-  //   let type = this.getFeedType();
-  //   this.userService
-  //     .searchPeople(this.query.value, type)
-  //     .finally(() => (this.loading = false))
-  //     .subscribe(
-  //       (data: Array<IUser>) => (this.people = data),
-  //       (err) => console.error(err)
-  //     );
-  // }
+  unFollowUser(person) {
+    this.userService
+      .unFollowUser(person)
+      .subscribe((data: User) => {
+        this.followers.splice(this.followers.indexOf(data), 1);
+      });
+  }
+
+  searchFriend(friend) {
+    this.userService
+      .searchFriend(friend);
+  }
 
 
 }

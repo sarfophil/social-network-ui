@@ -1,0 +1,39 @@
+<div class="card card-small">
+    <div class="share-box-inner">
+
+        <!-- share content box start -->
+        <div class="share-content-box w-100">
+            <form class="share-text-box">
+                <textarea name="share" class="share-text-field" aria-disabled="true"
+                    placeholder="Search People you may know" id="email"></textarea>
+                <button class="btn-share" type="submit">Search</button>
+            </form>
+        </div>
+
+    </div>
+</div>
+<div class="row mt--20 friends-list">
+    <div class="col-lg-6 col-sm-6 recently request" *ngFor="let person of people">
+        <div class="friend-list-view" *ngIf="person._id!==userId">
+            <!-- profile picture end -->
+            <div class="profile-thumb">
+                <a href="#">
+                    <figure class="profile-thumb-middle">
+                        <img src="assets/images/profile/profile-small-1.jpg" alt="profile picture">
+                    </figure>
+                </a>
+            </div>
+            <!-- profile picture end -->
+
+            <div class="posted-author">
+                <h6 class="author"><a [routerLink]="'/profile/'+person._id+'/timeline'">{{person.username}}</a>
+                </h6>
+                <p> {{person.followers.length +' followers'}}</p>
+                <button class="ui basic green button" (click)="
+                    isFollowing(person)? unFollowUser(person): followUser(person) ">
+                    {{ isFollowing(person) ? "Unfollow" : "Follow" }}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

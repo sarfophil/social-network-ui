@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import {User} from "../../model/user";
+import { User } from '../../model/user';
 
 @Component({
   selector: 'app-profile',
@@ -9,18 +9,17 @@ import {User} from "../../model/user";
 })
 export class ProfileComponent implements OnInit {
 
-  currentRoute:String = 'profile';
+  currentRoute: String = 'profile';
   user: User;
-
-  constructor(private route:ActivatedRoute) { }
+  constructor(private route: ActivatedRoute) { }
 
   ngOnInit() {
-    this.renderPage()
-    this.user = JSON.parse(localStorage.getItem("active_user"));
+    this.renderPage();
+    this.user = JSON.parse(localStorage.getItem('active_user'));
   }
 
-  renderPage(){
-    console.log(this.route.pathFromRoot)
+  renderPage() {
+    console.log(this.route.pathFromRoot);
   }
 
 }

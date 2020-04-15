@@ -12,6 +12,7 @@ import { AdvertComponent } from './pages/admin-ui-components/advert/advert.compo
 import { AdminLoginComponent } from './pages/admin-login/admin-login.component'
 import { CanActivateTeamService } from './service/canActivateTeam/can-activate-team.service';
 import { SearchComponent } from './pages/search/search.component';
+import { PeopleComponent } from './pages/ui-components/people/people.component';
 
 const routes: Routes = [
   {
@@ -49,6 +50,12 @@ const routes: Routes = [
       {
         path: 'followers',
         component: FollowersComponent,
+        data: {role: ['USER_ROLE']},
+        canActivateChild: [CanActivateTeamService]
+      },
+      {
+        path: 'people',
+        component: PeopleComponent,
         data: {role: ['USER_ROLE']},
         canActivateChild: [CanActivateTeamService]
       }
