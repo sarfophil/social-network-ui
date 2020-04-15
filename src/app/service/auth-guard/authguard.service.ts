@@ -10,7 +10,7 @@ import {API_TYPE} from "../../model/apiType";
 export class AuthguardService implements CanActivate{
 
   constructor(private provider: ProviderService,private router: Router) { }
-  token: String = JSON.parse(localStorage.getItem("access_token"))
+  token: String = localStorage.getItem("access_token")
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     return this.checkLogin();
   }
