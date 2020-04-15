@@ -161,7 +161,7 @@ export class SearchWidgetComponent implements OnInit,OnDestroy {
     // /:userId/unfollow/:friendId
     let path = `${this.currentUser._id}/unfollow/${user._id}`;
     this.provider.put(API_TYPE.USER, path,{}).subscribe((res) => {
-        console.log(`Publishing Event`)
+      //  console.log(`Publishing Event`)
         this.pubSub.publishEvent('UNFOLLOWED_USER_EVENT', {
             friendId: user._id
         })

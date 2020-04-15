@@ -67,6 +67,7 @@ export class SocketioService {
             verifiedSnackRef.onAction().subscribe((action) => this.router.navigateByUrl('/home'))
            break;
            case NotificationCode.ACCOUNT_BLOCKED:
+             this.router.navigateByUrl('/login')
             this.snackbar.open(`Sorry your Account has been blocked.Please contact Administrator to review your account`)
            break;
 

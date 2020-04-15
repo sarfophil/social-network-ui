@@ -19,6 +19,7 @@ export class TimelineComponent implements OnInit {
       this.user = obj.user;
       this.username = this.user.username;
     })
+
   }
 
 }
