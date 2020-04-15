@@ -4,11 +4,9 @@ import {ProviderService} from 'src/app/service/provider-service/provider.service
 import {API_TYPE} from 'src/app/model/apiType';
 import {User} from 'src/app/model/user';
 import {PostType} from 'src/app/model/post-type';
-import {ViewportScroller} from "@angular/common";
-import {Advert} from "../../../model/advert";
 import {of} from "rxjs";
 import {map, switchMap} from "rxjs/operators";
-import {PostResponse} from "../../../model/post-response";
+import {Like, PostResponse} from "../../../model/post-response";
 import {DomSanitizer} from "@angular/platform-browser";
 import {ViewPostModalComponent} from "../view-post-modal/view-post-modal.component";
 import {MatDialog} from "@angular/material/dialog";
@@ -62,7 +60,7 @@ export class PostsComponent implements OnInit {
   constructor(private provider: ProviderService,private sanitizer: DomSanitizer,private dialog: MatDialog) { }
 
   ngOnInit() {
-    this.loadPosts(this.postState)
+    setTimeout(() => this.loadPosts(this.postState), 2000)
   }
 
   /**
@@ -102,13 +100,13 @@ export class PostsComponent implements OnInit {
 
   }
 
-  likeFilter(likes, id) {
-    return likes.indexOf(id) !== -1;
+  likeFilter(likes:Array<Like>) {
+    let lookup = likes.find((like) => like._id == this.currentUser._id);
+    return !!lookup;
   }
 
   loadMore() {
     this.skip += this.limit;
-    console.log(this.skip)
     this.openSpinner = true;
     this.loadPosts(this.postState)
   }
@@ -121,7 +119,7 @@ export class PostsComponent implements OnInit {
           map((response: Array<any>) => {
               let postsArr: Array<PostResponse> = [];
               for(let data of response){
-                  let post = new PostResponse(data._id,data.imageLink[0],data.userDetail[0]._id,data.createdDate,data.isHealthy,data.userDetail[0].profilePicture,data.userDetail[0].username,data.likes,data.content);
+                  let post = new PostResponse(data._id,data.imageLink[0],data.userDetail[0]._id,data.createdDate,data.isHealthy,data.userDetail[0].profilePicture,data.userDetail[0].username,data.likes,data.content,data.comments);
                   postsArr.push(post)
               }
               return postsArr
@@ -218,5 +216,32 @@ export class PostsComponent implements OnInit {
 
   sanitize(downloadedImageBlob: any) {
     return this.sanitizer.bypassSecurityTrustUrl(downloadedImageBlob);
+  }
+
+  react(post: PostResponse) {
+     let lookup = post.likes.findIndex(like => this.currentUser._id == like._id)
+     let path = `${post.id}/user/${this.currentUser._id}/likes`;
+     if(lookup != -1) {
+        // id found
+        // unlike
+        post.likes.splice(lookup,1)
+       this.provider.delete(API_TYPE.POST, path,'')
+         .subscribe((res) => console.log(`Unliked`))
+     }else{
+       // id not found
+       // like
+       // @ts-ignore
+       post.likes.push({_id: this.currentUser._id})
+
+       // send  a request
+       let body = {};
+       this.provider.put(API_TYPE.POST,path,body)
+         .subscribe((res) => console.log(`liked`))
+     }
+     console.log(`Lookup: ${lookup}`)
+     console.log(post.likes)
+     console.log(post.likes.length)
+
+
   }
 }

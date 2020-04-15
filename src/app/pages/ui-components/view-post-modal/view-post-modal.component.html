@@ -33,7 +33,7 @@
                     <div class="profile-thumb">
                         <a href="#">
                             <figure class="profile-thumb-small">
-                                <app-profile-photo [fetchWithUserId]="post.username"></app-profile-photo>
+                                <app-profile-photo [imageName]="post.userProfilePicture"></app-profile-photo>
                             </figure>
                         </a>
                     </div>
@@ -52,15 +52,12 @@
         <!-- Likes -->
 
         <div class="post-meta">
-            <button *ngIf="hasLiked" class="post-meta-like" (click)="like(true)">
-                <i class="bi bi-heart-beat"></i>
-                <span>{{likes}}</span>
-                <strong></strong>
-            </button>
 
-          <button *ngIf="!hasLiked" class="post-meta-like" (click)="like(false)">
+
+          <button class="post-meta-like" (click)="react(post)">
             <i class="bi bi-heart-beat"></i>
-            <span>{{likes}}</span>
+            <span *ngIf="likeFilter(post.likes)">You and</span>
+            <span>{{ post.likes ? post.likes.length : '0' }} people like this</span>
             <strong></strong>
           </button>
 
@@ -68,7 +65,7 @@
                 <li>
                     <button class="post-comment">
                         <i class="bi bi-chat-bubble"></i>
-                        <span>{{totalComments}}</span>
+                        <span>{{post.comments.length}}</span>
                     </button>
                 </li>
             </ul>

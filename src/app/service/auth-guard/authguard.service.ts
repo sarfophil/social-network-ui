@@ -26,8 +26,10 @@ export class AuthguardService implements CanActivate{
       this.provider.get(API_TYPE.TOKEN,path,'').subscribe(
         (res) => {
            this.router.navigate(['/home'])
-           return true;
-        }
+        },
+        (error => {
+          return true
+        })
       )
   }
 }

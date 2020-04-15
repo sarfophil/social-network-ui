@@ -18,8 +18,8 @@ export interface SocketResponse {
 })
 export class SocketioService {
 
-  socket:any;
-  user: User = JSON.parse(localStorage.getItem('active_user'));
+  socket:io = io(environment.socketEndpoint);
+  user: User;
 
   sound = new Howl({
     src: ['assets/sound/filling-your-inbox.mp3']
@@ -28,15 +28,14 @@ export class SocketioService {
   constructor(private snackbar: MatSnackBar,private router: Router,private pubSub: NgxPubSubService) { }
 
   initiazeSocketClient(){
-    this.socket = io(environment.socketEndpoint)
+
   }
 
   demoBroadcast() {
     this.socket.on('userDemo', (data) => console.log(`Socket Broadcastted ${data}`))
   }
 
-  onNotificationReceivedEvent(): void{
-    let topic = this.user.email
+  onNotificationReceivedEvent(topic: String): void{
     this.socket.on(`${topic}`,(data: SocketResponse) => {
         switch(data.reason){
            case NotificationCode.FOLLOW:
@@ -75,11 +74,24 @@ export class SocketioService {
             this.snackbar.open(`Profile Pic Updated`);
             this.pubSub.publishEvent('PROFILE_CHANGED')
             break;
+          default:
+              console.log(`Emiitted`)
+            break
         }
         this.sound.play()
     })
 
   }
 
+
+  connect(): void{
+    this.socket.emit('loggedIn',{data: 'Phili'})
+  }
+
+  disconnect():void{
+    this.socket.disconnect(() =>{
+        console.log('Disconnected')
+    })
+  }
 
 }
