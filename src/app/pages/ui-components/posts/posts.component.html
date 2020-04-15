@@ -102,9 +102,9 @@
                     </div>
                 </div>
                 <div class="post-meta">
-                    <button class="post-meta-like">
+                    <button class="post-meta-like" (click)="react(p)">
                         <i class="bi bi-heart-beat"></i>
-                        <span *ngIf="likeFilter(p.likes,p.id)">You and</span>
+                        <span *ngIf="likeFilter(p.likes)">You and</span>
                         <span>{{ p.likes ? p.likes.length : '0' }} people like this</span>
                         <strong></strong>
                     </button>
@@ -112,7 +112,7 @@
                         <li>
                             <button class="post-comment" (click)="openPost($event,p)">
                                 <i class="bi bi-chat-bubble"></i>
-                                <span>41</span>
+                                <span>{{p.comments.length}}</span>
                             </button>
                         </li>
                     </ul>
