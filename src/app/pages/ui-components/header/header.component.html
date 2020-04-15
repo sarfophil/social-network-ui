@@ -34,7 +34,7 @@
 
                                                     <!-- message content start -->
                                                     <div class="msg-content" (click)="viewPost(result)">
-                                                        <h6 class="author"><a [routerLink]="'/profile/'+result.user+'/timeline'">{{result.postuname}} <span class="you">{{result.user == currentuser._id ? '.You':''}}</span></a></h6>
+                                                        <h6 class="author"><a [routerLink]="'/profile/'+result.userId+'/timeline'">{{result.username}} <span class="you">{{result.userId == currentuser._id ? '.You':''}}</span></a></h6>
                                                         <p>{{result.content | shorten}}</p>
                                                     </div>
                                                     <!-- message content end -->

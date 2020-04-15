@@ -38,7 +38,7 @@ export class CreatePostComponent implements OnInit ,AfterContentInit,AfterViewIn
   user: User = JSON.parse(localStorage.getItem('active_user'));
 
   constructor(private config:ConfigService,private snackBar:MatSnackBar,private http: HttpClient, private formBuilder: FormBuilder, private providerService: ProviderService) {
-    
+
     this.postform = this.formBuilder.group({
       content:new FormControl('', [Validators.minLength(5),Validators.maxLength(30),Validators.required]),
       avatar: [null],
@@ -47,7 +47,7 @@ export class CreatePostComponent implements OnInit ,AfterContentInit,AfterViewIn
       notifyFollowers: ['']
     })
   }
-  
+
 
   ngOnInit() {
 
@@ -80,7 +80,7 @@ export class CreatePostComponent implements OnInit ,AfterContentInit,AfterViewIn
     }
 
     let notifyfoll = this.postform.get('notifyFollowers').value!=''?this.postform.get('notifyFollowers').value:'false';
-    let ageGroupTarget =  { min: this.postform.get('minAge').value, max: this.postform.get('maxAge').value } 
+    let ageGroupTarget =  { min: this.postform.get('minAge').value, max: this.postform.get('maxAge').value }
     var formData: any = new FormData();
     formData.append("content", this.postform.get('content').value);
     formData.append("imageLink", this.postform.get('avatar').value);
@@ -114,9 +114,9 @@ export class CreatePostComponent implements OnInit ,AfterContentInit,AfterViewIn
     this.postform.patchValue({
       avatar: file
     });
-    this.postform.get('imageLink').updateValueAndValidity()
+    //this.postform.get('imageLink').updateValueAndValidity()
 
-    console.log(file)
+  //  console.log(file)
   }
 
 

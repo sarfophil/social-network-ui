@@ -12,7 +12,13 @@ import { AdvertComponent } from './pages/admin-ui-components/advert/advert.compo
 import { AdminLoginComponent } from './pages/admin-login/admin-login.component'
 import { CanActivateTeamService } from './service/canActivateTeam/can-activate-team.service';
 import { SearchComponent } from './pages/search/search.component';
+<<<<<<< HEAD
 import { AdminAccountReviewComponent } from './pages/admin-ui-components/admin-account-review/admin-account-review.component';
+=======
+
+import { NotfoundComponent } from './pages/404/notfound/notfound.component';
+
+>>>>>>> 2c4c8f25a6ea53ad279c71c716b7f6fa4765b078
 import {TimelineComponent} from "./pages/ui-components/timeline/timeline.component";
 import {UserResolverService} from "./service/user-resolver/user-resolver.service";
 import {AuthguardService} from "./service/auth-guard/authguard.service";
@@ -50,7 +56,16 @@ const routes: Routes = [
         redirectTo:'/timeline',
         pathMatch:'full'
       },
+<<<<<<< HEAD
       
+=======
+      {
+        path: 'timeline',
+        component: TimelineComponent,
+        data: {role: ['USER_ROLE']},
+        canActivateChild: [CanActivateTeamService]
+      },
+>>>>>>> 2c4c8f25a6ea53ad279c71c716b7f6fa4765b078
       {
         path: 'followers',
         component: FollowersComponent,
@@ -102,6 +117,12 @@ const routes: Routes = [
     component: SearchComponent,
     canActivate: [CanActivateTeamService],
     data: {role: ['USER_ROLE']}
+  },
+  {
+    path: '404',
+    component: NotfoundComponent,
+    canActivate: [CanActivateTeamService],
+    data: {role: ['USER_ROLE','USER_ADMIN']}
   }
 ];
 

@@ -28,10 +28,10 @@ import { environment } from 'src/environments/environment';
 import { AdminLoginComponent } from './pages/admin-login/admin-login.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { LoginWidgetComponent } from './pages/ui-components/login-widget/login-widget.component';
-import {MatDialogModule} from '@angular/material/dialog';
+import { MatDialogModule} from '@angular/material/dialog';
 import { ShortenPipe } from './pipe/shorten/shorten.pipe';
 import { MomentPipe } from './pipe/moment/moment.pipe';
 import { SearchComponent } from './pages/search/search.component';
@@ -45,10 +45,18 @@ import { ViewPostModalComponent } from './pages/ui-components/view-post-modal/vi
 import { ProfilePicUploadComponent } from './pages/ui-components/profile-pic-upload/profile-pic-upload.component';
 import { NgxPubSubModule } from '@pscoped/ngx-pub-sub';
 import { AdBannerComponent } from './pages/ui-components/ad-banner/ad-banner.component';
+<<<<<<< HEAD
 import { AdminAccountReviewComponent } from './pages/admin-ui-components/admin-account-review/admin-account-review.component';
 
+=======
+
+import { NotfoundComponent } from './pages/404/notfound/notfound.component';
+
+import { TimelineComponent } from './pages/ui-components/timeline/timeline.component';
+>>>>>>> 2c4c8f25a6ea53ad279c71c716b7f6fa4765b078
 import { FollowingComponent } from './pages/ui-components/following/following.component';
 import { TimelineComponent } from './pages/ui-components/timeline/timeline.component';
+
 
 
 // socket config
@@ -87,8 +95,15 @@ const socketConfig: SocketIoConfig = {url: environment.socketEndpoint,options: {
     ViewPostModalComponent,
     ProfilePicUploadComponent,
     AdBannerComponent,
+<<<<<<< HEAD
     AdminAccountReviewComponent,
     FollowingComponent,TimelineComponent
+=======
+    NotfoundComponent,
+    TimelineComponent,
+    FollowingComponent
+
+>>>>>>> 2c4c8f25a6ea53ad279c71c716b7f6fa4765b078
   ],
   imports: [
     BrowserModule,

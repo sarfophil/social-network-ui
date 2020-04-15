@@ -9,6 +9,7 @@ import { User } from 'src/app/model/user';
 import { MatDialog } from '@angular/material/dialog';
 import { ViewPostModalComponent } from '../view-post-modal/view-post-modal.component';
 import { Post } from 'src/app/model/post';
+import {PostResponse} from "../../../model/post-response";
 
 
 @Component({
@@ -51,7 +52,7 @@ export class HeaderComponent implements OnInit,OnDestroy {
   isSearchInputOpen = false;
   isProfileOpen = false;
   @Input() headerType: string;
-  search$: Observable<any>;
+  search$: Observable<Array<PostResponse>>;
   private searchText$ = new Subject<string>()
   currentuser: User;
 
@@ -66,7 +67,15 @@ export class HeaderComponent implements OnInit,OnDestroy {
         filter(text => text.length > 2),
         debounceTime(10),
         distinctUntilChanged(),
-        switchMap((value) => this.provider.get(API_TYPE.POST,'search',`?query=${value}&limit=5&skip=0`))
+        switchMap((value) => this.provider.get(API_TYPE.POST,'search',`?query=${value}&limit=5&skip=0`)),
+        map((result: Array<any>) => {
+          let postsArr: Array<PostResponse> = [];
+          for(let data of result){
+            let post = new PostResponse(data._id,data.imageLink[0],data.userDetail[0]._id,data.createdDate,data.isHealthy,data.userDetail[0].profilePicture,data.userDetail[0].username,data.likes,data.content);
+            postsArr.push(post)
+          }
+          return postsArr
+        })
     )
 
     this.route.params.subscribe((param) => {
@@ -112,17 +121,17 @@ export class HeaderComponent implements OnInit,OnDestroy {
     this.router.navigateByUrl(this.viewAllRoute)
   }
 
-  viewPost(post:any){
+  viewPost(post:PostResponse){
       let dialogRef = this.dialog.open(ViewPostModalComponent,{
          width: '1000px',
-         minHeight: '900px',
+         height: '500px',
          position: {
            top: '0'
          },
          data: post
       })
 
-      dialogRef.afterOpened().subscribe(res => console.log(`${res}`))
+      //dialogRef.afterOpened().subscribe(res => console.log(`${res}`))
   }
 
   ngOnDestroy(): void {
