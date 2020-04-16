@@ -4,7 +4,6 @@ import { LoginComponent } from './pages/login/login.component';
 import { HomeComponent } from './pages/home/home.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { FollowersComponent } from './pages/ui-components/followers/followers.component'
-import { PostsComponent } from './pages/ui-components/posts/posts.component';
 import { AdminComponent } from './pages/admin/admin.component';
 import { KeywordComponent } from './pages/admin-ui-components/keyword/keyword.component';
 import { PostReviewComponent } from './pages/admin-ui-components/post-review/post-review.component';
@@ -12,7 +11,6 @@ import { AdvertComponent } from './pages/admin-ui-components/advert/advert.compo
 import { AdminLoginComponent } from './pages/admin-login/admin-login.component'
 import { CanActivateTeamService } from './service/canActivateTeam/can-activate-team.service';
 import { SearchComponent } from './pages/search/search.component';
-import { PeopleComponent } from './pages/ui-components/people/people.component';
 
 import { NotfoundComponent } from './pages/404/notfound/notfound.component';
 
@@ -66,8 +64,6 @@ const routes: Routes = [
         canActivateChild: [CanActivateTeamService]
       },
       {
-        // path: 'people',
-        // component: PeopleComponent,
         path: 'following',
         component: FollowingComponent,
         data: {role: ['USER_ROLE']},
@@ -94,6 +90,10 @@ const routes: Routes = [
       },
       {
         path: 'keywords',
+        component: KeywordComponent
+      },
+      {
+        path: 'keywords/:wordId',
         component: KeywordComponent
       },
       {

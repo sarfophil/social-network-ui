@@ -4,14 +4,8 @@
         <!-- share content box start -->
         <div class="share-content-box w-100">
             <form class="share-text-box">
-<<<<<<< HEAD
-                <textarea name="share" class="share-text-field" aria-disabled="true" placeholder="Search Followers"
-                    id="email"></textarea>
-                <button class="btn-share" type="submit">Search</button>
-=======
                 <textarea name="share" (keyup)="search($event.target.value)" class="share-text-field" aria-disabled="true" placeholder="Search Followers" id="email"></textarea>
 <!--                <button class="btn-share" type="submit">Search</button>-->
->>>>>>> 2c4c8f25a6ea53ad279c71c716b7f6fa4765b078
             </form>
         </div>
 
@@ -24,14 +18,9 @@
         <div class="row">
             <div class="col-12">
                 <div class="content-box friends-zone">
-<<<<<<< HEAD
-                    <div class="row mt--20 friends-list">
-                        <div class="col-lg-6 col-sm-6 recently request" *ngFor="let follower of followers index as i">
-=======
                     <div class="row mt--20 friends-list zoomIn" *ngIf="!isLoading">
                         <p style="text-align: center; margin: auto" *ngIf="followers.length == 0">No Followers yet</p>
                         <div class="col-lg-6 col-sm-6 recently request"  *ngFor="let follower of followers">
->>>>>>> 2c4c8f25a6ea53ad279c71c716b7f6fa4765b078
                             <div class="friend-list-view">
                                 <!-- profile picture end -->
                                 <div class="profile-thumb">
@@ -61,8 +50,4 @@
             </div>
         </div>
     </div>
-<<<<<<< HEAD
 </div>
-=======
-</div>
->>>>>>> 2c4c8f25a6ea53ad279c71c716b7f6fa4765b078
