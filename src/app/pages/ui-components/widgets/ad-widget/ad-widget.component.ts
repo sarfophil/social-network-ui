@@ -46,7 +46,7 @@ export class AdWidgetComponent implements OnInit {
   ngOnInit() {
       this.user = JSON.parse(localStorage.getItem('active_user'))
       this.loadAnimy();
-      setTimeout(()=> this.loadAds(),1000)
+      setTimeout(()=> this.loadAds(),3000)
   }
 
 
@@ -70,13 +70,18 @@ export class AdWidgetComponent implements OnInit {
       )
       .subscribe(
       (response: Array<Advert>) => {
-          this.adsList = response;
+          if(response.length == 0){
+            this.isLoading = true
+          }else {
+            this.isLoading = false
+            this.adsList = response;
+          }
+
       },
       (error => {
         this.isLoading = false;
       }),
       (()=>{
-        this.isLoading = false;
         this.isLoadingMore = false
       })
     )
