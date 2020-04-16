@@ -21,7 +21,7 @@
                                      <!-- header top search start -->
                                     <div class="header-top-search" *ngIf="headerType == 'user'">
                                         <form class="top-search-box">
-                                            <input  placeholder="Search Post by Username" id="searchbox" autocomplete="off" class="top-search-field" (keyup)= "search($event.target.value)">
+                                            <input  placeholder="Search Post by Username" id="searchbox" autocomplete="off" name="searchkeyword" [(ngModel)]="searchkeyword" class="top-search-field" (keyup)= "search($event.target.value)">
                                             <button class="top-search-btn"><i class="flaticon-search"></i></button>
                                         </form>
                                     </div>
@@ -33,7 +33,9 @@
 
                                             </div>
                                             <ul class="dropdown-msg-list">
-
+                                                <li class="msg-list-item d-flex justify-content-between" >
+                                                  <p>Search for "{{searchkeyword}}"</p>
+                                                </li>
                                                 <li class="msg-list-item d-flex justify-content-between" *ngFor="let result of search$ | async">
 
 

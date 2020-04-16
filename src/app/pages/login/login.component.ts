@@ -60,7 +60,7 @@ export class LoginComponent implements OnInit {
       conformpassword:['',Validators.required]
     })
 
-    this.hasLoggedInSuccessFullyEvent()
+
 
 
   }
@@ -97,9 +97,9 @@ export class LoginComponent implements OnInit {
         else this.snackbar.open(`${err.message}`)
       },
       complete:() => {
-        console.log(response)
         this.router.navigate(['/home'])
           .then((res) => {
+            console.log(`Navigation: ${res}`)
             if(!res) {
               this.snackbar.open('Oops! Your account has been deactivated', 'Ok', {
                 horizontalPosition: "center",
@@ -107,7 +107,8 @@ export class LoginComponent implements OnInit {
               })
               localStorage.clear()
             }else{
-              this.pubSub.publishEvent('HAS_LOGIN',response.user);
+              console.log('Has Login Event')
+              this.socketService.connect(response.user._id,USER_STATUS.ONLINE)
             }
           })
           .catch(err => console.log(err))

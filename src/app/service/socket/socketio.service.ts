@@ -10,7 +10,8 @@ import {NgxPubSubService} from "@pscoped/ngx-pub-sub";
 
 export interface SocketResponse {
    reason: NotificationCode;
-   follower: User
+   follower: User,
+   content: String
 }
 
 export enum USER_STATUS {
@@ -66,16 +67,29 @@ export class SocketioService {
             verifiedSnackRef.onAction().subscribe((action) => this.router.navigateByUrl('/home'))
            break;
            case NotificationCode.ACCOUNT_BLOCKED:
+             this.socket.disconnect()
+             localStorage.clear()
              this.router.navigateByUrl('/login')
             this.snackbar.open(`Sorry your Account has been blocked.Please contact Administrator to review your account`)
            break;
 
           case NotificationCode.PROFILE_PIC_UPDATE:
-            this.snackbar.open(`Profile Pic Updated`);
+            this.snackbar.open(`Profile Pic Updated`,'Ok');
             this.pubSub.publishEvent('PROFILE_CHANGED')
             break;
+
+          case NotificationCode.POST_CREATED:
+             this.snackbar.open(`Post Created Successfully`,`Ok`)
+             this.pubSub.publishEvent(`POST_CREATED_EVENT`,{});
+            break
+
+          case NotificationCode.UNHEALTHY_POST:
+              this.snackbar.open(`${data.content}`,'Ok')
+              this.pubSub.publishEvent(`UNHEALTHY_POST_EVENT`,{})
+            break;
+
           default:
-              console.log(`Emitted`)
+              this.snackbar.open(`You have a new notification`,'Ok')
             break
         }
     })
@@ -84,6 +98,7 @@ export class SocketioService {
 
 
   connect(userId: String,status:USER_STATUS): void{
+    console.log(this.socket)
     this.socket.emit('user_status',{userId: userId,status: status})
   }
 

@@ -4,7 +4,6 @@ import { LoginComponent } from './pages/login/login.component';
 import { HomeComponent } from './pages/home/home.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { FollowersComponent } from './pages/ui-components/followers/followers.component'
-import { PostsComponent } from './pages/ui-components/posts/posts.component';
 import { AdminComponent } from './pages/admin/admin.component';
 import { KeywordComponent } from './pages/admin-ui-components/keyword/keyword.component';
 import { PostReviewComponent } from './pages/admin-ui-components/post-review/post-review.component';
@@ -14,7 +13,7 @@ import { CanActivateTeamService } from './service/canActivateTeam/can-activate-t
 import { SearchComponent } from './pages/search/search.component';
 import { AdminAccountReviewComponent } from './pages/admin-ui-components/admin-account-review/admin-account-review.component';
 
-import { NotfoundComponent } from './pages/404/notfound/notfound.component';
+import { NotfoundComponent } from './pages/notfound/notfound.component';
 
 import {TimelineComponent} from "./pages/ui-components/timeline/timeline.component";
 import {UserResolverService} from "./service/user-resolver/user-resolver.service";
@@ -95,6 +94,10 @@ const routes: Routes = [
         component: KeywordComponent
       },
       {
+        path: 'keywords/:wordId',
+        component: KeywordComponent
+      },
+      {
         path: 'posts/reviews',
         component: PostReviewComponent
       },
@@ -112,9 +115,7 @@ const routes: Routes = [
   },
   {
     path: '404',
-    component: NotfoundComponent,
-    canActivate: [CanActivateTeamService],
-    data: {role: ['USER_ROLE','USER_ADMIN']}
+    component: NotfoundComponent
   }
 ];
 

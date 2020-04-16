@@ -11,6 +11,7 @@ export class UserService {
   private users: Array<User>;
   private followers: Array<User>;
   private user: User;
+  userId = JSON.parse(localStorage.getItem('active_user'))._id;
   constructor(private providerService: ProviderService) { }
 
   getUsers(): Array<User> {
@@ -40,15 +41,21 @@ export class UserService {
 
   }
 
-  // followUser(userId) {
-  //   const user = JSON.parse(localStorage.getItem('active_user'))._id;
-  //   const url: string = getServerURL('users/follow');
-  //   return this.http.post(url, { _id: userId });
-  // }
+  followUser(friend: User) {
+    return this.providerService.put(API_TYPE.USER, `${this.userId}/follow/${friend._id}`, '');
 
-  // unFollowUser(userId) {
-  //   const url: string = getServerURL('users/unfollow');
-  //   return this.http.post(url, { _id: userId });
-  // }
+  }
+
+  unFollowUser(friend: User) {
+    return this.providerService.put(API_TYPE.USER, `${this.userId}/unfollow/${friend._id}`, '');
+  }
+  searchFriend(friend) {
+    for (let f of this.getFollowers(this.userId)) {
+      if (f.username === friend) {
+
+      }
+
+    }
+  }
 
 }

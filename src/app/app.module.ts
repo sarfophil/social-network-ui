@@ -48,6 +48,9 @@ import { AdBannerComponent } from './pages/ui-components/ad-banner/ad-banner.com
 import { AdminAccountReviewComponent } from './pages/admin-ui-components/admin-account-review/admin-account-review.component';
 
 
+import { NotfoundComponent } from './pages/notfound/notfound.component';
+
+
 import { NotfoundComponent } from './pages/404/notfound/notfound.component';
 import { FollowingComponent } from './pages/ui-components/following/following.component';
 import { NotificationComponent } from './pages/ui-components/notification/notification.component';

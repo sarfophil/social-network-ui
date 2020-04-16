@@ -17,11 +17,11 @@
                         </figure>
                     </a>
                 </div>
-                <!-- profile picture end -->
+                <!-- profile picture end [routerLink]="'/profile/'+result.user._id+'/timeline'"-->
 
                 <div class="unorder-list-info">
                     <div class="list-detail">
-                      <a [routerLink]="'/profile/'+result.user._id+'/timeline'" class="list-info">{{result.user.username}}</a>
+                      <a (click)="goToUserProfile($event,result)" class="list-info">{{result.user.username}}</a>
                       <a href="#" class="follow-link" *ngIf="!result.isAFollower" (click)="follow(result.user,$event)">Follow</a>
                       <a href="#" class="follow-link" *ngIf="result.isAFollower" (click)="unfollow(result.user,$event)">UnFollow</a>
                     </div>
