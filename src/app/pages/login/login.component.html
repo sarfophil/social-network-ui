@@ -64,40 +64,42 @@
                                         Welcome in Adda.</h3>
                                 </div>
                             </div>
-                            <!-- Sign up -->
-                            <div class="col-lg-6 order-1 order-lg-2 d-flex align-items-center justify-content-center">
-                                <div class="signup-form-wrapper">
-                                    <h1 class="create-acc text-center">Create An Account</h1>
-                                    <div class="signup-inner text-center">
-                                        <h5 class="title">Wellcome to Adda</h5>
-                                        <form class="signup-inner--form" [formGroup]="signUpForm" (ngSubmit)="signUp()">
-                                            <div class="row">
-                                                <div class="col-6">
-                                                    <input type="email" formControlName="email" class="single-field"
-                                                        placeholder="Email">
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <input type="text" formControlName="username" class="single-field"
-                                                        placeholder="Username">
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <input type="password" formControlName="password"
-                                                        class="single-field" placeholder="Password">
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <input type="conformpassword" formControlName="conformpassword"
-                                                        class="single-field" placeholder="confirm password">
-                                                </div>
-                                                <div class="col-md-12">
-                                                    <select class="nice-select" name="sortby" [(value)]="selcetedValue">
-                                                        <option value="trending">Age</option>
-                                                        <option value="old">18+</option>
-                                                        <option value="young">18-</option>
-                                                    </select>
-                                                </div>
-                                                <div class="col-12">
-                                                    <button class="submit-btn">Create Account</button>
-                                                </div>
+
+                        </div>
+                        <!-- Sign up -->
+                        <div class="col-lg-6 order-1 order-lg-2 d-flex align-items-center justify-content-center">
+                            <div class="signup-form-wrapper">
+                                <h1 class="create-acc text-center">Create An Account</h1>
+                                <div class="signup-inner text-center">
+                                    <h5 class="title">Wellcome to Adda</h5>
+                                    <form class="signup-inner--form" >
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <input  required  ngModel minlength="3"   name="email" #email="ngModel" class="single-field" placeholder="Email">
+                                                <p class="alert alert-danger" *ngIf="email.touched && !email.valid" >email is required</p>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <input type="text" ngModel required minlength="3" name="username" #username="ngModel" class="single-field" placeholder="Username" >
+                                                <p class="alert alert-danger" *ngIf="username.touched && !username.valid" >username is required</p>
+                                            </div>
+                                            
+
+                                            <div class="col-md-6">
+                                                <input type="password"  ngModel required minlength="8"  name="password" #password="ngModel" class="single-field" placeholder="Password">
+
+                                                <p class="alert alert-danger" *ngIf="password.touched && !password.valid" > password is required </p>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <input type="password" ngModel required minlength="8"  name="conformpassword" #conformpassword="ngModel" class="single-field" placeholder="confirm password">
+                                                <p class="alert alert-danger" *ngIf="conformpassword.touched && !conformpassword.valid" >password is required</p>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <select class="nice-select" ngModel name="sortby" #sortby="ngModel"  [value]='18' placeholder="Age">
+                                                    <option value="trending">Age</option>
+                                                    <option value="old">18+</option>
+                                                    <option value="young">18-</option>
+                                                </select>
+
                                             </div>
                                             <!-- <h6 class="terms-condition">I have read & accepted the <a href="#">terms of use</a></h6> -->
                                             <div class="other-links">
