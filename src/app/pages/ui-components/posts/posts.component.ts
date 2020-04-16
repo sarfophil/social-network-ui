@@ -82,15 +82,9 @@ export class PostsComponent implements OnInit {
 
     // User posts
     if (postType === PostType.USER_POSTS) {
-<<<<<<< HEAD
-     this.apiType = API_TYPE.POST
-     this. path = `search`
-     this.queryParam = `?query=${this.postData}&limit= ${this.limit}`
-=======
       this.apiType = API_TYPE.POST
       this.path = `search`
       this.queryParam = `?query=${this.postData}&limit= ${this.limit}&skip= ${this.skip}`
->>>>>>> 2c4c8f25a6ea53ad279c71c716b7f6fa4765b078
 
     }
 
@@ -98,11 +92,7 @@ export class PostsComponent implements OnInit {
     if (postType === PostType.SEARCH_POSTS) {
       this.apiType = API_TYPE.POST;
       this.path = 'search'
-<<<<<<< HEAD
-      this.queryParam = `?query=${this.postData}&limit= ${this.limit}`
-=======
       this.queryParam = `?query=${this.postData}&limit= ${this.limit}&skip=${this.skip}`
->>>>>>> 2c4c8f25a6ea53ad279c71c716b7f6fa4765b078
 
     }
 
