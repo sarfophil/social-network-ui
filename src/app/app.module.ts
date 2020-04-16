@@ -51,11 +51,11 @@ import { AdminAccountReviewComponent } from './pages/admin-ui-components/admin-a
 import { NotfoundComponent } from './pages/notfound/notfound.component';
 
 
-import { NotfoundComponent } from './pages/404/notfound/notfound.component';
 import { FollowingComponent } from './pages/ui-components/following/following.component';
 import { NotificationComponent } from './pages/ui-components/notification/notification.component';
 import { TimelineComponent } from './pages/ui-components/timeline/timeline.component';
 import { ImagePipe } from './pipe/imagepipe';
+import { AdminPostComponent } from './pages/admin-ui-components/admin-post/admin-post.component';
 
 
 
@@ -101,7 +101,8 @@ const socketConfig: SocketIoConfig = {url: environment.socketEndpoint,options: {
     TimelineComponent,
     FollowingComponent,
     NotificationComponent,
-    ImagePipe
+    ImagePipe,
+    AdminPostComponent
   ],
   imports: [
     BrowserModule,

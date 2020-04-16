@@ -1,4 +1,4 @@
-import { config } from 'rxjs';
+import { config, Observable } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
 import { ProviderService } from 'src/app/service/provider-service/provider.service';
 import { API_TYPE } from 'src/app/model/apiType';
@@ -8,6 +8,8 @@ import { HttpClient } from '@angular/common/http';
 import { ConfigService } from 'src/app/service/config/config-service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { environment } from 'src/environments/environment';
+import { DomSanitizer } from '@angular/platform-browser';
+import { switchMap, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-advert',
@@ -24,7 +26,7 @@ export class AdvertComponent implements OnInit {
   private imageUrl: Array<any> = [];
   advertisments: Object;
 
-  constructor(private snackBar:MatSnackBar,private config: ConfigService, private service: ProviderService, private formBuilder: FormBuilder, private http: HttpClient) {
+  constructor(private sanitizer: DomSanitizer, private snackBar: MatSnackBar, private config: ConfigService, private service: ProviderService, private formBuilder: FormBuilder, private http: HttpClient) {
     this.addform = this.formBuilder.group({
       title: [''],
       content: [''],
@@ -43,10 +45,14 @@ export class AdvertComponent implements OnInit {
     //retiriving allads
     this.isActive = !this.isActive;
     console.log(this.isActive)
-    this.service.get(API_TYPE.ADMIN, 'ads', this.queryParam).subscribe((res) => {
-      this.advertisments= res;
-      console.log(res);
+    this.service.get(API_TYPE.ADMIN, 'ads', this.queryParam).pipe(switchMap(
+    (res)=>{
+      this.requestImages(res)
 
+      return null
+    })
+      ).subscribe((res:[]) => {
+      console.log("advertisments",res);
     }, (err) => {
       console.log(err);
     },
@@ -57,7 +63,6 @@ export class AdvertComponent implements OnInit {
   }
 
   displayForm() {
-
     this.isActive = !this.isActive;
   }
 
@@ -84,21 +89,20 @@ export class AdvertComponent implements OnInit {
 
     //sending request to server
     this.service.formdataPost(API_TYPE.ADMIN, 'ads', formData, httpOptions).subscribe((res) => {
-      this.snackBar.open('Advertisment created successfully','Ok')
+      this.snackBar.open('Advertisment created successfully', 'Ok')
+
+      //displaying advertisment list
+      this.isActive = false;
 
     }, error => {
       console.log(error);
-      this.snackBar.open('Unable to create advertismnet','Ok')
+      this.snackBar.open('Unable to create advertismnet', 'Ok')
 
     })
-
-    //reseting form
-    this.addform.reset()
-    //displaying advertisment list
-    this.isActive = !this.isActive;
     //updating adds
     this.getAllAdds();
-
+    //reseting form
+    this.addform.reset()
 
   }
 
@@ -131,4 +135,30 @@ export class AdvertComponent implements OnInit {
       { avatar: files }
     )
   }
+
+  //Delete 
+
+  delete(id) {
+  }
+
+  sanitize(downloadedImageBlob: any) {
+    return this.sanitizer.bypassSecurityTrustUrl(downloadedImageBlob);
+  }
+
+  requestImages(posts) {
+
+    for (let post of posts) {
+      console.log(post.banner[0])
+      let queryParam = `?imagename=${post.banner[0]}`;
+      let headerOption = { responseType: 'blob' };
+      this.service.get(API_TYPE.DEFAULT, 'download', queryParam, headerOption)
+        .subscribe(
+          (res) => {
+            let objectUrl = URL.createObjectURL(res);
+            post.downloadedImageBlob = objectUrl;
+          },
+          (error => post.downloadedImageBlob = 'assets/img/placeholder.png')
+        )
+    }
+this.advertisments=posts  }
 }
