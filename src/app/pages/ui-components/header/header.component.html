@@ -9,9 +9,14 @@
                         <div class="header-top-navigation" >
                             <nav>
                                 <ul>
-                                    <li class="active"><a [routerLink]="headerType == 'user'?'/home':'/admin/dashboard'">home</a></li>
+                                  <li class="active"><a [routerLink]="headerType == 'user'?'/home':'/admin/dashboard'">home</a></li>
 
-                                    <li class="notification-trigger" *ngIf="headerType == 'user'">
+                                  <li class="active">
+                                    <a href="#" (click)="notification($event)">Notification</a>
+
+                                  </li>
+
+                                  <li class="notification-trigger" *ngIf="headerType == 'user'">
 
                                      <!-- header top search start -->
                                     <div class="header-top-search" *ngIf="headerType == 'user'">
@@ -51,6 +56,7 @@
                                             </div>
                                     </div>
                                     </li>
+
                                 </ul>
                             </nav>
                         </div>
@@ -60,7 +66,7 @@
                     <div class="col-md-2">
                         <!-- brand logo start -->
                         <div class="brand-logo text-center">
-                            <a href="index.html">
+                            <a href="#">
                                 <img src="assets/images/logo/logo.png" alt="brand logo">
 
                             </a>
@@ -80,6 +86,7 @@
                                             <!-- <img src="assets/images/profile/profile-small-1.jpg" alt="profile picture"> -->
                                             <app-profile-photo [imageName]="currentuser.profilePicture" [style]=""></app-profile-photo>
                                         </figure>
+
                                     </a>
                                     <div class="profile-dropdown" [@slideToggle] = "isProfileOpen ? 'openProfile':'closeProfile'">
                                         <div class="profile-head">
@@ -99,6 +106,7 @@
                                 </div>
                             </div>
                             <!-- profile picture end -->
+
                         </div>
                     </div>
                 </div>
@@ -155,7 +163,7 @@
                                 <li *ngIf="headerType == 'admin'"><a routerLink="/admin/dashboard/profile/"><i class="flaticon-user"></i>Profile</a></li>
                             </ul>
                             <ul>
-                                <li><a href="javascript:void()" (click)="signout()"><i class="flaticon-unlock"></i>Sign out</a></li>
+                                <li><a href="" (click)="signout($event)"><i class="flaticon-unlock"></i>Sign out</a></li>
                             </ul>
                         </div>
                     </div>

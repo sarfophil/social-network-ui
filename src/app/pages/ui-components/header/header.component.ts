@@ -11,6 +11,7 @@ import { ViewPostModalComponent } from '../view-post-modal/view-post-modal.compo
 import { Post } from 'src/app/model/post';
 import {PostResponse} from "../../../model/post-response";
 import {SocketioService} from "../../../service/socket/socketio.service";
+import {NotificationComponent} from "../notification/notification.component";
 
 
 @Component({
@@ -60,7 +61,8 @@ export class HeaderComponent implements OnInit,OnDestroy {
   // View All Links from post search
   viewAllRoute:string = ''
 
-  constructor(private router:Router,private route: ActivatedRoute,private _eref: ElementRef,private provider : ProviderService,private dialog: MatDialog,private socketioService: SocketioService) { }
+  constructor(private router:Router,private route: ActivatedRoute,private _eref: ElementRef,
+              private provider : ProviderService,private dialog: MatDialog,private socketioService: SocketioService) { }
 
   ngOnInit() {
     this.currentuser = JSON.parse(localStorage.getItem('active_user'));
@@ -108,9 +110,9 @@ export class HeaderComponent implements OnInit,OnDestroy {
 
   signout(event:MouseEvent){
     event.preventDefault()
-    localStorage.clear()
+    this.socketioService.disconnect(this.currentuser._id)
     this.router.navigateByUrl('/login')
-    this.socketioService.disconnect()
+    localStorage.clear()
   }
 
   search(keyword:string){
@@ -141,5 +143,11 @@ export class HeaderComponent implements OnInit,OnDestroy {
   }
 
 
-
+  notification($event: MouseEvent) {
+    $event.preventDefault()
+    let dialogRef = this.dialog.open(NotificationComponent,{
+        width: '700px',
+        height: '900px'
+    })
+  }
 }

@@ -13,6 +13,11 @@ export interface SocketResponse {
    follower: User
 }
 
+export enum USER_STATUS {
+    ONLINE,OFFLINE
+}
+
+
 @Injectable({
   providedIn: 'root'
 })
@@ -27,16 +32,11 @@ export class SocketioService {
 
   constructor(private snackbar: MatSnackBar,private router: Router,private pubSub: NgxPubSubService) { }
 
-  initiazeSocketClient(){
-
-  }
-
-  demoBroadcast() {
-    this.socket.on('userDemo', (data) => console.log(`Socket Broadcastted ${data}`))
-  }
 
   onNotificationReceivedEvent(topic: String): void{
     this.socket.on(`${topic}`,(data: SocketResponse) => {
+
+      this.sound.play()
         switch(data.reason){
            case NotificationCode.FOLLOW:
               let followSnackRef = this.snackbar.open(`${data.follower.username} followed you`,'View Follower',
@@ -75,23 +75,21 @@ export class SocketioService {
             this.pubSub.publishEvent('PROFILE_CHANGED')
             break;
           default:
-              console.log(`Emiitted`)
+              console.log(`Emitted`)
             break
         }
-        this.sound.play()
     })
 
   }
 
 
-  connect(): void{
-    this.socket.emit('loggedIn',{data: 'Phili'})
+  connect(userId: String,status:USER_STATUS): void{
+    this.socket.emit('user_status',{userId: userId,status: status})
   }
 
-  disconnect():void{
-    this.socket.disconnect(() =>{
-        console.log('Disconnected')
-    })
+  disconnect(userId: String,status: USER_STATUS = USER_STATUS.OFFLINE):void{
+    this.connect(userId,status)
+    this.socket.disconnect()
   }
 
 }

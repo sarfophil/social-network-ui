@@ -10,7 +10,7 @@ import {User} from "./model/user";
 })
 export class AppComponent implements OnInit{
   title = 'social-network';
-  constructor(private socketioService:SocketioService,private viewportScroller: ViewportScroller){}
+  constructor(private viewportScroller: ViewportScroller){}
 
 
   ngOnInit(): void {
