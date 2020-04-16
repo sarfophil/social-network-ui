@@ -83,6 +83,14 @@ export class ProviderService {
   }
 
 
+  //FormData Post
+formdataPost(apiType:API_TYPE,pathName,formdata,httpOptions: Object = {headers:  this.config.getHeaders()}){
+  const url = `${environment.apiEndpoint}${apiType}${pathName}`;
+
+ return this.http.post(url ,formdata,httpOptions);
+}
+  
+
   
 
   delete(apiType:API_TYPE,pathName,queryParam,httpOptions:Object = {headers:  this.config.getHeaders()}) {

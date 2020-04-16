@@ -20,7 +20,7 @@ export class PostResponse {
   private _content: string;
   private _downloadedImageBlob: any;
   private _comments: Array<Comment>;
-  post: PostResponse;
+  post: {pos: PostResponse};
   private userdetail: any;
   reactedUsers: any;
   eportedDate: PostResponse;

@@ -52,6 +52,7 @@ import { NotfoundComponent } from './pages/404/notfound/notfound.component';
 import { FollowingComponent } from './pages/ui-components/following/following.component';
 import { NotificationComponent } from './pages/ui-components/notification/notification.component';
 import { TimelineComponent } from './pages/ui-components/timeline/timeline.component';
+import { ImagePipe } from './pipe/imagepipe';
 
 
 
@@ -96,8 +97,8 @@ const socketConfig: SocketIoConfig = {url: environment.socketEndpoint,options: {
     NotfoundComponent,
     TimelineComponent,
     FollowingComponent,
-    NotificationComponent
-
+    NotificationComponent,
+    ImagePipe
   ],
   imports: [
     BrowserModule,
