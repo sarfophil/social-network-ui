@@ -155,7 +155,6 @@ export class PostsComponent implements OnInit {
     this.provider.get(apiType, path, query == '' ? '' : query)
       .pipe(
         map((response: PostResponse[]) => {
-          console.log(response)
 
           return response.map((postresponce) => {
             // Mapping posts For Account and Post Review
@@ -180,38 +179,7 @@ export class PostsComponent implements OnInit {
            this.showPlaceholder = false
           }
       )
-//TODO: Needs testing
-//   load(apiType,path, query) {
-//     this.provider.get(apiType, path, query == '' ? '' : query)
-//       .pipe(
-//           map((response: Array<any>) => {
-//               let postsArr: Array<PostResponse> = [];
-//               for(let data of response){
-//                   let post = new PostResponse(data._id,data.imageLink[0],data.userDetail[0]._id,data.createdDate,data.isHealthy,data.userDetail[0].profilePicture,data.userDetail[0].username,data.likes,data.content,data.comments);
-//                   postsArr.push(post)
-//               }
-//               return postsArr
-//           }),
-//           switchMap((postArr: Array<PostResponse>) => this.requestImages(postArr))
-//       )
-//       .subscribe(
-//         (res: Array<PostResponse>) => {
-//          //   this.post = res;
-//          this.post = this.post.concat(res);
-
-//         },
-//         (error) => {
-
-//           this.showPlaceholder = false;
-//           this.provider.onTokenExpired(error.responseMessage, error.statusCode)
-//         },
-//         () => {
-//           this.openSpinner = false;
-//           this.showPlaceholder = false
-//         }
-// 
-//     )
- }
+  }
 
 
 
@@ -314,7 +282,7 @@ export class PostsComponent implements OnInit {
       this.provider.put(API_TYPE.POST, path, body)
         .subscribe((res) => console.log(`liked`))
     }
-    
+
 
 
   }
@@ -354,6 +322,36 @@ export class PostsComponent implements OnInit {
      })
   }
 
+  //   load(apiType,path, query) {
+//     this.provider.get(apiType, path, query == '' ? '' : query)
+//       .pipe(
+//           map((response: Array<any>) => {
+//               let postsArr: Array<PostResponse> = [];
+//               for(let data of response){
+//                   let post = new PostResponse(data._id,data.imageLink[0],data.userDetail[0]._id,data.createdDate,data.isHealthy,data.userDetail[0].profilePicture,data.userDetail[0].username,data.likes,data.content,data.comments);
+//                   postsArr.push(post)
+//               }
+//               return postsArr
+//           }),
+//           switchMap((postArr: Array<PostResponse>) => this.requestImages(postArr))
+//       )
+//       .subscribe(
+//         (res: Array<PostResponse>) => {
+//          //   this.post = res;
+//          this.post = this.post.concat(res);
+
+//         },
+//         (error) => {
+
+//           this.showPlaceholder = false;
+//           this.provider.onTokenExpired(error.responseMessage, error.statusCode)
+//         },
+//         () => {
+//           this.openSpinner = false;
+//           this.showPlaceholder = false
+//         }
+//
+//     )
 
 
 }

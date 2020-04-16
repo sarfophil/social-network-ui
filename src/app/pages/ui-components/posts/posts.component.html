@@ -118,10 +118,10 @@
                     <button class="post-meta-like" (click)="react(p)">
                         <i class="bi bi-heart-beat"></i>
                         <span *ngIf="likeFilter(p.likes)">You and</span>
-                        <!-- <span>{{ p.likes ? p.likes.length : '0' }} people like this</span> -->
+                         <span>{{ p.likes ? p.likes.length : '0' }} people like this</span>
                         <strong></strong>
                     </button>
-                    <ul *ngIf="userIdAdmin==''" class="comment-share-meta">
+                    <ul *ngIf="!userIdAdmin" class="comment-share-meta">
                         <li>
                             <button class="post-comment" (click)="openPost($event,p)">
                                 <i class="bi bi-chat-bubble"></i>
@@ -139,6 +139,7 @@
 
     <!-- post status end -->
     <div *ngIf="post.length != 0">
+      <br>
       <button type="button" *ngIf="!openSpinner" class="submit-btn" style="margin: auto"  (click)="loadMore()"> Load more ...</button>
     </div>
 
