@@ -2,15 +2,16 @@ import { Component, OnInit, Input, Output, EventEmitter, AfterContentInit,AfterV
 import { PostType } from 'src/app/model/post-type';
 import { ProviderService } from 'src/app/service/provider-service/provider.service';
 import { API_TYPE } from 'src/app/model/apiType';
-import { NgForm, FormGroup, FormBuilder, FormControl, Validators, NG_VALIDATORS,ValidationErrors, ValidatorFn  } from '@angular/forms'
+import { FormGroup, FormBuilder, FormControl, Validators} from '@angular/forms'
 import { Post } from '../../../../model/post';
-import { error } from 'util';
-import { elementAt } from 'rxjs/operators';
 import { ViewEncapsulation } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import { ConfigService } from 'src/app/service/config/config-service';
 import {User} from "../../../../model/user";
+import {environment} from "../../../../../environments/environment";
+import {PostResponse} from "../../../../model/post-response";
+import {NgxPubSubService} from "@pscoped/ngx-pub-sub";
 
 
 @Component({
@@ -34,13 +35,13 @@ export class CreatePostComponent implements OnInit ,AfterContentInit,AfterViewIn
   isSearchPage: Boolean;
   errorMessage: string;
   uploadForm: FormGroup;
-
+  private readonly apiEndpoint: String = environment.apiEndpoint
   user: User = JSON.parse(localStorage.getItem('active_user'));
 
-  constructor(private config:ConfigService,private snackBar:MatSnackBar,private http: HttpClient, private formBuilder: FormBuilder, private providerService: ProviderService) {
+  constructor(private config:ConfigService,private snackBar:MatSnackBar,private http: HttpClient, private formBuilder: FormBuilder, private providerService: ProviderService,private pubSubService: NgxPubSubService) {
 
     this.postform = this.formBuilder.group({
-      content:new FormControl('', [Validators.minLength(5),Validators.maxLength(30),Validators.required]),
+      content:new FormControl('', [Validators.required]),
       avatar: [null],
       minAge: [''],
       maxAge: [''],
@@ -53,12 +54,10 @@ export class CreatePostComponent implements OnInit ,AfterContentInit,AfterViewIn
 
     this.isSearchPage = this.pageType === PostType.SEARCH_POSTS;
     this.providerService.get(API_TYPE.USER, '/followers', '').subscribe((Listusers: Array<any>) => {
-      console.log("Listusers", Listusers)
+
       this.users = Listusers;
 
       for (var i = 0; i < this.users.length; i++) {
-        console.log("rendered", this.users[i]);
-
         this.users[i].checked = false;
       }
     }, err => {
@@ -93,15 +92,20 @@ export class CreatePostComponent implements OnInit ,AfterContentInit,AfterViewIn
 
     const httpOptions = {
       headers:  this.config.getHeadersMultipart()
-   }
+    }
 
-    this.http.post('http://localhost:3000/posts', formData,httpOptions).subscribe((data: Post) => {
+    // Publishes an event on the homepage
+    this.onPostCreatedEvent(formData)
+
+    this.http.post(`${this.apiEndpoint}/posts`, formData,httpOptions).subscribe((data: Post) => {
       this.isCreated = true
-      this.snackBar.open('post created successfully','Ok')
-      this.loadNewData();
+     // this.snackBar.open('post created successfully','Ok')
+    //  this.loadNewData();
     }, error => {
-       this.snackBar.open(error.errorMessage,'Ok')
-      this.errorMessage = error.responseMessage;
+       console.log(`${error}`)
+       this.snackBar.open('An Error Occurred. Please try again','Ok')
+       this.errorMessage = error.responseMessage;
+       this.providerService.onTokenExpired(error.errorMessage,error.status)
     });
 
     this.postform.reset()
@@ -128,16 +132,23 @@ export class CreatePostComponent implements OnInit ,AfterContentInit,AfterViewIn
  @Output("loadNewData") someEvent = new EventEmitter<string>();
 
 
-loadNewData(): void {
-  this.someEvent.next();
-}
+  onPostCreatedEvent(formData: FormData){
+      // @ts-ignore
+    let post  = new PostResponse('',formData.get('imageLink'),this.user._id,new Date(),true,this.user.profilePicture,this.user.username,[],formData.get('content').value,[])
+    this.pubSubService.publishEvent('onPostCreatedEvent',post)
+  }
 
-ngAfterContentInit(): void {
-  console.log("ng on after Content Init : " + this.closeModall);
-}
-ngAfterViewInit():void{
-  console.log("ng on after Content Init : " + this.closeModall);
 
-}
+  loadNewData(): void {
+    this.someEvent.next();
+  }
+
+  ngAfterContentInit(): void {
+    console.log("ng on after Content Init : " + this.closeModall);
+  }
+  ngAfterViewInit():void{
+    console.log("ng on after Content Init : " + this.closeModall);
+
+  }
 
 }

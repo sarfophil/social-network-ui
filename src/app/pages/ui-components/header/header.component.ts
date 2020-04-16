@@ -60,6 +60,7 @@ export class HeaderComponent implements OnInit,OnDestroy {
 
   // View All Links from post search
   viewAllRoute:string = ''
+  searchkeyword: any;
 
   constructor(private router:Router,private route: ActivatedRoute,private _eref: ElementRef,
               private provider : ProviderService,private dialog: MatDialog,private socketioService: SocketioService) { }
@@ -146,8 +147,8 @@ export class HeaderComponent implements OnInit,OnDestroy {
   notification($event: MouseEvent) {
     $event.preventDefault()
     let dialogRef = this.dialog.open(NotificationComponent,{
-        width: '700px',
-        height: '900px'
+        minWidth: '400px',
+        minHeight: '30%'
     })
   }
 }

@@ -6,9 +6,10 @@ import {debounceTime, distinctUntilChanged, filter, map, mergeMap, switchMap} fr
 import {API_TYPE} from "../../../../model/apiType";
 import {User} from "../../../../model/user";
 import {state, style, trigger} from "@angular/animations";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {NgxPubSubService} from "@pscoped/ngx-pub-sub";
+import {Location} from "@angular/common";
 
 /**
  * Search Response
@@ -39,7 +40,8 @@ export class SearchResponse {
         display: 'block'
       }))
     ])
-  ]
+  ],
+  providers: [Location]
 })
 export class SearchWidgetComponent implements OnInit,OnDestroy {
   searchTopic$: Subject<String> = new Subject<String>();
@@ -50,7 +52,8 @@ export class SearchWidgetComponent implements OnInit,OnDestroy {
   lottieAnimation: any;
   showProgressSpinner: Boolean = false;
   constructor(private provider: ProviderService,private route: ActivatedRoute,
-              private snackbar:MatSnackBar,private pubSub: NgxPubSubService) { }
+              private snackbar:MatSnackBar,private pubSub: NgxPubSubService,
+              private _router: Router,private location: Location) { }
 
   ngOnInit() {
     this.searchAnimie();
@@ -166,6 +169,15 @@ export class SearchWidgetComponent implements OnInit,OnDestroy {
             friendId: user._id
         })
     })
+  }
+
+  goToUserProfile($event: MouseEvent,result:SearchResponse) {
+    $event.preventDefault()
+    this._router.navigateByUrl('/home',{skipLocationChange: true})
+      .then(()=> {
+        console.log(this.location.path())
+        this._router.navigate(['/profile/'+result.user._id+'/timeline'])
+      })
   }
 }
 

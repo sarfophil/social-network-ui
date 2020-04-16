@@ -31,7 +31,7 @@
 
 <!-- share box end -->
 <div class="box-placeholder" style="width: 100%; margin: auto;"
-    [@loadingPlaceholder]="showPlaceholder ? 'close':'open'">
+    [@loadingPlaceholder]="showPlaceholder ? 'open':'close'">
     <div class="p-4">
         <span class="category text link"></span>
         <h4 class="text line"></h4>
@@ -49,10 +49,16 @@
     </div>
 </div>
 
-<div >
+<div>
+    <!--  Pending Post-->
+  <div *ngIf="pendingPost">
+    <div class="spinner-loader" style="margin: auto;"></div>
+    <br>
+  </div>
+    <!--    -->
     <!-- post status start -->
 
-        <div class="card fadeInUp" *ngFor="let p of post" >
+        <div class="card fadeInUp" *ngFor="let p of post" [@loadingPlaceholder]="showPlaceholder ? 'close':'open'">
             <!-- post title start -->
             <div class="post-title d-flex align-items-center">
                 <!-- profile picture end -->
@@ -65,7 +71,7 @@
                 </div>
                 <!-- profile picture end -->
                 <div class="posted-author">
-                    <h6 class="author"><a [routerLink]="'/profile/'+p.id+'/timeline'">{{p.username}}</a></h6>
+                    <h6 class="author"><a [routerLink]="'/profile/'+p.userId+'/timeline'">{{p.username}}</a></h6>
                     <span class="post-time">{{p.createdDate | dateAgo}}</span>
                 </div>
 
@@ -75,7 +81,7 @@
                     <span></span>
                     <div class="post-settings arrow-shape">
                         <ul>
-                            <li  (click)="setPostId(p.id)" data-toggle="modal" data-target="#editPost" ><button>edit post</button></li>
+<!--                            <li  (click)="setPostId(p.id)" data-toggle="modal" data-target="#editPost" ><button>edit post</button></li>-->
                             <li  (click)="deletePost(p.id)" ><button>Delete Post</button></li>
                         </ul>
                     </div>
@@ -121,14 +127,14 @@
         </div>
 
 
+    <p *ngIf="post.length == 0" style="text-align: center; margin: auto">No Post Available</p>
 
     <!-- post status end -->
-    <button type="button" *ngIf="!openSpinner || post.length < 0" class="submit-btn" style="margin: auto"  (click)="loadMore()"> Load more ...</button>
-
-
-    <div  class="modal fade" id="editPost">
-        <app-edit-post (loadNewData)="loadNewData()"  [postId]="postId"></app-edit-post>
+    <div *ngIf="post.length != 0">
+      <button type="button" *ngIf="!openSpinner" class="submit-btn" style="margin: auto"  (click)="loadMore()"> Load more ...</button>
     </div>
+
+
 
 </div>
 

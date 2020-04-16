@@ -1,60 +1,70 @@
 <div class="bg-white">
-<main>
-    <div class="main-wrapper pb-0 mb-0">
-        <div class="timeline-wrapper">
-            <div class="timeline-header">
-                <div class="container-fluid p-0">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col-lg-6">
-                            <div class="timeline-logo-area d-flex align-items-center">
-                                <div class="timeline-logo">
-                                    <a href="index.html">
-                                        <img src="assets/images/logo/logo.png" alt="timeline logo">
-                                    </a>
-                                </div>
-                                <div class="timeline-tagline">
-                                    <h6 class="tagline">It’s helps you to connect and share with the people in your life</h6>
+    <main>
+        <div class="main-wrapper pb-0 mb-0">
+            <div class="timeline-wrapper">
+                <div class="timeline-header">
+                    <div class="container-fluid p-0">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col-lg-6">
+                                <div class="timeline-logo-area d-flex align-items-center">
+                                    <div class="timeline-logo">
+                                        <a href="index.html">
+                                            <img src="assets/images/logo/logo.png" alt="timeline logo">
+                                        </a>
+                                    </div>
+                                    <div class="timeline-tagline">
+                                        <h6 class="tagline">It’s helps you to connect and share with the people in your
+                                            life</h6>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <!-- Login Div -->
-                        <div class="col-lg-6">
-                            <div class="login-area">
+                            <!-- Login Div -->
+                            <div class="col-lg-6">
+                                <div class="login-area">
 
-                                <form [formGroup]="loginForm" (ngSubmit)="login()">
-                                    <div class="row align-items-center">
+                                    <form [formGroup]="loginForm" (ngSubmit)="login()">
+                                        <div class="row align-items-center">
                                             <div class="col-12 col-sm">
-                                                <input type="text" placeholder="Email or Username" formControlName="username" class="single-field">
+                                                <input type="text" placeholder="Email or Username"
+                                                    formControlName="username" class="single-field">
                                             </div>
                                             <div class="col-12 col-sm">
-                                                <input type="password" placeholder="Password" formControlName="password" class="single-field">
+                                                <input type="password" placeholder="Password" formControlName="password"
+                                                    class="single-field">
                                             </div>
                                             <div class="col-12 col-sm-auto">
-                                                <button [@loadingState]="isLoading?'close':'open'" class="login-btn" type="submit" [disabled]="!loginForm.valid">Login</button>
-                                                <mat-progress-spinner [@loadingState]="isLoading?'open':'close'" class="loader" color="white" mode="indeterminate" value="10" strokeWidth="3" diameter="40">
+                                                <button [@loadingState]="isLoading?'close':'open'" class="login-btn"
+                                                    type="submit" [disabled]="!loginForm.valid">Login</button>
+                                                <mat-progress-spinner [@loadingState]="isLoading?'open':'close'"
+                                                    class="loader" color="white" mode="indeterminate" value="10"
+                                                    strokeWidth="3" diameter="40">
                                                 </mat-progress-spinner>
                                             </div>
 
-                                    </div>
-                                </form>
+                                        </div>
+                                    </form>
+                                </div>
+
                             </div>
+                            <!-- Login End -->
+
+
 
                         </div>
-                        <!-- Login End -->
-
-
-
                     </div>
                 </div>
-            </div>
-            <div class="timeline-page-wrapper">
-                <div class="container-fluid p-0">
-                    <div class="row no-gutters">
-                        <div class="col-lg-6 order-2 order-lg-1">
-                            <div class="timeline-bg-content bg-img" data-bg="assets/images/banner/adda-timeline.jpg">
-                                <h3 class="timeline-bg-title">Let’s see what’s happening to you and your world. Welcome in Adda.</h3>
+                <div class="timeline-page-wrapper">
+                    <div class="container-fluid p-0">
+                        <div class="row no-gutters">
+                            <div class="col-lg-6 order-2 order-lg-1">
+                                <div class="timeline-bg-content bg-img"
+                                    data-bg="assets/images/banner/adda-timeline.jpg">
+                                    <h3 class="timeline-bg-title">Let’s see what’s happening to you and your world.
+                                        Welcome in Adda.</h3>
+                                </div>
                             </div>
+
                         </div>
                         <!-- Sign up -->
                         <div class="col-lg-6 order-1 order-lg-2 d-flex align-items-center justify-content-center">
@@ -89,27 +99,25 @@
                                                     <option value="old">18+</option>
                                                     <option value="young">18-</option>
                                                 </select>
+
                                             </div>
-                                            <div class="col-12">
-                                                <button class="submit-btn">Create Account</button>
+                                            <!-- <h6 class="terms-condition">I have read & accepted the <a href="#">terms of use</a></h6> -->
+                                            <div class="other-links">
+                                                <p>Account Locked? <a href="#" (click)="reviewForm($event)">Click
+                                                        here</a></p>
+                                                <a routerLink="/admin/login">Login as an administrator</a>
                                             </div>
-                                        </div>
-                                        <!-- <h6 class="terms-condition">I have read & accepted the <a href="#">terms of use</a></h6> -->
-                                        <div class="other-links">
-                                            <p>Account Locked? <a href="#" (click)="reviewForm($event)">Click here</a></p>
-                                            <a routerLink="/admin/login" >Login as an administrator</a>
-                                        </div>
-                                    </form>
+                                        </form>
+                                    </div>
                                 </div>
+
                             </div>
+                            <!-- Sign up End -->
 
                         </div>
-                        <!-- Sign up End -->
-
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</main>
+    </main>
 </div>

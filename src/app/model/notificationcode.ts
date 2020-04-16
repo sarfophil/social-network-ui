@@ -6,5 +6,7 @@ export enum NotificationCode {
     UNHEALTHY_POST = 114,
     ACCOUNT_BLOCKED = 115,
     POST_VERIFIED = 116,
-    PROFILE_PIC_UPDATE = 117
+    PROFILE_PIC_UPDATE = 117,
+    POST_LIKED = 118,
+    POST_CREATED = 119
 }

@@ -19,11 +19,14 @@
       </div>
 
       <button class="like-button active">
-        <small>{{notification.createdDate | moment}}</small>
+        <small class="timeago">{{notification.createdDate | moment}}</small>
       </button>
     </li>
 
   </ul>
-  <a href="#" (click)="loadmore($event)" *ngIf="notificationList.length >= 5">Load more</a>
+
+</div>
+<div>
+  <a href="#" style="margin: auto" (click)="loadmore($event)" *ngIf="notificationList.length >= 5">Load more</a>
   <div style="margin: auto" *ngIf="isLoading" class="spinner-loader"></div>
 </div>
