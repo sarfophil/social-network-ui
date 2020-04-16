@@ -1,3 +1,4 @@
+@import '~bootstrap/dist/css/bootstrap.css'; 
 /* Animations */
 .fadeIn{
   animation-name: fadeIn;
@@ -3695,3 +3696,4 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     animation-iteration-count: 1 !important;
   }
 }
+

@@ -1,1 +1,36 @@
-<p>keyword works!</p>
+<div class="container">
+    <div class="row">
+        <div class="col-md-4 order-md-4 mb-4">
+            <h4 class="d-flex justify-content-between align-items-center mb-3">
+                <span class="text-muted">Banned Words</span>
+            </h4>
+            <table class="table table-bordered table-dark">
+                <thead>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let word of bannedWords">
+                        <td>{{word.word}}</td>
+                        <td>
+                            <button class="btn btn-danger" (click)="deleteWord(word._id)">Delete</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-8 order-md-1">
+            <h4 class="mb-3">Enter Word</h4>
+            <form>
+                <div class="form-group">
+                    <input class="form-control" type="text" name="word" ngModel #word="ngModel" required>
+                    <div *ngIf="word.touched && !word.valid" class="alert alert-danger">
+                        Enter a valid english word.
+                    </div>
+                </div>
+                <span style=" float: right;">
+                    <button style="width: 100px;height: 40px;" class="btn btn-primary"
+                        (click)="addWord(word)">Enter</button>
+                </span>
+            </form>
+        </div>
+    </div>
+</div>

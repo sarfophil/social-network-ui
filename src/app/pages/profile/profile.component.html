@@ -1,40 +1,41 @@
-<app-header [headerType] = "'user'"></app-header>
+<app-header [headerType]="'user'"></app-header>
 <main>
-
-<div class="main-wrapper">
-    <div class="profile-banner-large bg-img">
-    </div>
-    <div class="profile-menu-area bg-white">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-3 col-md-3">
-                    <div class="profile-picture-box">
-                        <figure class="profile-picture">
-                            <a>
-<!--                                <img src="assets/images/profile/profile-1.jpg" alt="profile picture">-->
-                              <app-profile-photo [imageName]="user.profilePicture" [style]="" class="profile-pic"></app-profile-photo>
-                            </a>
-                        </figure>
+    <div class="main-wrapper">
+        <div class="profile-banner-large bg-img">
+        </div>
+        <div class="profile-menu-area bg-white">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-3 col-md-3">
+                        <div class="profile-picture-box">
+                            <figure class="profile-picture">
+                                <a>
+                                    <!-- <img src="assets/images/profile/profile-1.jpg" alt="profile picture"> -->
+                                    <app-profile-photo [imageName]="user.profilePicture" [style]="" class="profile-pic">
+                                    </app-profile-photo>
+                                </a>
+                            </figure>
+                        </div>
                     </div>
-                </div>
-                <div class="col-lg-6 col-md-6 offset-lg-1">
-                    <div class="profile-menu-wrapper">
-                        <div class="main-menu-inner header-top-navigation">
-                            <nav>
-                                <ul class="main-menu">
+                    <div class="col-lg-6 col-md-6 offset-lg-1">
+                        <div class="profile-menu-wrapper">
+                            <div class="main-menu-inner header-top-navigation">
+                                <nav>
+                                    <ul class="main-menu">
 
                                     <li routerLinkActive="active"><a [routerLink]="'/profile/'+user._id+'/timeline'">timeline</a></li>
                                     <li routerLinkActive="active"><a [routerLink]="'/profile/'+user._id+'/following'">Following ({{following}})</a></li>
                                     <li  routerLinkActive="active"><a [routerLink]="'/profile/'+user._id+'/followers'">Followers ({{followers}})</a></li>
 
-                                </ul>
-                            </nav>
+                                    </ul>
+                                </nav>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-3 d-none d-md-block">
-                    <div class="profile-edit-panel">
-                        <button class="edit-btn">edit profile</button>
+                        <div class="col-lg-2 col-md-3 d-none d-md-block">
+                            <div class="profile-edit-panel">
+                                <button class="edit-btn">edit profile</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -60,27 +61,21 @@
 <!--                                    <li><a href="#"><i class="bi bi-heart-beat"></i>Travel, Swimming</a></li>-->
 <!--                                </ul>-->
                             </div>
+                            <!-- widget single item end -->
                         </div>
+                    </aside>
+
+
+                    <div class="col-lg-6 order-1 order-lg-2">
+                        <router-outlet></router-outlet>
                     </div>
-                    <!-- widget single item end -->
-
-                </aside>
-            </div>
-
-            <div class="col-lg-6 order-1 order-lg-2">
-
-                <router-outlet></router-outlet>
-
-
-            </div>
-
-            <div class="col-lg-3 order-3">
-                <aside class="widget-area">
-                   <app-search-widget></app-search-widget>
-                </aside>
+                    <div class="col-lg-3 order-3">
+                        <aside class="widget-area">
+                            <app-search-widget></app-search-widget>
+                        </aside>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</div>
-
 </main>

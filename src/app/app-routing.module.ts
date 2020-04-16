@@ -4,7 +4,6 @@ import { LoginComponent } from './pages/login/login.component';
 import { HomeComponent } from './pages/home/home.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { FollowersComponent } from './pages/ui-components/followers/followers.component'
-import { PostsComponent } from './pages/ui-components/posts/posts.component';
 import { AdminComponent } from './pages/admin/admin.component';
 import { KeywordComponent } from './pages/admin-ui-components/keyword/keyword.component';
 import { PostReviewComponent } from './pages/admin-ui-components/post-review/post-review.component';
@@ -90,6 +89,10 @@ const routes: Routes = [
       },
       {
         path: 'keywords',
+        component: KeywordComponent
+      },
+      {
+        path: 'keywords/:wordId',
         component: KeywordComponent
       },
       {
