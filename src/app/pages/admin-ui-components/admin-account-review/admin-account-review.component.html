@@ -1,0 +1,46 @@
+<h1 class="display-4" >Account-review</h1> <span class="display-5">Deactivated-user-Accounts</span>
+
+<table  class="mt-4 table">
+    <thead class="thead-light">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">First Nme</th>
+        <th scope="col">Unhealthy Posts</th>
+        <th scope="col">Request Time</th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody *ngIf="accountreview==false" >
+      <tr  *ngFor="let blockedAccount of blockedAccounts ; let i=index"  >
+        <th   scope="row">{{i}}</th>
+        <td >{{blockedAccount.account.username}}</td>
+        <td>{{blockedAccount.account.totalviolation}}</td>
+        <td>{{blockedAccount.createdDate|dateAgo}}</td>
+        <td><button (click)="reviewAccount(blockedAccount.account._id,blockedAccount)" class="btn btn-primary">Unhealthy Posts</button></td>
+        <td><button (click)="activateAccount(blockedAccount._id)" class="btn ">Activate Account</button></td>
+        <td><button class="btn ">Reject Account</button></td>
+      </tr>
+
+    </tbody>
+
+    <tbody *ngIf="accountreview==true" >
+      <tr>
+        <th  scope="row"></th>
+        <td >{{blockedAccount.account.username}}</td>
+        <td>{{blockedAccount.account.totalviolation}}</td>
+        <td>{{blockedAccount.createdDate|dateAgo}}</td>
+        <td><button (click)="reviewAccount(blockedAccount.account._id,blockedAccount)" class="btn btn-primary">Unhealthy Posts</button></td>
+        <td><button (click)="activateAccount(blockedAccount._id)" class="btn ">Activate Account</button></td>
+        <td><button class="btn ">Reject Account</button></td>
+      </tr>
+      
+    </tbody>
+  </table>
+  <div *ngIf="accountreview==true">
+    <a  class="btn btn-primary" (click)="accountreview = !accountreview" >&laquo; Back</a>
+    <app-posts [userIdAdmin]="userId"  [postState] = "postState" [postData]="username"></app-posts>
+  </div>
+  
+ 

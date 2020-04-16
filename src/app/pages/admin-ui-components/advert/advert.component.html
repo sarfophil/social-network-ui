@@ -1,1 +1,79 @@
-<p>advert works!</p>
+<div class="row">
+    <div class="col-md-12">
+        <h1 class="display-4">Addvertisment </h1>
+
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link " [class.active]="isActive" (click)="getAllAdds()">Disaply All Adds</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" [class.active]="!isActive" (click)="displayForm()">Create New Add</a>
+            </li>
+        </ul>
+    </div>
+
+    <div *ngIf="isActive ; else thenBlock">
+       
+
+    <div class="card" *ngFor="let advert of advertisments ; let i of index ">
+            <div class="card">
+            <img class="card-img-top" src={{advert.banner[0]|imageUrl}}  alt="Card image cap">
+            <div class="card-body">
+              <h5 class="card-title">{{advert.title}}</h5>
+              <p class="card-text">{{advert.content}}</p>
+              <a href="#" class="btn btn-primary">Go somewhere</a>
+            </div>
+    </div>
+
+    </div>
+    </div>
+        
+    
+
+
+</div>
+
+<ng-template #thenBlock>
+            
+    <form class="signup-inner--form" [formGroup]="addform" (ngSubmit)="onsubmit()">
+        <div class="row">
+            
+            <div class="col-12">
+                <input type="title" formControlName ="title"  name="title" class="single-field" placeholder="Title" required>
+            </div>
+            <div class="col-md-12">
+                <textarea name="content" id="content" formControlName="content" required
+                class="share-field-big custom-scroll" minlength="5" maxlength="30" placeholder="Content" required></textarea>                    </div>
+            <div class="col-md-6">
+                <input type="url" name="link" formControlName="link" class="single-field" placeholder="Link">
+            </div>
+            <div class="col-12">
+                <input type="hidden" name="owner" value="5e8a6e7a313b41e794ab1045" formControlName="owner" class="single-field" placeholder="Password">
+            </div>
+            <h5 class="mt-3 ml-3">Age Target</h5>
+            <div class="col-md-5">
+                <input type="number" name="min" formControlName="min" class="single-field" placeholder="Min">
+            </div>
+            <div class="col-5">
+                <input type="number" name="max" formControlName="max" class="single-field" placeholder="Max">
+            </div>
+
+            <div class="col-12">
+                <input type="file" (change)="uploadFile($event)" class="single-field" multiple>
+            </div>
+            <div  class="col-4" *ngFor="let imageur of imageUrl">
+                <div>
+                    
+                    <img [src]="imageur" style="width: 300px;" class="mx-auto" >
+                </div>
+            </div>
+            
+            <div class="col-12">
+                <button   class="submit-btn">Create Addvertisment</button>
+            </div>
+        </div>
+    </form>
+
+
+
+</ng-template>

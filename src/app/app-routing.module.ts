@@ -11,6 +11,7 @@ import { AdvertComponent } from './pages/admin-ui-components/advert/advert.compo
 import { AdminLoginComponent } from './pages/admin-login/admin-login.component'
 import { CanActivateTeamService } from './service/canActivateTeam/can-activate-team.service';
 import { SearchComponent } from './pages/search/search.component';
+import { AdminAccountReviewComponent } from './pages/admin-ui-components/admin-account-review/admin-account-review.component';
 
 import { NotfoundComponent } from './pages/notfound/notfound.component';
 
@@ -77,6 +78,7 @@ const routes: Routes = [
   {
     path: 'admin/dashboard',
     component: AdminComponent,
+    canActivate: [CanActivateTeamService],
     children: [
       {
         path: '',
@@ -101,7 +103,7 @@ const routes: Routes = [
       },
       {
         path: 'accounts/reviews',
-        component: PostReviewComponent //TODO: Add a new Component
+        component: AdminAccountReviewComponent 
       }
     ]
   },

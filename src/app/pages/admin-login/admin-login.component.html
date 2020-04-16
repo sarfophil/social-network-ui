@@ -1,1 +1,75 @@
+<div class="bg-white">
+    <main>
+        <div class="main-wrapper pb-0 mb-0">
+            <div class="timeline-wrapper">
+                <div class="timeline-header">
+                    <div class="container-fluid p-0">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col-lg-6">
+                                <div class="timeline-logo-area d-flex align-items-center">
+                                    <div class="timeline-logo">
+                                        <a href="index.html">
+                                            <img src="assets/images/logo/logo.png" alt="timeline logo">
+                                        </a>
+                                    </div>
+                                    <div class="timeline-tagline">
+                                        <h6 class="tagline">Admin Pannel</h6>
+                                    </div>
+                                </div>
+                            </div>
+    
+                           
+    
+    
+                        </div>
+                    </div>
+                </div>
+                <div class="timeline-page-wrapper">
+                    <div class="container-fluid p-0">
+                        <div class="row no-gutters">
+                            <div class="order-2 order-lg-1">
+                                <div class="timeline-bg-content bg-img" data-bg="assets/images/banner/adda-timeline.jpg">
+                                    <h3 class="timeline-bg-title">Let’s see what’s happening to you and your world. Welcome in Adda.</h3>
+                                </div>
+                            </div>
+                            <!-- Sign up -->
+                            <div class=" test col-lg-11 order-2 order-lg-1 d-flex align-items-center justify-content-center">
+                                <div class="signup-form-wrapper">
+                                    <h1 class="create-acc text-center">Login</h1>
+                                    <div class="signup-inner text-center">
+                                        <h5 class="title">Wellcome to Social Netowrk</h5>
+                                        <form (ngSubmit)="onSubmit()" #f="ngForm" class="signup-inner--form" >
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <input type="username" ngModel name="username" #username="ngModel" class="single-field" placeholder="username" required>
+                                                </div>
+                                                <span *ngIf="!username.valid&&username.touched">Please Enter a valid username</span>
 
+                                                <div class="col-md-12">
+                                                    <input type="password" ngModel name="password" #password="ngModel" class="single-field" placeholder="Password" required>
+                                                </div>
+                                                <span *ngIf="!password.valid&&password.touched">password required</span>
+                                                
+                                                <div class="col-12">
+                                                    <button type="submit" [disabled]="!f.valid"  class="submit-btn">Login</button>
+                                                </div>
+                                            </div>
+                                            <!-- <h6 class="terms-condition">I have read & accepted the <a href="#">terms of use</a></h6> -->
+                                            <div class="other-links">
+                                                <a routerLink="/login" >Login as a user</a>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+    
+                            </div>
+                            <!-- Sign up End -->
+    
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    </div>
+    

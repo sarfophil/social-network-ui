@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { API_TYPE } from 'src/app/model/apiType';
+import { PostType } from 'src/app/model/post-type';
 
 @Component({
   selector: 'app-post-review',
@@ -7,9 +9,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PostReviewComponent implements OnInit {
 
+  private postState: PostType = PostType.POST_REVIEW;
+  private userId = '*';
   constructor() { }
 
   ngOnInit() {
+  }
+
+  accept(){
   }
 
 }
