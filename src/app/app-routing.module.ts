@@ -29,8 +29,7 @@ const routes: Routes = [
   },
   {
     path: 'login',
-    component: LoginComponent,
-    canActivate: [AuthguardService]
+    component: LoginComponent
   },
   {
     path: 'home',

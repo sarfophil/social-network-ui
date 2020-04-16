@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
 import {CanActivate, Router} from '@angular/router';
 import { User } from 'src/app/model/user';
+import {MatDialog} from "@angular/material/dialog";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Injectable({
   providedIn: 'root'
 })
 export class CanActivateTeamService implements CanActivate{
 
-  constructor(private router: Router) { }
+  constructor(private router: Router,private snackbar: MatSnackBar) { }
   canActivate(route: import("@angular/router").ActivatedRouteSnapshot,
               state: import("@angular/router").RouterStateSnapshot): boolean | import("@angular/router").UrlTree | import("rxjs").Observable<boolean | import("@angular/router").UrlTree> | Promise<boolean | import("@angular/router").UrlTree> {
     return this.permission(route.data.role);
@@ -21,7 +23,6 @@ export class CanActivateTeamService implements CanActivate{
           if(user && user.isActive){
             // check role
             let checkRole = role.find((r:string) => r == user.role);
-
             return !!checkRole;
           }else{
             this.router.navigate(['/login']);

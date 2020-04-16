@@ -60,6 +60,7 @@ export class PostsComponent implements OnInit {
   constructor(private provider: ProviderService,private sanitizer: DomSanitizer,private dialog: MatDialog) { }
 
   ngOnInit() {
+   // this.loadPosts(this.postState)
     setTimeout(() => this.loadPosts(this.postState), 2000)
   }
 

@@ -50,6 +50,7 @@ import { NotfoundComponent } from './pages/404/notfound/notfound.component';
 
 import { TimelineComponent } from './pages/ui-components/timeline/timeline.component';
 import { FollowingComponent } from './pages/ui-components/following/following.component';
+import { NotificationComponent } from './pages/ui-components/notification/notification.component';
 
 
 
@@ -91,7 +92,8 @@ const socketConfig: SocketIoConfig = {url: environment.socketEndpoint,options: {
     AdBannerComponent,
     NotfoundComponent,
     TimelineComponent,
-    FollowingComponent
+    FollowingComponent,
+    NotificationComponent
 
   ],
   imports: [
@@ -109,6 +111,6 @@ const socketConfig: SocketIoConfig = {url: environment.socketEndpoint,options: {
   ],
   providers: [],
   bootstrap: [AppComponent],
-  entryComponents: [LoginWidgetComponent,ViewPostModalComponent,ProfilePicUploadComponent,AccountReviewComponent]
+  entryComponents: [LoginWidgetComponent,ViewPostModalComponent,ProfilePicUploadComponent,AccountReviewComponent,NotificationComponent]
 })
 export class AppModule { }
