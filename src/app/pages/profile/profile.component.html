@@ -23,14 +23,9 @@
                                 <nav>
                                     <ul class="main-menu">
 
-                                        <li routerLinkActive="active"><a
-                                                [routerLink]="'/profile/'+user._id+'/timeline'">timeline</a></li>
-                                        <li routerLinkActive="active"><a
-                                                [routerLink]="'/profile/'+user._id+'/following'">Following
-                                                ({{following}})</a></li>
-                                        <li routerLinkActive="active"><a
-                                                [routerLink]="'/profile/'+user._id+'/followers'">Followers
-                                                ({{followers}})</a></li>
+                                    <li routerLinkActive="active"><a [routerLink]="'/profile/'+user._id+'/timeline'">timeline</a></li>
+                                    <li routerLinkActive="active"><a [routerLink]="'/profile/'+user._id+'/following'">Following ({{following}})</a></li>
+                                    <li  routerLinkActive="active"><a [routerLink]="'/profile/'+user._id+'/followers'">Followers ({{followers}})</a></li>
 
                                     </ul>
                                 </nav>
@@ -45,23 +40,26 @@
                 </div>
             </div>
         </div>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-3 order-2 order-lg-1">
-                    <aside class="widget-area profile-sidebar">
-                        <!-- widget single item start -->
-                        <div class="card widget-item">
-                            <h4 class="widget-title">{{user.username}}</h4>
-                            <div class="widget-body">
-                                <div class="about-author">
-                                    <p class="status"><span class="dot"></span>Active</p>
-                                    <!--                                <ul class="author-into-list">-->
-                                    <!--                                    <li><a href="#"><i class="bi bi-email"></i>Graphic Designer</a></li>-->
-                                    <!--                                    <li><a href="#"><i class="bi bi-home"></i>Melbourne, Australia</a></li>-->
-                                    <!--                                    <li><a href="#"><i class="bi bi-location-pointer"></i>Pulshar, Melbourne</a></li>-->
-                                    <!--                                    <li><a href="#"><i class="bi bi-heart-beat"></i>Travel, Swimming</a></li>-->
-                                    <!--                                </ul>-->
-                                </div>
+    </div>
+
+
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 order-2 order-lg-1">
+                <aside class="widget-area profile-sidebar">
+                    <!-- widget single item start -->
+                    <div class="card widget-item">
+                        <h4 class="widget-title">{{user.username}}</h4>
+                        <div class="widget-body">
+                            <div class="about-author">
+                                <p class="status"><span class="dot"></span>Active</p>
+<!--                                <ul class="author-into-list">-->
+<!--                                    <li><a href="#"><i class="bi bi-email"></i>Graphic Designer</a></li>-->
+<!--                                    <li><a href="#"><i class="bi bi-home"></i>Melbourne, Australia</a></li>-->
+<!--                                    <li><a href="#"><i class="bi bi-location-pointer"></i>Pulshar, Melbourne</a></li>-->
+<!--                                    <li><a href="#"><i class="bi bi-heart-beat"></i>Travel, Swimming</a></li>-->
+<!--                                </ul>-->
                             </div>
                             <!-- widget single item end -->
                         </div>

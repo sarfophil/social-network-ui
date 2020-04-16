@@ -20,16 +20,7 @@ export class AuthguardService implements CanActivate{
           // Login Page
          return true;
       }
-
-      // verify token
-      let path = `verify`
-      this.provider.get(API_TYPE.TOKEN,path,'').subscribe(
-        (res) => {
-           this.router.navigate(['/home'])
-        },
-        (error => {
-          return true
-        })
-      )
+    this.router.navigate(['/home'])
+    return false;
   }
 }

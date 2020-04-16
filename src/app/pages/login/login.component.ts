@@ -1,18 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import { ProviderService } from 'src/app/service/provider-service/provider.service';
-import { API_TYPE } from 'src/app/model/apiType';
-import { FormBuilder,Validators, FormGroup } from '@angular/forms'
-import { trigger,state,style } from '@angular/animations';
+import {ProviderService} from 'src/app/service/provider-service/provider.service';
+import {API_TYPE} from 'src/app/model/apiType';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms'
+import {state, style, trigger} from '@angular/animations';
 
 import {MatSnackBar} from '@angular/material/snack-bar';
-import { User } from 'src/app/model/user';
-
-import { stringify } from 'querystring';
+import {User} from 'src/app/model/user';
 
 import {MatDialog} from "@angular/material/dialog";
 import {AccountReviewComponent} from "../account-review/account-review.component";
-import {SocketioService} from "../../service/socket/socketio.service";
+import {SocketioService, USER_STATUS} from "../../service/socket/socketio.service";
+import {NgxPubSubService} from "@pscoped/ngx-pub-sub";
 
 
 export interface LoginResponse{
@@ -45,7 +44,7 @@ export class LoginComponent implements OnInit {
   constructor(private router:Router,private provider:ProviderService,
               private formBuilder:FormBuilder,private snackbar:MatSnackBar,
               private dialog: MatDialog,private activeRoute: ActivatedRoute,
-              private socketService: SocketioService) { }
+              private socketService: SocketioService,private pubSub: NgxPubSubService) { }
 
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
@@ -61,8 +60,8 @@ export class LoginComponent implements OnInit {
       conformpassword:['',Validators.required]
     })
 
+    this.hasLoggedInSuccessFullyEvent()
 
-    this.implicitLogin()
 
   }
 
@@ -83,28 +82,49 @@ export class LoginComponent implements OnInit {
   login() {
     this.isLoading = true;
     let body = this.loginForm.value;
+    let response: LoginResponse;
     this.provider.post(API_TYPE.USER,'login',body)
     .subscribe({
       next:(res:LoginResponse)=> {
         res.user.password = '';
         localStorage.setItem('access_token',res.access_token)
         localStorage.setItem('active_user',JSON.stringify(res.user))
+        response = res
       },
       error:(err) => {
-        console.log(`Login Failed`)
         this.isLoading = false
         if(err.statusCode == 403) this.snackbar.open(`Invalid Username / Password`,'Ok')
         else this.snackbar.open(`${err.message}`)
       },
-      complete: () => {
-         console.log(`Login Complete`)
-        this.socketService.connect()
+      complete:() => {
+        console.log(response)
+        this.router.navigate(['/home'])
+          .then((res) => {
+            if(!res) {
+              this.snackbar.open('Oops! Your account has been deactivated', 'Ok', {
+                horizontalPosition: "center",
+                politeness: "assertive",
+              })
+              localStorage.clear()
+            }else{
+              this.pubSub.publishEvent('HAS_LOGIN',response.user);
+            }
+          })
+          .catch(err => console.log(err))
         this.isLoading = false
-        this.router.navigateByUrl('/home')
       }
     })
 
   }
+
+
+  hasLoggedInSuccessFullyEvent(){
+    this.pubSub.subscribe('HAS_LOGIN',(user) => {
+      this.socketService.connect(user._id,USER_STATUS.ONLINE)
+    })
+  }
+
+
 signUp(){
   let body = this.signUpForm.value;
   this.provider.post(API_TYPE.USER,'account',body)
