@@ -50,8 +50,12 @@ import { NotfoundComponent } from './pages/404/notfound/notfound.component';
 
 import { TimelineComponent } from './pages/ui-components/timeline/timeline.component';
 import { FollowingComponent } from './pages/ui-components/following/following.component';
+<<<<<<< HEAD
 import { AdminAccountReviewComponent } from './pages/admin-ui-components/admin-account-review/admin-account-review.component';
 import { AdvertComponentComponent } from './pages/advert-component/advert-component.component';
+=======
+import { NotificationComponent } from './pages/ui-components/notification/notification.component';
+>>>>>>> 58dd813638f90a0710ce0b13b826ecdfc1c0e043
 
 
 
@@ -94,8 +98,12 @@ const socketConfig: SocketIoConfig = {url: environment.socketEndpoint,options: {
     NotfoundComponent,
     TimelineComponent,
     FollowingComponent,
+<<<<<<< HEAD
     AdminAccountReviewComponent,
     AdvertComponentComponent
+=======
+    NotificationComponent
+>>>>>>> 58dd813638f90a0710ce0b13b826ecdfc1c0e043
 
   ],
   imports: [
@@ -113,6 +121,6 @@ const socketConfig: SocketIoConfig = {url: environment.socketEndpoint,options: {
   ],
   providers: [],
   bootstrap: [AppComponent],
-  entryComponents: [LoginWidgetComponent,ViewPostModalComponent,ProfilePicUploadComponent,AccountReviewComponent]
+  entryComponents: [LoginWidgetComponent,ViewPostModalComponent,ProfilePicUploadComponent,AccountReviewComponent,NotificationComponent]
 })
 export class AppModule { }
