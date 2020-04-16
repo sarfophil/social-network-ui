@@ -1,0 +1,108 @@
+.center {
+	width: 600px;
+	margin-left: auto;
+	margin-right: auto;
+  }
+  
+  .label {
+	font-family: 'Quantico';
+	text-align: center;
+  }
+  
+  .card-wrapper {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+  }
+  @media screen and (max-width: 320px) {
+	.card-wrapper {
+	  flex-direction: column;
+	}
+  }
+  
+  .blog-card {
+	height: 350px;
+	width: 180px;
+	margin-left: 15px;
+	margin-right: 15px;
+  }
+  .blog-card .blog-card__thumbnail {
+	width: 180px;
+	height: 100px;
+	object-fit: cover;
+  }
+  .blog-card .blog-card__details {
+	height: 150px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	padding: 20px;
+	background: #fff;
+	box-shadow: 0 1px 7px rgba(0, 0, 0, 0.5);
+  }
+  .blog-card .blog-card__title {
+	font-family: 'Quantico';
+	font-size: 8px;
+	text-transform: uppercase;
+	color: #000;
+  }
+  .blog-card .blog-card__description {
+	font-family: 'Open Sans';
+	font-weight: 300;
+	font-size: 8px;
+	color: #888888;
+  }
+  .blog-card .blog-card__action {
+	background: transparent;
+	border: none;
+	font-family: 'Quantico';
+	font-weight: 700;
+	text-transform: uppercase;
+	text-align: left;
+	color: #888888;
+	cursor: pointer;
+  }
+  
+  .product-card {
+	width: 220px;
+	margin-left: 15px;
+	margin-right: 15px;
+	box-shadow: 0 1px 7px rgba(0, 0, 0, 0.5);
+  }
+  .product-card .product-card__thumbnail {
+	width: 220px;
+	height: 150px;
+	object-fit: cover;
+  }
+  .product-card .product-card__details {
+	height: 220px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	padding: 20px;
+	background: #fff;
+  }
+  .product-card .product-card__title {
+	font-family: 'Quantico';
+	font-size: 12px;
+	text-transform: uppercase;
+	color: #000;
+  }
+  .product-card .product-card__description {
+	font-family: 'Open Sans';
+	font-weight: 300;
+	font-size: 11px;
+	color: #888888;
+  }
+  .product-card .product-card__action {
+	width: 100%;
+	padding: 5px;
+	background: #727fff;
+	border: 1px solid #727fff;
+	border-radius: 2px;
+	font-family: 'Quantico';
+	font-weight: 700;
+	color: #fff;
+	cursor: pointer;
+  }
+  
