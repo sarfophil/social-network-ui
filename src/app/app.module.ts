@@ -46,7 +46,7 @@ import { ProfilePicUploadComponent } from './pages/ui-components/profile-pic-upl
 import { NgxPubSubModule } from '@pscoped/ngx-pub-sub';
 import { AdBannerComponent } from './pages/ui-components/ad-banner/ad-banner.component';
 
-import { NotfoundComponent } from './pages/404/notfound/notfound.component';
+import { NotfoundComponent } from './pages/notfound/notfound.component';
 
 import { TimelineComponent } from './pages/ui-components/timeline/timeline.component';
 import { FollowingComponent } from './pages/ui-components/following/following.component';

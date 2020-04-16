@@ -10,6 +10,8 @@ import {Like, PostResponse} from "../../../model/post-response";
 import {DomSanitizer} from "@angular/platform-browser";
 import {ViewPostModalComponent} from "../view-post-modal/view-post-modal.component";
 import {MatDialog} from "@angular/material/dialog";
+import {NgxPubSubService} from "@pscoped/ngx-pub-sub";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-posts',
@@ -32,9 +34,9 @@ import {MatDialog} from "@angular/material/dialog";
 })
 export class PostsComponent implements OnInit {
   /** Useful when making a request to the server */
-  showPlaceholder: Boolean = false;
+  showPlaceholder: Boolean = true;
   skip = 0;
-  limit = 1;
+  private readonly limit = 3;
 
   /**
    * @description loadPosts method will depend on this decorator to load contents
@@ -52,16 +54,22 @@ export class PostsComponent implements OnInit {
 
   private currentUser: User = JSON.parse(localStorage.getItem('active_user'));
 
+  pendingPost: Boolean = false;
+
   private postId: {} = null;
   private path ;
   private apiType : API_TYPE;
   private queryParam;
   private openSpinner: boolean = false
-  constructor(private provider: ProviderService,private sanitizer: DomSanitizer,private dialog: MatDialog) { }
+  constructor(private provider: ProviderService,private sanitizer: DomSanitizer,private dialog: MatDialog,
+              private pubSubService: NgxPubSubService,private snackBar: MatSnackBar) { }
 
   ngOnInit() {
    // this.loadPosts(this.postState)
     setTimeout(() => this.loadPosts(this.postState), 2000)
+    this.onPostCreatedEventSubscription()
+    this.onPostedSuccessfulEvent()
+    this.onPostRejectedEvent()
   }
 
   /**
@@ -85,7 +93,7 @@ export class PostsComponent implements OnInit {
     if (postType === PostType.USER_POSTS) {
       this.apiType = API_TYPE.POST
       this.path = `search`
-      this.queryParam = `?query=${this.postData}&limit= ${this.limit}&skip= ${this.skip}`
+      this.queryParam = `?query=${this.postData}&limit=${this.limit}&skip=${this.skip}`
 
     }
 
@@ -93,7 +101,7 @@ export class PostsComponent implements OnInit {
     if (postType === PostType.SEARCH_POSTS) {
       this.apiType = API_TYPE.POST;
       this.path = 'search'
-      this.queryParam = `?query=${this.postData}&limit= ${this.limit}&skip=${this.skip}`
+      this.queryParam = `?query=${this.postData}&limit=${this.limit}&skip=${this.skip}`
 
     }
 
@@ -107,12 +115,10 @@ export class PostsComponent implements OnInit {
   }
 
   loadMore() {
-    this.skip += this.limit;
+    this.skip += 1;
     this.openSpinner = true;
     this.loadPosts(this.postState)
   }
-
-
 
   load(apiType,path, query) {
     this.provider.get(apiType, path, query == '' ? '' : query)
@@ -140,7 +146,7 @@ export class PostsComponent implements OnInit {
         },
         () => {
           this.openSpinner = false;
-          this.showPlaceholder = true
+          this.showPlaceholder = false
         }
     )
   }
@@ -164,10 +170,13 @@ export class PostsComponent implements OnInit {
 
   }
 
+  /**
+   * @deprecated
+   */
   loadNewData() {
     this.post=[];
     this.skip = 0;
-    this.limit = 4;
+    //this.limit = 4;
     let apiType = API_TYPE.POST;
     let path = ''
     let queryParam = '?page=' + this.skip + '&limit=' + this.limit;
@@ -180,25 +189,28 @@ export class PostsComponent implements OnInit {
   }
 
   deletePost(pid){
+    this.showPlaceholder = true
     this.provider.delete(API_TYPE.POST,pid,'').subscribe(
       (res: Array<any>) => {
         console.log('Success' + res)
-        this.loadNewData()
+        this.post = []
+        this.loadPosts(this.postState)
       },
       (error) => {
         console.log('Success' + error)
-
+        this.snackBar.open(`An Error occurred`,'ok',{duration: 3000})
         this.showPlaceholder = false;
         this.provider.onTokenExpired(error.responseMessage, error.statusCode)
       },
       () => {
         console.log(`Complete {}`)
-        this.showPlaceholder = true
+        this.snackBar.open(`Post removed successfully`,'ok',{duration: 3000})
+        this.showPlaceholder = false
       }
     )
 
-  }
 
+  }
 
   openPost($event: MouseEvent,post:PostResponse) {
     $event.preventDefault()
@@ -211,9 +223,6 @@ export class PostsComponent implements OnInit {
       data: post
     })
   }
-
-
-
 
   sanitize(downloadedImageBlob: any) {
     return this.sanitizer.bypassSecurityTrustUrl(downloadedImageBlob);
@@ -245,4 +254,28 @@ export class PostsComponent implements OnInit {
 
 
   }
+
+  onPostCreatedEventSubscription() : void{
+      this.pubSubService.subscribe('onPostCreatedEvent',(data: PostResponse) => {
+          this.pendingPost = true
+      })
+  }
+
+  onPostedSuccessfulEvent(): void{
+    this.pubSubService.subscribe(`POST_CREATED_EVENT`,() => {
+       this.skip = 0
+       this.pendingPost = false;
+       this.showPlaceholder = true;
+       this.post = [];
+       setTimeout(() => this.loadPosts(this.postState),2000)
+    })
+  }
+
+  onPostRejectedEvent(): void{
+     this.pubSubService.subscribe(`UNHEALTHY_POST_EVENT`,() => {
+        this.pendingPost = false
+     })
+  }
+
+
 }

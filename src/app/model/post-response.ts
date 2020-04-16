@@ -37,7 +37,12 @@ export class PostResponse {
     return this._id;
   }
 
-  get image(): string {
+
+  set image(value: any) {
+    this._image = value;
+  }
+
+  get image(): any {
     return this._image;
   }
 
