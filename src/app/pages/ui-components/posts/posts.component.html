@@ -123,7 +123,7 @@
 
 
     <!-- post status end -->
-    <button type="button" *ngIf="!openSpinner" class="submit-btn" style="margin: auto"  (click)="loadMore()"> Load more ...</button>
+    <button type="button" *ngIf="!openSpinner || post.length < 0" class="submit-btn" style="margin: auto"  (click)="loadMore()"> Load more ...</button>
 
 
     <div  class="modal fade" id="editPost">
