@@ -79,7 +79,8 @@
 
 
                             <!-- profile picture start -->
-                            <div class="profile-setting-box">
+                            <div *ngIf="headerType != 'admin'; else elseBlock " class="profile-setting-box">
+
                                 <div class="profile-thumb-small">
                                     <a href="javascript:void(0)" class="profile-triger" (click)="openProfileDropdown()">
                                         <figure>
@@ -99,6 +100,7 @@
                                                 <li *ngIf="headerType == 'admin'"><a routerLink="/admin/dashboard/profile/"><i class="flaticon-user"></i>Profile</a></li>
                                             </ul>
                                             <ul>
+                                                
                                                 <li><a href="#" (click)="signout($event)"><i class="flaticon-unlock"></i>Sign out</a></li>
                                             </ul>
                                         </div>
@@ -113,6 +115,8 @@
             </div>
         </div>
     </header>
+    <ng-template #elseBlock><a href="#" (click)="signout($event)"><i class="flaticon-unlock"></i>Sign out</a></ng-template>
+
 <!-- header area end -->
 
 <!-- Mobile View -->

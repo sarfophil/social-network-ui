@@ -36,6 +36,7 @@ export class CreatePostComponent implements OnInit ,AfterContentInit,AfterViewIn
   uploadForm: FormGroup;
 
   user: User = JSON.parse(localStorage.getItem('active_user'));
+  imageUrl: string | ArrayBuffer;
 
   constructor(private config:ConfigService,private snackBar:MatSnackBar,private http: HttpClient, private formBuilder: FormBuilder, private providerService: ProviderService) {
 
@@ -79,7 +80,7 @@ export class CreatePostComponent implements OnInit ,AfterContentInit,AfterViewIn
       }
     }
 
-    let notifyfoll = this.postform.get('notifyFollowers').value!=''?this.postform.get('notifyFollowers').value:'false';
+    let notifyfoll = this.postform.get('notifyFollowers').value!=''?this.postform.get('notifyFollowers').value:'false'; //TODO: notify null has been sent to server
     let ageGroupTarget =  { min: this.postform.get('minAge').value, max: this.postform.get('maxAge').value }
     var formData: any = new FormData();
     formData.append("content", this.postform.get('content').value);
@@ -100,6 +101,7 @@ export class CreatePostComponent implements OnInit ,AfterContentInit,AfterViewIn
       this.snackBar.open('post created successfully','Ok')
       this.loadNewData();
     }, error => {
+      console.log(error);
        this.snackBar.open(error.errorMessage,'Ok')
       this.errorMessage = error.responseMessage;
     });
@@ -109,15 +111,22 @@ export class CreatePostComponent implements OnInit ,AfterContentInit,AfterViewIn
   }
 
   uploadFile(event) {
-    console.log("ng on after Content Init : " + this.closeModall);
-
     const file = (event.target as HTMLInputElement).files[0];
     this.postform.patchValue({
       avatar: file
     });
-    //this.postform.get('imageLink').updateValueAndValidity()
 
-  //  console.log(file)
+    var mimeType = file.type;
+    if (mimeType.match(/image\/*/) == null) {
+      this.snackBar.open('only images are allowed', 'Ok')
+      return;
+    }
+
+    var reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = (_event) => {
+      this.imageUrl = reader.result;
+    }
   }
 
 

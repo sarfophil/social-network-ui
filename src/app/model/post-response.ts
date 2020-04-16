@@ -1,5 +1,7 @@
+import { Optional } from '@angular/core';
+
 /** Response Model for post */
-import {Comment} from "./comment";
+import { Comment } from "./comment";
 
 export interface Like {
   _id: string
@@ -7,19 +9,24 @@ export interface Like {
 
 
 export class PostResponse {
-    private _id: string;
-    private _image: string;
-    private _userId: string;
-    private _createdDate: string;
-    private _isHealthy: boolean;
-    private _userProfilePicture:string
-    private _username: string;
-    private _likes: Array<Like>;
-    private _content: string;
-    private _downloadedImageBlob: any;
-    private _comments: Array<Comment>;
+  private _id: string;
+  private _image: string;
+  private _userId: string;
+  private _createdDate: string;
+  private _isHealthy: boolean;
+  private _userProfilePicture: string
+  private _username: string;
+  private _likes: Array<Like>;
+  private _content: string;
+  private _downloadedImageBlob: any;
+  private _comments: Array<Comment>;
+  post: PostResponse;
+  private userdetail: any;
+  reactedUsers: any;
+  eportedDate: PostResponse;
+  reportedDate: PostResponse;
 
-  constructor(id: string, image: string, userId: string, createdDate: string, isHealthy: boolean, userProfilePicture: string, username: string, likes: Array<Like>, content: string,comments: Array<Comment>) {
+  constructor(id: string, image: string, userId: string, createdDate: string, isHealthy: boolean, userProfilePicture: string, username: string, likes: Array<Like>, content: string, comments: Array<Comment>) {
     this._id = id;
     this._image = image;
     this._userId = userId;
@@ -81,5 +88,13 @@ export class PostResponse {
 
   get comments(): Array<Comment> {
     return this._comments;
+  }
+  get _userdetail(): any {
+    return this.userdetail;
+  }
+
+
+  set _userdetail(value: any) {
+    this.userdetail = value;
   }
 }

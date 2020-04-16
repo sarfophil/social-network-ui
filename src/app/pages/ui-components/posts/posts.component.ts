@@ -47,6 +47,7 @@ export class PostsComponent implements OnInit {
    * @description postData will recieve data from any parent component
    */
   @Input('postData') postData: any = '';
+  @Input('userIdAdmin') userIdAdmin;
 
   post: Array<PostResponse> = []
 
@@ -244,5 +245,17 @@ export class PostsComponent implements OnInit {
      console.log(post.likes.length)
 
 
+  }
+
+
+  acceptBlacklistedPost(reviewId){
+    console.log(reviewId)
+    this.provider.put(API_TYPE.ADMIN,`blacklist/posts/reviews/${reviewId}`,'').subscribe((res:{err:boolean,message:string})=>{
+      this.loadNewData() ;
+    },(err)=>{
+        console.log(err);
+    },()=>{
+
+    })
   }
 }
