@@ -12,6 +12,8 @@ import {MatDialog} from "@angular/material/dialog";
 import {AccountReviewComponent} from "../account-review/account-review.component";
 import {SocketioService, USER_STATUS} from "../../service/socket/socketio.service";
 import {NgxPubSubService} from "@pscoped/ngx-pub-sub";
+import { Newuser } from 'src/app/model/newuser';
+
 
 
 export interface LoginResponse{
@@ -36,6 +38,7 @@ export interface LoginResponse{
   ]
 })
 export class LoginComponent implements OnInit {
+  usersignup = new Newuser("","","",0);
   selcetedValue:string;
   signUpForm:FormGroup;
   loginForm: FormGroup;
@@ -44,7 +47,7 @@ export class LoginComponent implements OnInit {
   constructor(private router:Router,private provider:ProviderService,
               private formBuilder:FormBuilder,private snackbar:MatSnackBar,
               private dialog: MatDialog,private activeRoute: ActivatedRoute,
-              private socketService: SocketioService,private pubSub: NgxPubSubService) { }
+              private socketService: SocketioService,private pubSub: NgxPubSubService,private snackBar: MatSnackBar) { }
 
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
@@ -127,9 +130,26 @@ export class LoginComponent implements OnInit {
 
 
 signUp(){
-  let body = this.signUpForm.value;
-  this.provider.post(API_TYPE.USER,'account',body)
-  console.log(body)
+
+  this.provider.post(API_TYPE.USER,'account',this.usersignup).subscribe(
+    
+    (res: Array<any>) => {
+      console.log('Success' + res)
+    },
+    (error) => {
+      console.log('Success' + error)
+      this.snackBar.open(`An Error occurred`,'ok',{duration: 1000})
+     
+      this.provider.onTokenExpired(error.responseMessage, error.statusCode)
+    },
+    () => {
+      console.log(`Complete {}`)
+      this.snackBar.open(`user account created successfully`,'ok',{duration: 1000})
+     this.usersignup=null;
+    }
+  )
+
+
 }
 
   reviewForm($event: MouseEvent) {
