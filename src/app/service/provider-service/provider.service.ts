@@ -47,8 +47,12 @@ export class ProviderService {
       )
   }
 
-
-
+  /**
+   * Put method
+   * @param apiType
+   * @param pathName
+   * @param body
+   */
   put(apiType: API_TYPE, pathName, body) {
     // concat url
     const url = `${environment.apiEndpoint}${apiType}${pathName}`;
@@ -56,7 +60,7 @@ export class ProviderService {
     // options
     const httpOptions = {
       headers: this.config.getHeadersMultipart()
-    }
+    };
 
     return this.http.put(url, body, httpOptions)
       .pipe(
@@ -90,7 +94,7 @@ formdataPost(apiType:API_TYPE,pathName,formdata,httpOptions: Object = {headers: 
 
  return this.http.post(url ,formdata,httpOptions);
 }
-  
+
 
 
  delete(apiType: API_TYPE, pathName, queryParam, httpOptions: Object = { headers: this.config.getHeaders() }) {

@@ -7,7 +7,7 @@ import { throwError, Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class ConfigService {
-  
+
   constructor() {
    }
 
@@ -24,14 +24,14 @@ export class ConfigService {
     return new HttpHeaders({
       'Authorization': `Bearer ${localStorage.getItem('access_token')}`
     })
-    
+
   };
-  
 
 
-  
 
-  
+
+
+
   handleError(error: HttpErrorResponse){
     if (error.error instanceof ErrorEvent) {
       // A client-side or network error occurred. Handle it accordingly.
@@ -42,14 +42,15 @@ export class ConfigService {
       console.error(
         `Backend returned code ${error.status}, ` +
         `body was: ${error.error}`);
+      console.log(error.error)
     }
 
     // return an observable with a user-facing error message
     return throwError({statusCode:error.status,responseMessage:error.error,message:'Something bad happened; please try again later.'});
   }
 
-  
- 
+
+
 
 
 

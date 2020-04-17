@@ -17,7 +17,6 @@ import { NotfoundComponent } from './pages/notfound/notfound.component';
 
 import {TimelineComponent} from "./pages/ui-components/timeline/timeline.component";
 import {UserResolverService} from "./service/user-resolver/user-resolver.service";
-import {AuthguardService} from "./service/auth-guard/authguard.service";
 import {FollowingComponent} from "./pages/ui-components/following/following.component";
 
 
@@ -103,7 +102,7 @@ const routes: Routes = [
       },
       {
         path: 'accounts/reviews',
-        component: AdminAccountReviewComponent 
+        component: AdminAccountReviewComponent
       }
     ]
   },
