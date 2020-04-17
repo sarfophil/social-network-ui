@@ -224,6 +224,7 @@ export class PostsComponent implements OnInit {
   deletePost(pid){
     this.showPlaceholder = true
     this.provider.delete(API_TYPE.POST,pid,'').subscribe(
+      
 
       (res: Array<any>) => {
         console.log('Success' + res)
