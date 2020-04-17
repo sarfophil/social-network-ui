@@ -12,6 +12,8 @@ import {MatDialog} from "@angular/material/dialog";
 import {AccountReviewComponent} from "../account-review/account-review.component";
 import {SocketioService, USER_STATUS} from "../../service/socket/socketio.service";
 import {NgxPubSubService} from "@pscoped/ngx-pub-sub";
+import { Newuser } from 'src/app/model/newuser';
+
 
 
 export interface LoginResponse{
@@ -36,6 +38,7 @@ export interface LoginResponse{
   ]
 })
 export class LoginComponent implements OnInit {
+  usersignup = new Newuser("","","",0);
   selcetedValue:string;
   signUpForm:FormGroup;
   loginForm: FormGroup;
@@ -127,9 +130,18 @@ export class LoginComponent implements OnInit {
 
 
 signUp(){
-  let body = this.signUpForm.value;
-  this.provider.post(API_TYPE.USER,'account',body)
-  console.log(body)
+  //<div> {{signup.value.email}}</div>
+// let body =this.usersignup.value;
+ //console.log(this.)
+ //oru  new object this.usersignup
+  //console.log(this.usersignup)
+//   let body = this.signUpForm.value;
+
+  this.provider.post(API_TYPE.USER,'account',this.usersignup).subscribe(data=>console.log('sucess',data));
+
+   
+  
+
 }
 
   reviewForm($event: MouseEvent) {

@@ -62,38 +62,38 @@
                   <h1 class="create-acc text-center">Create An Account</h1>
                   <div class="signup-inner text-center">
                     <h5 class="title">Wellcome to Adda</h5>
-                    <form class="signup-inner--form" >
+                    <form class="signup-inner--form" #userForm="ngForm" (ngSubmit)="signUp()">
+                      
                       <div class="row">
-                        <div class="col-6">
-                          <input  required  ngModel minlength="3"   name="email" #email="ngModel" class="single-field" placeholder="Email">
+                        <div class="col-6" >
+                          <input class="form-control" required  ngModel minlength="3" [(ngModel)]="usersignup.email"  name="email" #email="ngModel" class="single-field" placeholder="Email">
                           <p class="alert alert-danger" *ngIf="email.touched && !email.valid" >email is required</p>
                         </div>
                         <div class="col-md-6">
-                          <input type="text" ngModel required minlength="3" name="username" #username="ngModel" class="single-field" placeholder="Username" >
+                          <input type="text" ngModel required minlength="3" [(ngModel)]="usersignup.username" name="username" #username="ngModel" class="single-field" placeholder="Username" >
                           <p class="alert alert-danger" *ngIf="username.touched && !username.valid" >username is required</p>
                         </div>
 
 
                         <div class="col-md-6">
-                          <input type="password"  ngModel required minlength="8"  name="password" #password="ngModel" class="single-field" placeholder="Password">
+                          <input type="password"  ngModel required minlength="8"  [(ngModel)]="usersignup.password"  name="password" #password="ngModel" class="single-field" placeholder="Password">
 
                           <p class="alert alert-danger" *ngIf="password.touched && !password.valid" > password is required </p>
                         </div>
                         <div class="col-md-6">
-                          <input type="password" ngModel required minlength="8"  name="conformpassword" #conformpassword="ngModel" class="single-field" placeholder="confirm password">
+                          <input type="password"  name="conformpassword"  ngModel required minlength="8"   #conformpassword="ngModel" class="single-field" placeholder="confirm password">
                           <p class="alert alert-danger" *ngIf="conformpassword.touched && !conformpassword.valid" >password is required</p>
                         </div>
                         <div class="col-md-12">
-                          <select class="nice-select" ngModel name="sortby" #sortby="ngModel"  [value]='18' placeholder="Age">
-                            <option value="trending">Age</option>
-                            <option value="old">18+</option>
-                            <option value="young">18-</option>
-                          </select>
+                            <div class="col-md-6">
+                                <input type="number"  name="age"  [(ngModel)]="usersignup.age" ngModel required minlength="8"   #conformpassword="ngModel" class="single-field" placeholder="confirm password">
+                                <p class="alert alert-danger" *ngIf="conformpassword.touched && !conformpassword.valid" >password is required</p>
+                              </div>
 
                         </div>
                         
                                             <div class="col-12">
-                                                <button class="submit-btn">Create Account</button>
+                                                <button class="submit-btn" >Create Account</button>
                                             </div>
                                         
                         <!-- <h6 class="terms-condition">I have read & accepted the <a href="#">terms of use</a></h6> -->
