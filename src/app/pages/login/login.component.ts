@@ -130,28 +130,21 @@ export class LoginComponent implements OnInit {
 
 
 signUp(){
-  //<div> {{signup.value.email}}</div>
-// let body =this.usersignup.value;
- //console.log(this.)
- //oru  new object this.usersignup
-  //console.log(this.usersignup)
-//   let body = this.signUpForm.value;
 
   this.provider.post(API_TYPE.USER,'account',this.usersignup).subscribe(
-      
-
+    
     (res: Array<any>) => {
       console.log('Success' + res)
     },
     (error) => {
       console.log('Success' + error)
-      this.snackBar.open(`An Error occurred`,'ok',{duration: 3000})
+      this.snackBar.open(`An Error occurred`,'ok',{duration: 1000})
      
       this.provider.onTokenExpired(error.responseMessage, error.statusCode)
     },
     () => {
       console.log(`Complete {}`)
-      this.snackBar.open(`user account created successfully`,'ok',{duration: 3000})
+      this.snackBar.open(`user account created successfully`,'ok',{duration: 1000})
      this.usersignup=null;
     }
   )

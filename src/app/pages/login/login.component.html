@@ -66,7 +66,7 @@
                       
                       <div class="row">
                         <div class="col-6" >
-                          <input class="form-control" required  ngModel minlength="3" [(ngModel)]="usersignup.email"  name="email" #email="ngModel" class="single-field" placeholder="Email">
+                          <input class="form-control" required   ngModel minlength="3" [(ngModel)]="usersignup.email"  name="email" #email="ngModel" class="single-field" placeholder="Email">
                           <p class="alert alert-danger" *ngIf="email.touched && !email.valid" >email is required</p>
                         </div>
                         <div class="col-md-6">
