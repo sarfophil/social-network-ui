@@ -47,7 +47,7 @@ export class LoginComponent implements OnInit {
   constructor(private router:Router,private provider:ProviderService,
               private formBuilder:FormBuilder,private snackbar:MatSnackBar,
               private dialog: MatDialog,private activeRoute: ActivatedRoute,
-              private socketService: SocketioService,private pubSub: NgxPubSubService) { }
+              private socketService: SocketioService,private pubSub: NgxPubSubService,private snackBar: MatSnackBar) { }
 
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
@@ -137,10 +137,25 @@ signUp(){
   //console.log(this.usersignup)
 //   let body = this.signUpForm.value;
 
-  this.provider.post(API_TYPE.USER,'account',this.usersignup).subscribe(data=>console.log('sucess',data));
+  this.provider.post(API_TYPE.USER,'account',this.usersignup).subscribe(
+      
 
-   
-  
+    (res: Array<any>) => {
+      console.log('Success' + res)
+    },
+    (error) => {
+      console.log('Success' + error)
+      this.snackBar.open(`An Error occurred`,'ok',{duration: 3000})
+     
+      this.provider.onTokenExpired(error.responseMessage, error.statusCode)
+    },
+    () => {
+      console.log(`Complete {}`)
+      this.snackBar.open(`user account created successfully`,'ok',{duration: 3000})
+     this.usersignup=null;
+    }
+  )
+
 
 }
 
