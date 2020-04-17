@@ -11,7 +11,7 @@
                                 <ul>
                                   <li class="active"><a [routerLink]="headerType == 'user'?'/home':'/admin/dashboard'">home</a></li>
 
-                                  <li class="active">
+                                  <li *ngIf="headerType != 'admin'" class="active">
                                     <a href="#" (click)="notification($event)">Notification</a>
 
                                   </li>
