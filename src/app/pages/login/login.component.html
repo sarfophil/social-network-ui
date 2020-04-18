@@ -31,9 +31,12 @@
                         <input type="password" placeholder="Password" formControlName="password" class="single-field">
                       </div>
                       <div class="col-12 col-sm-auto">
-                        <button [@loadingState]="isLoading?'close':'open'" class="login-btn" type="submit" [disabled]="!loginForm.valid">Login</button>
-                        <mat-progress-spinner [@loadingState]="isLoading?'open':'close'" class="loader" color="white" mode="indeterminate" value="10" strokeWidth="3" diameter="40">
-                        </mat-progress-spinner>
+                        <button  class="login-btn " type="submit" [disabled]="!loginForm.valid">
+                          <span [@loadingState]="isLoading?'close':'open'">Login</span>
+                          <span class="spinner-grow-sm" [@loadingState]="isLoading?'open':'close'"></span>
+                        </button>
+
+
                       </div>
 
                     </div>
@@ -100,11 +103,7 @@
                           <button class="submit-btn" [disabled]="!signUpForm.valid">Create Account <span class="spinner-grow-sm" *ngIf="isCreatingAccount"></span></button>
                         </div>
 
-                        
-                                            <div class="col-12">
-                                                <button class="submit-btn" >Create Account</button>
-                                            </div>
-                                        
+
 
                         <!-- <h6 class="terms-condition">I have read & accepted the <a href="#">terms of use</a></h6> -->
                         <div class="other-links">

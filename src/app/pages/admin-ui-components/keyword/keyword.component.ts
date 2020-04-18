@@ -30,21 +30,30 @@ export class KeywordComponent implements OnInit {
 
   addWord(word: NgModel) {
     // @ts-ignore
+    let lookup = this.bannedWords.find((bannedWord) => bannedWord.word.toLowerCase() == word.value)
+
+    if(!lookup){
+   // @ts-ignore
     this.bannedWords.push({_id: '',word: word.value})
-    let sentWord = [word.value];
-    this.providerService.post(API_TYPE.ADMIN, 'blacklistwords', sentWord)
-      .subscribe(
-        () => {
-          this.snackbar.open(`Keyword Configured`,'OK',{duration: 3000})
-          },
-        () => {
-          this.snackbar.open(`Unable to configure keyword. Please try again`,'OK',{duration: 3000})
-          this.bannedWords.pop()
-        }
-      );
+      let sentWord = [word.value];
+      this.providerService.post(API_TYPE.ADMIN, 'blacklistwords', sentWord)
+        .subscribe(
+          () => {
+            this.snackbar.open(`Keyword Configured`,'OK',{duration: 3000})
+            },
+          () => {
+            this.snackbar.open(`Unable to configure keyword. Please try again`,'OK',{duration: 3000})
+            this.bannedWords.pop()
+          }
+        );
+    }else{
+       this.snackbar.open('Keyword Already exist','OK', {duration: 3000})
+    }
+
+
   }
   deleteWord(wordId) {
-
+    console.log(`ID: ${wordId}`)
     let lookup = this.bannedWords.findIndex((word) => word._id === wordId)
     // remove from array
     this.bannedWords.splice(lookup,1)

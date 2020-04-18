@@ -8,9 +8,10 @@
           <input type="text" placeholder="Email" formControlName="email" class="single-field">
         </div>
         <div class="col-lg-12">
-          <button [@loadingState]="isLoading?'close':'open'"  class="submit-btn" type="submit" [disabled]="!reviewForm.valid">Submit</button>
-          <mat-progress-spinner [@loadingState]="isLoading?'open':'close'" class="loader" color="white" mode="indeterminate" value="10" strokeWidth="3" diameter="40">
-          </mat-progress-spinner>
+          <button  class="submit-btn" type="submit" [disabled]="!reviewForm.valid">
+            Submit
+            <span [@loadingState]="isLoading?'open':'close'"  class="spinner-grow-sm"></span>
+          </button>
         </div>
 
       </div>

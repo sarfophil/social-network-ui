@@ -119,7 +119,6 @@ export class ViewPostModalComponent implements OnInit,OnDestroy {
       this.post = this.data;
       this.populateLikes();
       this.loadComments(LoadingStrategy.PARTIAL);
-      this.countComment();
       this.previewPostImages()
 
   }

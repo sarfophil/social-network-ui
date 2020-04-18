@@ -57,9 +57,10 @@
   </div>
     <!--    -->
     <!-- post status start -->
-    <div [class.row]="userIdAdmin">
+    <div >
 
-        <div class="card fadeInUp ml-3" *ngFor="let p of post" [class.col-md-5]="userIdAdmin" [@loadingPlaceholder]="showPlaceholder ? 'close':'open'">
+        
+        <div class="card fadeInUp " *ngFor="let p of post"  [@loadingPlaceholder]="showPlaceholder ? 'close':'open'">
 
             <!-- post title start -->
             <div class="post-title d-flex align-items-center">
