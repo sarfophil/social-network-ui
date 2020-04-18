@@ -50,15 +50,10 @@ import { FollowingComponent } from './pages/ui-components/following/following.co
 import { AdminAccountReviewComponent } from './pages/admin-ui-components/admin-account-review/admin-account-review.component';
 import { AdvertComponentComponent } from './pages/advert-component/advert-component.component';
 import { NotificationComponent } from './pages/ui-components/notification/notification.component';
-<<<<<<< HEAD
->>>>>>> 58dd813638f90a0710ce0b13b826ecdfc1c0e043
-=======
 import { TimelineComponent } from './pages/ui-components/timeline/timeline.component';
 import { ImagePipe } from './pipe/imagepipe';
 import { AdminPostComponent } from './pages/admin-ui-components/admin-post/admin-post.component';
 import { from } from 'rxjs';
->>>>>>> 520a3ec1165ea69026954ce7be1397b914ccd62e
-
 import { FollowButtonComponent } from './pages/ui-components/follow-button/follow-button.component';
 import { FriendsComponent } from './pages/friends/friends.component';
 import { WordsHighlighterPipe } from './pipe/words-highlighter/words-highlighter.pipe';
