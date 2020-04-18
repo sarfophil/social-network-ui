@@ -62,6 +62,7 @@
                   <h1 class="create-acc text-center">Create An Account</h1>
                   <div class="signup-inner text-center">
                     <h5 class="title">Wellcome to Adda</h5>
+
                     <form class="signup-inner--form" [formGroup]="signUpForm" (ngSubmit)="signUp()">
 
                       <div class="row">
@@ -72,11 +73,14 @@
                         <div class="col-md-6">
                           <input type="text"  required  formControlName="username"  name="username"  class="single-field" placeholder="Username" >
 
+
                         </div>
 
 
                         <div class="col-md-6">
+
                           <input type="password"   required formControlName="password"   name="password"  class="single-field" placeholder="Password">
+
 
                         </div>
 
@@ -86,13 +90,21 @@
 <!--                        </div>-->
 
                         <div class="col-md-6">
+
                           <input type="number"  name="age" formControlName="age"    class="single-field" placeholder="Age" required>
 
                         </div>
 
+
                         <div class="col-12">
                           <button class="submit-btn" [disabled]="!signUpForm.valid">Create Account <span class="spinner-grow-sm" *ngIf="isCreatingAccount"></span></button>
                         </div>
+
+                        
+                                            <div class="col-12">
+                                                <button class="submit-btn" >Create Account</button>
+                                            </div>
+                                        
 
                         <!-- <h6 class="terms-condition">I have read & accepted the <a href="#">terms of use</a></h6> -->
                         <div class="other-links">

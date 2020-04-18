@@ -12,6 +12,8 @@ import {MatDialog} from "@angular/material/dialog";
 import {AccountReviewComponent} from "../account-review/account-review.component";
 import {SocketioService, USER_STATUS} from "../../service/socket/socketio.service";
 import {NgxPubSubService} from "@pscoped/ngx-pub-sub";
+import { Newuser } from 'src/app/model/newuser';
+
 
 
 export interface LoginResponse{
@@ -43,7 +45,7 @@ export class LoginComponent implements OnInit {
   constructor(private router:Router,private provider:ProviderService,
               private formBuilder:FormBuilder,private snackbar:MatSnackBar,
               private dialog: MatDialog,private activeRoute: ActivatedRoute,
-              private socketService: SocketioService,private pubSub: NgxPubSubService) { }
+              private socketService: SocketioService,private pubSub: NgxPubSubService,private snackBar: MatSnackBar) { }
 
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
@@ -110,7 +112,6 @@ export class LoginComponent implements OnInit {
 
 
 signUp(){
-
   if(this.signUpForm.valid){
     this.isCreatingAccount = true
     this.provider.post(API_TYPE.USER,'account',this.signUpForm.value).subscribe(
@@ -136,8 +137,6 @@ signUp(){
   }else {
     this.snackbar.open('All inputs are required','Ok',{ duration: 5000 })
   }
-
-
 }
 
   reviewForm($event: MouseEvent) {
