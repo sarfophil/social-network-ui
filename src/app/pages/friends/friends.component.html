@@ -1,0 +1,60 @@
+<app-header [headerType] = "'user'" ></app-header>
+
+
+<!-- News Area -->
+<main>
+
+  <div class="main-wrapper pt-80">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+
+        </div>
+        <div class="col-lg-6 offset-3">
+          <div class="card" >
+            <div class="card-header bg-white"><h6>Find Friends</h6></div>
+            <div class="card-body">
+              <ul class="like-page-list-wrapper">
+                <li class="unorder-list" *ngFor="let friend of friendsList">
+                  <!-- profile picture end -->
+                  <div class="profile-thumb">
+                    <a href="#">
+                      <figure class="profile-thumb-small">
+                        <app-profile-photo [imageName]="friend.profilePicture" [style]="" class="profile-pic"></app-profile-photo>
+                      </figure>
+                    </a>
+                  </div>
+                  <!-- profile picture end -->
+
+                  <div class="unorder-list-info">
+                    <h3 class="list-title">{{friend.username}}</h3>
+                    <p class="list-subtitle" style="display: inline-block">
+                      <span>{{friend.followers.length + ' followers. '}}</span>
+                      <span>{{friend.following.length + ' following. '}}</span>
+                    </p>
+                  </div>
+
+                  <app-follow-button class="like-button active" [followData] = "getFollowerData(friend)" (action)="performAction($event,friend)"></app-follow-button>
+                </li>
+
+
+
+              </ul>
+
+              <div class="spinner-loader" style="margin: auto" [@isLoadingTrigger]="isLoading?'open':'close'"></div>
+
+            </div>
+            <div class="card-footer bg-white">
+              <button  style="margin: auto; display: block" (click)="loadMore()" *ngIf="friendsList.length >= 10">Load More</button>
+            </div>
+          </div>
+
+          <button class="edit-btn" style="float: right" (click)="next()">Next</button>
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>

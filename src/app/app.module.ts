@@ -53,6 +53,7 @@ import { TimelineComponent } from './pages/ui-components/timeline/timeline.compo
 import { ImagePipe } from './pipe/imagepipe';
 import { AdminPostComponent } from './pages/admin-ui-components/admin-post/admin-post.component';
 import { FollowButtonComponent } from './pages/ui-components/follow-button/follow-button.component';
+import { FriendsComponent } from './pages/friends/friends.component';
 
 
 // socket config
@@ -98,8 +99,9 @@ const socketConfig: SocketIoConfig = {url: environment.socketEndpoint,options: {
     FollowingComponent,
     NotificationComponent,
     ImagePipe,
-    AdminPostComponent
-    FollowButtonComponent
+    AdminPostComponent,
+    FollowButtonComponent,
+    FriendsComponent
 
   ],
   imports: [
