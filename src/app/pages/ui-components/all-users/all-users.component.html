@@ -1,0 +1,63 @@
+<div class="card card-small">
+    <div class="share-box-inner">
+
+        <!-- share content box start -->
+        <div class="share-content-box w-100">
+            <form class="share-text-box">
+                <textarea name="share" (keyup)="search($event.target.value)" class="share-text-field"
+                    aria-disabled="true" placeholder="Search users" id="email"></textarea>
+                <!--                <button class="btn-share" type="submit">Search</button>-->
+            </form>
+        </div>
+
+    </div>
+</div>
+
+<!-- photo section start -->
+<div class="friends-section mt-20">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="content-box friends-zone">
+                    <div class="row mt--20 friends-list zoomIn" *ngIf="!isLoading">
+                        <p style="text-align: center; margin: auto" *ngIf="allUsers.length == 0">No User yet</p>
+                        <div class="col-lg-6 col-sm-6 recently request" *ngFor="let usr of allUsers">
+                            <div *ngIf="usr._id!==user._id">
+                                <div class="friend-list-view">
+                                    <!-- profile picture end -->
+                                    <div class="profile-thumb">
+                                        <a href="#">
+                                            <figure class="profile-thumb-middle">
+                                                <app-profile-photo [imageName]="usr.profilePicture" [style]=""
+                                                    class="profile-pic"></app-profile-photo>
+                                            </figure>
+                                        </a>
+                                    </div>
+                                    <!-- profile picture end -->
+
+                                    <div class="posted-author">
+
+                                        <h6 class="author"><a
+                                                [routerLink]="'/profile/'+usr._id+'/timeline'">{{usr.username}}</a></h6>
+                                        <small>{{usr.followers.length+' followers'}} &nbsp;
+                                            {{usr.following.length+' following'}}</small>
+
+                                        <button class="add-frnd" *ngIf="usr.isFollowing"
+                                            (click)="unfollow(usr)">Unfollow</button>
+                                        <button class="add-frnd" *ngIf="!usr.isFollowing"
+                                            (click)="follow(usr)">Follow</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <mat-progress-spinner *ngIf="isLoading" class="loader" color="white" mode="indeterminate" value="10"
+                        strokeWidth="3" diameter="40">
+                    </mat-progress-spinner>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

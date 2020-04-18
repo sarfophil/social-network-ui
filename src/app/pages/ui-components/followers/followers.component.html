@@ -37,6 +37,7 @@
                                     <h6 class="author"><a [routerLink]="'/profile/'+follower._id+'/timeline'">{{follower.username}}</a></h6>
                                     <small>{{follower.followers.length+' followers'}} &nbsp;  {{follower.following.length+' following'}}</small>
                                     <button class="add-frnd" *ngIf="!follower.isFollowing" (click)="follow(follower)">Follow</button>
+                                    <button class="add-frnd" *ngIf="follower.isFollowing" (click)="unfollow(follower)">Unfollow</button>
 
                                 </div>
                             </div>
