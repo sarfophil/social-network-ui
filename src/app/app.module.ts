@@ -58,6 +58,7 @@ import { from } from 'rxjs';
 
 import { FollowButtonComponent } from './pages/ui-components/follow-button/follow-button.component';
 import { FriendsComponent } from './pages/friends/friends.component';
+import { WordsHighlighterPipe } from './pipe/words-highlighter/words-highlighter.pipe';
 
 
 // socket config
@@ -105,7 +106,8 @@ const socketConfig: SocketIoConfig = {url: environment.socketEndpoint,options: {
     ImagePipe,
     AdminPostComponent,
     FollowButtonComponent,
-    FriendsComponent
+    FriendsComponent,
+    WordsHighlighterPipe
 
   ],
   imports: [

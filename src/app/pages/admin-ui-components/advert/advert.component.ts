@@ -146,7 +146,10 @@ export class AdvertComponent implements OnInit {
   delete(id,$event) {
     $event.preventDefault()
     // @ts:ignore
-    let lookup = this.advertisments.findIndex((ad) => ad._id === id);
+    let lookup = this.advertisments.findIndex((ad) => {
+      // @ts-ignore
+      return ad._id === id;
+    });
     this.advertisments.splice(lookup,1)
 
     this.service.post(API_TYPE.ADMIN,`ads/${id}`,'').subscribe((res)=>{
