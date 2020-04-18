@@ -82,9 +82,6 @@ export class HeaderComponent implements OnInit,OnDestroy {
         })
     )
 
-    this.route.params.subscribe((param) => {
-        console.log(param)
-    })
   }
 
   expandNotification(){
@@ -115,6 +112,13 @@ export class HeaderComponent implements OnInit,OnDestroy {
     this.router.navigateByUrl('/login')
     localStorage.clear()
   }
+
+  adminSignout(event:MouseEvent){
+    event.preventDefault();
+    this.router.navigateByUrl('/admin/login')
+    localStorage.clear()
+  }
+
 
   search(keyword:string){
     this.viewAllRoute = '/search/'.concat(keyword)

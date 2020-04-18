@@ -1,4 +1,4 @@
-import {Component, HostListener, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import {ProviderService} from 'src/app/service/provider-service/provider.service';
 import {API_TYPE} from 'src/app/model/apiType';
@@ -190,8 +190,7 @@ export class PostsComponent implements OnInit {
       this.provider.get(API_TYPE.DEFAULT, 'download', queryParam, headerOption)
         .subscribe(
           (res) => {
-            let objectUrl = URL.createObjectURL(res);
-            post.downloadedImageBlob = objectUrl;
+            post.downloadedImageBlob = URL.createObjectURL(res);
           },
           (error => post.downloadedImageBlob = 'assets/img/placeholder.png')
         )

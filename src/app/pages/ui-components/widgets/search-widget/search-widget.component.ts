@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import lottie from "lottie-web"
 import {Observable, Subject} from "rxjs";
 import {ProviderService} from "../../../../service/provider-service/provider.service";
-import {debounceTime, distinctUntilChanged, filter, map, mergeMap, switchMap} from "rxjs/operators";
+import {debounceTime, distinctUntilChanged, filter, map, switchMap} from "rxjs/operators";
 import {API_TYPE} from "../../../../model/apiType";
 import {User} from "../../../../model/user";
 import {state, style, trigger} from "@angular/animations";
@@ -10,6 +10,8 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {NgxPubSubService} from "@pscoped/ngx-pub-sub";
 import {Location} from "@angular/common";
+import {FollowerResponse} from "../../../../model/follower-response";
+import {FollowButtonState} from "../../follow-button/follow-button.component";
 
 /**
  * Search Response
@@ -17,10 +19,19 @@ import {Location} from "@angular/common";
 export class SearchResponse {
     user: User;
     isAFollower: Boolean = false
-
     constructor(user: User,isAFollower:Boolean) {
       this.user = user
       this.isAFollower = isAFollower
+    }
+
+    getFollowerResponse() : FollowerResponse{
+      return {_id: String(this.user._id),
+                  username: String(this.user.username),
+                  followers: this.user.followers,
+                  following: this.user.following,
+                  profilePicture: this.user.profilePicture,
+                  isFollowing: false
+            }
     }
 }
 
@@ -45,7 +56,8 @@ export class SearchResponse {
 })
 export class SearchWidgetComponent implements OnInit,OnDestroy {
   searchTopic$: Subject<String> = new Subject<String>();
-  search$: Observable<any>;
+  search$: Observable<Array<SearchResponse>>;
+  private readonly user$final : User = JSON.parse(localStorage.getItem('active_user'))
   currentUser: User;
   searchResult: Array<SearchResponse> = [];
   onKeyUpEvent:Boolean = true;
@@ -136,6 +148,11 @@ export class SearchWidgetComponent implements OnInit,OnDestroy {
   }
 
 
+  /**
+   * @deprecated
+   * @param user
+   * @param event
+   */
   follow(user: User,event: MouseEvent) {
     event.preventDefault();
     let findIndex = this.searchResult.findIndex((result) => user._id == result.user._id)
@@ -145,7 +162,6 @@ export class SearchWidgetComponent implements OnInit,OnDestroy {
     let path = `${this.currentUser._id}/follow/${user._id}`;
     this.provider.put(API_TYPE.USER,path,{})
       .subscribe((res) => {
-          console.log(`Publishing Event`)
           this.pubSub.publishEvent('FOLLOWED_USER_EVENT', {
               friendId: user._id
           })
@@ -154,6 +170,11 @@ export class SearchWidgetComponent implements OnInit,OnDestroy {
       })
   }
 
+  /**
+   * @deprecated
+   * @param user
+   * @param $event
+   */
   unfollow(user: User, $event: MouseEvent) {
     $event.preventDefault();
     let findIndex = this.searchResult.findIndex((result) => user._id == result.user._id)
@@ -175,9 +196,24 @@ export class SearchWidgetComponent implements OnInit,OnDestroy {
     $event.preventDefault()
     this._router.navigateByUrl('/home',{skipLocationChange: true})
       .then(()=> {
-        console.log(this.location.path())
         this._router.navigate(['/profile/'+result.user._id+'/timeline'])
       })
+  }
+
+  performAction($event: any, result: SearchResponse) {
+    if($event.status === FollowButtonState.FOLLOW){
+      if(this.currentUser._id == this.user$final._id){
+        this.pubSub.publishEvent('FOLLOWED_USER_EVENT', {
+          friendId: result.user._id
+        })
+      }
+    }else {
+      if(this.currentUser._id == this.user$final._id){
+        this.pubSub.publishEvent('UNFOLLOWED_USER_EVENT', {
+          friendId: result.user._id
+        })
+      }
+    }
   }
 }
 
