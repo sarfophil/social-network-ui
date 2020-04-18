@@ -19,7 +19,7 @@ import { switchMap, map } from 'rxjs/operators';
 export class AdvertComponent implements OnInit {
 
   @ViewChild('adverDetail',{static:false}) advertDetail :TemplateRef<any>
-  limt: number = 5;
+  limt: number = 500;
   skip: number = 0;
   isActive = false;
   addform: FormGroup
@@ -146,8 +146,21 @@ export class AdvertComponent implements OnInit {
   //Delete 
 
   delete(id) {
-    console.log(id);
+    this.service.post(API_TYPE.ADMIN,`ads/${id}`,'').subscribe((res)=>{
+      this.snackBar.open('Advertisment deleted successfully', 'Ok')
+
+    }, error => {
+      console.log(error);
+      this.snackBar.open('Advertisment Not found', 'Ok')
+
+    })
+    
+    //reseting form
+    this.isActive = false;
+    this.getAllAdds();
+
   }
+
 
  async showDetail(adevert){
   await this.requestImages2(adevert) .then(async ()=>{

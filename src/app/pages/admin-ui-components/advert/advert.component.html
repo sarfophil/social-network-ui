@@ -169,8 +169,7 @@
             </a>
                     <h1 class="display-4">{{advertisment.title}}</h1>
                     <p class="lead">{{advertisment.content}}</p>
-                    <button style="font-size:medium;" (click)="delete(advertisment._id) "
-                        class="badge badge-success mr-1">Push </button>
+                    <button style="font-size: medium;" (click)="delete(advertisment._id);$event.stopPropagation()">Delete</button>
                     <button style="font-size: medium;" (click)="delete(advertisment._id);$event.stopPropagation()"
                         class="badge badge-danger">Delete </button>
                     <p class="card-text"><small class="text-muted">Created {{advertisment.createdDate|dateAgo}}</small>

@@ -47,15 +47,14 @@ import { NgxPubSubModule } from '@pscoped/ngx-pub-sub';
 import { AdBannerComponent } from './pages/ui-components/ad-banner/ad-banner.component';
 import { AdminAccountReviewComponent } from './pages/admin-ui-components/admin-account-review/admin-account-review.component';
 import { NotfoundComponent } from "./pages/notfound/notfound.component";
+
+
 import { FollowingComponent } from './pages/ui-components/following/following.component';
 import { NotificationComponent } from './pages/ui-components/notification/notification.component';
 import { TimelineComponent } from './pages/ui-components/timeline/timeline.component';
 import { ImagePipe } from './pipe/imagepipe';
-<<<<<<< HEAD
 import { AdminPostComponent } from './pages/admin-ui-components/admin-post/admin-post.component';
-=======
 import { from } from 'rxjs';
->>>>>>> 85fb8b86b5d25a4e352e85d470a1f269a5a76fe7
 
 
 
