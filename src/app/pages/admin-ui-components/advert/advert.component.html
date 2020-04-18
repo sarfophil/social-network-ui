@@ -1,10 +1,12 @@
 <div class="row">
     <div class="col-md-12">
-        <h1 class="display-4">Addvertisment </h1>
+        <h1>Addvertisments <span class="badge badge-success"> .... </span></h1>
 
+
+        <!-- nav bar -->
         <ul class="nav nav-tabs">
             <li class="nav-item">
-                <a class="nav-link " [class.active]="isActive" (click)="getAllAdds()">Disaply All Adds</a>
+                <a class="nav-link " [class.active]="isActive" (click)="getAllAdds()">Advertisments</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" [class.active]="!isActive" (click)="displayForm()">Create New Add</a>
@@ -12,68 +14,178 @@
         </ul>
     </div>
 
-    <div *ngIf="isActive ; else thenBlock">
-       
+    <!-- display advertisment start -->
+    <div class="col-md-12" *ngIf="advertisment==null">
 
-    <div class="card" *ngFor="let advert of advertisments ; let i of index ">
-            <div class="card">
-            <img class="card-img-top" src={{advert.banner[0]|imageUrl}}  alt="Card image cap">
-            <div class="card-body">
-              <h5 class="card-title">{{advert.title}}</h5>
-              <p class="card-text">{{advert.content}}</p>
-              <a href="#" class="btn btn-primary">Go somewhere</a>
+        <div class="row" style="margin-top: -15px;" *ngIf="isActive ; else thenBlock">
+            <div class="col-md-4 mt-3" *ngFor="let advert of advertisments ; index as i " style="display: flex;">
+                <div class="card " (click)="showDetail(advert);$event.stopPropagation()">
+                    <img class="card-img-top" [src]="sanitize(advert.downloadedImageBlob)" alt="post image">
+                    <div class="card-body">
+                        <h5 class="card-title">{{advert.title}}</h5>
+                        <p class="card-text">{{advert.content}}</p>
+                        <button style="font-size:medium;" (click)="delete(advert._id) "
+                            class="badge badge-success mr-1">Push </button>
+                        <button style="font-size: medium;" (click)="delete(advert._id);$event.stopPropagation()"
+                            class="badge badge-danger">Delete </button>
+                        <p class="card-text"><small class="text-muted">Created {{advert.createdDate|dateAgo}}</small>
+                        </p>
+                    </div>
+                </div>
+
             </div>
+
+        </div>
+
+        <button type="button" *ngIf="isActive&&(!openSpinner || post.length < 0)" class="submit-btn mt-3"
+            style="margin: auto; width: 10rem;" (click)="loadMore()"> Load more ...</button>
+
     </div>
+    <!-- dsiaplay advertimsent end -->
+    <!-- form start -->
+    <ng-template #thenBlock>
 
-    </div>
-    </div>
-        
-    
+        <form class="signup-inner--form" [formGroup]="addform" (ngSubmit)="onsubmit()">
+            <div class="row">
+
+                <div class="col-12">
+                    <input type="title" formControlName="title" name="title" class="single-field" placeholder="Title">
+                    <!-- Validation  -->
+                    <div *ngIf="addform.controls['title'].errors&&addform.controls['title'].touched"
+                        class="validation-errors">
+                        <p *ngIf="addform.controls['title'].errors.required">
+                            title is required
+                        </p>
+                        <p *ngIf="addform.controls['title'].errors.minlength">
+                            please add more Characters
+                        </p>
+                        <p *ngIf="addform.controls['title'].errors.maxlength">
+                            You have reached the maximum length
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <textarea name="content" id="content" formControlName="content"
+                        class="share-field-big custom-scroll" placeholder="Content"></textarea>
+                    <!-- Validation  -->
+
+                    <div *ngIf="addform.controls['content'].errors&& addform.controls['content'].touched"
+                        class="validation-errors">
+                        <p *ngIf="addform.controls['content'].errors.required">
+                            Content is required
+                        </p>
+                        <p *ngIf="addform.controls['content'].errors.minlength">
+                            Please add more content
+                        </p>
+                        <p *ngIf="addform.controls['content'].errors.maxlength">
+                            You have reached the maximum length
+                        </p>
+                    </div>
 
 
-</div>
+                </div>
+                <div class="col-md-6">
+                    <input type="url" name="link" formControlName="link" class="single-field" placeholder="Link">
+                </div>
+                <div class="col-12">
+                    <input type="hidden" name="owner" value="5e8a6e7a313b41e794ab1045" formControlName="owner"
+                        class="single-field" placeholder="Password">
+                </div>
+                <h5 class="mt-3 ml-3">Age Target</h5>
+                <div class="col-md-5">
+                    <input type="number" name="min" formControlName="min" class="single-field" placeholder="Min">
 
-<ng-template #thenBlock>
-            
-    <form class="signup-inner--form" [formGroup]="addform" (ngSubmit)="onsubmit()">
-        <div class="row">
-            
-            <div class="col-12">
-                <input type="title" formControlName ="title"  name="title" class="single-field" placeholder="Title" required>
-            </div>
-            <div class="col-md-12">
-                <textarea name="content" id="content" formControlName="content" required
-                class="share-field-big custom-scroll" minlength="5" maxlength="30" placeholder="Content" required></textarea>                    </div>
-            <div class="col-md-6">
-                <input type="url" name="link" formControlName="link" class="single-field" placeholder="Link">
-            </div>
-            <div class="col-12">
-                <input type="hidden" name="owner" value="5e8a6e7a313b41e794ab1045" formControlName="owner" class="single-field" placeholder="Password">
-            </div>
-            <h5 class="mt-3 ml-3">Age Target</h5>
-            <div class="col-md-5">
-                <input type="number" name="min" formControlName="min" class="single-field" placeholder="Min">
-            </div>
-            <div class="col-5">
-                <input type="number" name="max" formControlName="max" class="single-field" placeholder="Max">
-            </div>
+                    <!-- Validation  -->
 
-            <div class="col-12">
-                <input type="file" (change)="uploadFile($event)" class="single-field" multiple>
-            </div>
-            <div  class="col-4" *ngFor="let imageur of imageUrl">
-                <div>
-                    
-                    <img [src]="imageur" style="width: 300px;" class="mx-auto" >
+                    <div *ngIf="addform.controls['min'].errors&&addform.controls['min'].touched"
+                        class="validation-errors">
+                        <p *ngIf="addform.controls['min'].errors.required">
+                            Minimum age is Required
+                        </p>
+                        <p *ngIf="addform.controls['min'].errors.invalidMinAge">
+                            Minimum age must be less than the maximum age
+                        </p>
+                    </div>
+                </div>
+                <div class="col-5">
+                    <input type="number" name="max" formControlName="max" class="single-field" placeholder="Max">
+                    <!-- Validation  -->
+
+                    <div *ngIf="addform.controls['max'].errors&&addform.controls['max'].touched"
+                        class="validation-errors">
+                        <p *ngIf="addform.controls['max'].errors.required">
+                            Maximum age is Required
+                        </p>
+                        <p *ngIf="addform.controls['max'].errors.invalidMaxAge">
+                            Maximum age must be greater than the minimum age
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <input type="file" (change)="uploadFile($event)" class="single-field" multiple>
+                </div>
+                <div class="col-4" *ngFor="let imageur of imageUrl">
+                    <div>
+
+                        <img [src]="imageur" style="width: 300px;" class="mx-auto">
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <button [disabled]="addform.invalid" class="submit-btn">Create Addvertisment</button>
                 </div>
             </div>
-            
-            <div class="col-12">
-                <button   class="submit-btn">Create Addvertisment</button>
+        </form>
+
+
+
+    </ng-template>
+    <!-- form end -->
+
+    <!-- Advertisment detail block start-->
+
+
+    <div class="col-md-12" *ngIf="advertisment!=null&&advertimage!=[]">
+        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+            <button type="button" (click)="back()" class="back"><svg class="bi bi-arrow-left" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M5.854 4.646a.5.5 0 010 .708L3.207 8l2.647 2.646a.5.5 0 01-.708.708l-3-3a.5.5 0 010-.708l3-3a.5.5 0 01.708 0z" clip-rule="evenodd"/>
+                <path fill-rule="evenodd" d="M2.5 8a.5.5 0 01.5-.5h10.5a.5.5 0 010 1H3a.5.5 0 01-.5-.5z" clip-rule="evenodd"/>
+              </svg> Back</button>
+
+            <div class="carousel-inner">
+                <div class="carousel-item active" *ngFor="let image of advertimage; let i = index"
+                    [ngClass]="{'active' : i == 0}">
+                    <img [src]="image" class="d-block w-100" alt="...">
+                </div>
             </div>
+            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+                    <h1 class="display-4">{{advertisment.title}}</h1>
+                    <p class="lead">{{advertisment.content}}</p>
+                    <button style="font-size:medium;" (click)="delete(advertisment._id) "
+                        class="badge badge-success mr-1">Push </button>
+                    <button style="font-size: medium;" (click)="delete(advertisment._id);$event.stopPropagation()"
+                        class="badge badge-danger">Delete </button>
+                    <p class="card-text"><small class="text-muted">Created {{advertisment.createdDate|dateAgo}}</small>
+                    </p>
+  
+
+
         </div>
-    </form>
 
 
+    </div>
 
-</ng-template>
+
+    <!-- Advertisment detail block edn-->
+
+    <div>
+
+    </div>

@@ -51,10 +51,8 @@ import { FollowingComponent } from './pages/ui-components/following/following.co
 import { NotificationComponent } from './pages/ui-components/notification/notification.component';
 import { TimelineComponent } from './pages/ui-components/timeline/timeline.component';
 import { ImagePipe } from './pipe/imagepipe';
-
+import { AdminPostComponent } from './pages/admin-ui-components/admin-post/admin-post.component';
 import { FollowButtonComponent } from './pages/ui-components/follow-button/follow-button.component';
-
-
 
 
 // socket config
@@ -100,7 +98,9 @@ const socketConfig: SocketIoConfig = {url: environment.socketEndpoint,options: {
     FollowingComponent,
     NotificationComponent,
     ImagePipe,
+    AdminPostComponent
     FollowButtonComponent
+
   ],
   imports: [
     BrowserModule,
