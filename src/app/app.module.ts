@@ -45,14 +45,10 @@ import { ViewPostModalComponent } from './pages/ui-components/view-post-modal/vi
 import { ProfilePicUploadComponent } from './pages/ui-components/profile-pic-upload/profile-pic-upload.component';
 import { NgxPubSubModule } from '@pscoped/ngx-pub-sub';
 import { AdBannerComponent } from './pages/ui-components/ad-banner/ad-banner.component';
-import { AdminAccountReviewComponent } from './pages/admin-ui-components/admin-account-review/admin-account-review.component';
 import { NotfoundComponent } from "./pages/notfound/notfound.component";
-
 import { FollowingComponent } from './pages/ui-components/following/following.component';
-<<<<<<< HEAD
 import { AdminAccountReviewComponent } from './pages/admin-ui-components/admin-account-review/admin-account-review.component';
 import { AdvertComponentComponent } from './pages/advert-component/advert-component.component';
-=======
 import { NotificationComponent } from './pages/ui-components/notification/notification.component';
 <<<<<<< HEAD
 >>>>>>> 58dd813638f90a0710ce0b13b826ecdfc1c0e043
