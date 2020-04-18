@@ -1,0 +1,11 @@
+<button class="add-frnd"
+        *ngIf="buttonState === 1"
+        (click)="unfollow()"
+        >
+        Unfollow
+</button>
+
+
+<button class="add-frnd" *ngIf="buttonState === 0" (click)="follow()">
+    Follow
+</button>

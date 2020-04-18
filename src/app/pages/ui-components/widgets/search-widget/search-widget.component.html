@@ -22,8 +22,9 @@
                 <div class="unorder-list-info">
                     <div class="list-detail">
                       <a (click)="goToUserProfile($event,result)" class="list-info">{{result.user.username}}</a>
-                      <a href="#" class="follow-link" *ngIf="!result.isAFollower" (click)="follow(result.user,$event)">Follow</a>
-                      <a href="#" class="follow-link" *ngIf="result.isAFollower" (click)="unfollow(result.user,$event)">UnFollow</a>
+<!--                      <a href="#" class="follow-link" *ngIf="!result.isAFollower" (click)="follow(result.user,$event)">Follow</a>-->
+<!--                      <a href="#" class="follow-link" *ngIf="result.isAFollower" (click)="unfollow(result.user,$event)">UnFollow</a>-->
+                      <app-follow-button [followData] = "result.getFollowerResponse()" class="follow-link" (action)="performAction($event,result)"></app-follow-button>
                     </div>
                 </div>
             </li>

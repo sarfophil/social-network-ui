@@ -54,6 +54,8 @@ import { ImagePipe } from './pipe/imagepipe';
 import { from } from 'rxjs';
 import { AllUsersComponent } from './pages/ui-components/all-users/all-users.component';
 
+import { AdminPostComponent } from './pages/admin-ui-components/admin-post/admin-post.component';
+import { FollowButtonComponent } from './pages/ui-components/follow-button/follow-button.component';
 
 
 // socket config
@@ -99,7 +101,10 @@ const socketConfig: SocketIoConfig = {url: environment.socketEndpoint,options: {
     FollowingComponent,
     NotificationComponent,
     ImagePipe,
-    AllUsersComponent
+    AllUsersComponent,
+    AdminPostComponent,
+    FollowButtonComponent
+
   ],
   imports: [
     BrowserModule,

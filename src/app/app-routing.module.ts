@@ -19,6 +19,8 @@ import {TimelineComponent} from "./pages/ui-components/timeline/timeline.compone
 import {UserResolverService} from "./service/user-resolver/user-resolver.service";
 import {FollowingComponent} from "./pages/ui-components/following/following.component";
 import { AllUsersComponent } from './pages/ui-components/all-users/all-users.component';
+import {AdBannerComponent} from "./pages/ui-components/ad-banner/ad-banner.component";
+import {AdResolverService} from "./service/adResolver/ad-resolver.service";
 
 
 const routes: Routes = [
@@ -122,6 +124,13 @@ const routes: Routes = [
   {
     path: '404',
     component: NotfoundComponent
+  },
+  {
+    path: 'ads/:adId',
+    component: AdBannerComponent,
+    resolve: {
+      user: AdResolverService
+    }
   }
 ];
 

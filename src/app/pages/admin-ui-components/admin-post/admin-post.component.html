@@ -1,4 +1,3 @@
-<app-create-post *ngIf="!userIdAdmin" (loadNewData)="loadNewData()" [pageType]="postState"></app-create-post>
 <br>
 
 <!-- Modal start -->
@@ -31,7 +30,7 @@
 
 <!-- share box end -->
 <div class="box-placeholder" style="width: 100%; margin: auto;"
-    [@loadingPlaceholder]="showPlaceholder ? 'open':'close'">
+    [@loadingPlaceholder]="showPlaceholder ? 'close':'open'">
     <div class="p-4">
         <span class="category text link"></span>
         <h4 class="text line"></h4>
@@ -49,18 +48,11 @@
     </div>
 </div>
 
-<div>
-    <!--  Pending Post-->
-  <div *ngIf="pendingPost">
-    <div class="spinner-loader" style="margin: auto;"></div>
-    <br>
-  </div>
-    <!--    -->
+<div >
     <!-- post status start -->
     <div [class.row]="userIdAdmin">
 
-        <div class="card fadeInUp ml-3" *ngFor="let p of post" [class.col-md-5]="userIdAdmin" [@loadingPlaceholder]="showPlaceholder ? 'close':'open'">
-
+        <div class="card fadeInUp ml-3" *ngFor="let p of post" [class.col-md-5]="userIdAdmin" >
             <!-- post title start -->
             <div class="post-title d-flex align-items-center">
                 <!-- profile picture end -->
@@ -73,11 +65,7 @@
                 </div>
                 <!-- profile picture end -->
                 <div class="posted-author">
-
                     <!-- <h6 *ngIf= class="author"><a [routerLink]="'/profile/'+p.id+'/timeline'">{{p.username}}</a></h6> -->
-
-                    <h6 class="author"><a [routerLink]="'/profile/'+p.userId+'/timeline'">{{p.username}}</a></h6>
-
                     <span class="post-time">{{p.createdDate | dateAgo}}</span>
                 </div>
 
@@ -87,9 +75,9 @@
                     <span></span>
                     <div class="post-settings arrow-shape">
                         <ul>
-<!--                            <li  (click)="setPostId(p.id)" data-toggle="modal" data-target="#editPost" ><button>edit post</button></li>-->
+                            <li  (click)="setPostId(p.id)" data-toggle="modal" data-target="#editPost" ><button>edit post</button></li>
                             <li  (click)="deletePost(p.id)" ><button>Delete Post</button></li>
-                            <li *ngIf="userIdAdmin"  (click)="acceptBlacklistedPost(p._id)" ><button>Approve Post</button></li>
+                            <li *ngIf="userIdAdmin!=''"  (click)="acceptBlacklistedPost(p._id)" ><button>Approve Post</button></li>
                         </ul>
                     </div>
                 </div>
@@ -118,10 +106,10 @@
                     <button class="post-meta-like" (click)="react(p)">
                         <i class="bi bi-heart-beat"></i>
                         <span *ngIf="likeFilter(p.likes)">You and</span>
-                         <span>{{ p.likes ? p.likes.length : '0' }} people like this</span>
+                        <!-- <span>{{ p.likes ? p.likes.length : '0' }} people like this</span> -->
                         <strong></strong>
                     </button>
-                    <ul *ngIf="!userIdAdmin" class="comment-share-meta">
+                    <ul *ngIf="userIdAdmin==''" class="comment-share-meta">
                         <li>
                             <button class="post-comment" (click)="openPost($event,p)">
                                 <i class="bi bi-chat-bubble"></i>
@@ -135,15 +123,14 @@
 
     </div>
 
-    <p *ngIf="post.length == 0" style="text-align: center; margin: auto">No Post Available</p>
 
     <!-- post status end -->
-    <div *ngIf="post.length != 0">
-      <br>
-      <button type="button" *ngIf="!openSpinner" class="submit-btn" style="margin: auto"  (click)="loadMore()"> Load more ...</button>
+    <button type="button" *ngIf="!openSpinner || post.length < 0" class="submit-btn" style="margin: auto"  (click)="loadMore()"> Load more ...</button>
+
+
+    <div  class="modal fade" id="editPost">
+        <app-edit-post (loadNewData)="loadNewData()"  [postId]="postId"></app-edit-post>
     </div>
-
-
 
 </div>
 

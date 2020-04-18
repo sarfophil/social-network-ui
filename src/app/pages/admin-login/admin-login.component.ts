@@ -21,15 +21,14 @@ export class AdminLoginComponent implements OnInit {
   }
 
   onSubmit(){
-   
     this.service.post(API_TYPE.ADMIN,'login',this.signInForm.value).subscribe((res:{access_token:string})=>{
       localStorage.setItem("access_token",res.access_token)
       localStorage.setItem("isAdmin",'true');
 
       function user(user:User){
-        
         return user;
       }
+
       let userr  = user({
         "_id": "String",
         "username": "String",
