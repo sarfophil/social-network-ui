@@ -100,26 +100,14 @@ const socketConfig: SocketIoConfig = {url: environment.socketEndpoint,options: {
     NotfoundComponent,
     TimelineComponent,
     FollowingComponent,
-<<<<<<< HEAD
-<<<<<<< HEAD
     AdminAccountReviewComponent,
-    AdvertComponentComponent
-=======
-    NotificationComponent
->>>>>>> 58dd813638f90a0710ce0b13b826ecdfc1c0e043
-=======
+    AdvertComponentComponent,
     NotificationComponent,
     ImagePipe,
     AdminPostComponent,
     FollowButtonComponent,
-<<<<<<< HEAD
-    FriendsComponent
->>>>>>> 520a3ec1165ea69026954ce7be1397b914ccd62e
-=======
     FriendsComponent,
     WordsHighlighterPipe
->>>>>>> 4f74b2a72f95cf7a1fe5f628ecbb2872ea341993
-
   ],
   imports: [
     BrowserModule,

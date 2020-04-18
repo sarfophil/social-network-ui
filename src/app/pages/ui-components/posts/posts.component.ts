@@ -103,11 +103,7 @@ export class PostsComponent implements OnInit {
     if (postType === PostType.USER_POSTS) {
       this.apiType = API_TYPE.POST
       this.path = `search`
-<<<<<<< HEAD
       this.queryParam = `?query=${this.postData}&limit= ${this.limit}`
-=======
-      this.queryParam = `?query=${this.postData}&limit=${this.limit}&skip=${this.skip}`
->>>>>>> 520a3ec1165ea69026954ce7be1397b914ccd62e
 
     }
 
@@ -115,19 +111,7 @@ export class PostsComponent implements OnInit {
     if (postType === PostType.SEARCH_POSTS) {
       this.apiType = API_TYPE.POST;
       this.path = 'search'
-<<<<<<< HEAD
       this.queryParam = `?query=${this.postData}&limit= ${this.limit}`
-=======
-      this.queryParam = `?query=${this.postData}&limit=${this.limit}&skip=${this.skip}`
-
-    }
-
-    //Account Review Post
-    if (postType === PostType.ACCOUNT_REVIEW) {
-      this.apiType = API_TYPE.POST
-      this.path = `${this.userIdAdmin}/unhealthy`;
-      this.queryParam = `?limit= ${this.limit}&skip= ${this.skip}`
->>>>>>> 520a3ec1165ea69026954ce7be1397b914ccd62e
 
     }
 
