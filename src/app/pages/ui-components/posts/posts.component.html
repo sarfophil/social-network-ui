@@ -49,6 +49,8 @@
     </div>
 </div>
 
+
+
 <div>
     <!--  Pending Post-->
   <div *ngIf="pendingPost">
@@ -59,7 +61,7 @@
     <!-- post status start -->
     <div >
 
-        
+
         <div class="card fadeInUp " *ngFor="let p of post"  [@loadingPlaceholder]="showPlaceholder ? 'close':'open'">
 
             <!-- post title start -->

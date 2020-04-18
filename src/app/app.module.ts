@@ -48,7 +48,6 @@ import { AdBannerComponent } from './pages/ui-components/ad-banner/ad-banner.com
 import { AdminAccountReviewComponent } from './pages/admin-ui-components/admin-account-review/admin-account-review.component';
 import { NotfoundComponent } from "./pages/notfound/notfound.component";
 
-
 import { FollowingComponent } from './pages/ui-components/following/following.component';
 <<<<<<< HEAD
 import { AdminAccountReviewComponent } from './pages/admin-ui-components/admin-account-review/admin-account-review.component';
@@ -66,6 +65,7 @@ import { from } from 'rxjs';
 
 import { FollowButtonComponent } from './pages/ui-components/follow-button/follow-button.component';
 import { FriendsComponent } from './pages/friends/friends.component';
+import { WordsHighlighterPipe } from './pipe/words-highlighter/words-highlighter.pipe';
 
 
 // socket config
@@ -121,8 +121,13 @@ const socketConfig: SocketIoConfig = {url: environment.socketEndpoint,options: {
     ImagePipe,
     AdminPostComponent,
     FollowButtonComponent,
+<<<<<<< HEAD
     FriendsComponent
 >>>>>>> 520a3ec1165ea69026954ce7be1397b914ccd62e
+=======
+    FriendsComponent,
+    WordsHighlighterPipe
+>>>>>>> 4f74b2a72f95cf7a1fe5f628ecbb2872ea341993
 
   ],
   imports: [
