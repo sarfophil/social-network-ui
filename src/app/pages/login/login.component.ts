@@ -82,7 +82,8 @@ export class LoginComponent implements OnInit {
         else this.snackbar.open(`${err.message}`)
       },
       complete:() => {
-        this.router.navigate(['/home'])
+        let url = response.user.followers.length === 0 ? '/friends' : '/home'
+        this.router.navigate([url])
           .then((res) => {
             console.log(`Navigation: ${res}`)
             if(!res) {

@@ -57,6 +57,7 @@ import { AdminPostComponent } from './pages/admin-ui-components/admin-post/admin
 import { from } from 'rxjs';
 
 import { FollowButtonComponent } from './pages/ui-components/follow-button/follow-button.component';
+import { FriendsComponent } from './pages/friends/friends.component';
 
 
 // socket config
@@ -102,8 +103,9 @@ const socketConfig: SocketIoConfig = {url: environment.socketEndpoint,options: {
     FollowingComponent,
     NotificationComponent,
     ImagePipe,
-    AdminPostComponent
-    FollowButtonComponent
+    AdminPostComponent,
+    FollowButtonComponent,
+    FriendsComponent
 
   ],
   imports: [

@@ -20,6 +20,7 @@ import {UserResolverService} from "./service/user-resolver/user-resolver.service
 import {FollowingComponent} from "./pages/ui-components/following/following.component";
 import {AdBannerComponent} from "./pages/ui-components/ad-banner/ad-banner.component";
 import {AdResolverService} from "./service/adResolver/ad-resolver.service";
+import {FriendsComponent} from "./pages/friends/friends.component";
 
 
 const routes: Routes = [
@@ -124,6 +125,12 @@ const routes: Routes = [
     resolve: {
       user: AdResolverService
     }
+  },
+  {
+    path: 'friends',
+    component: FriendsComponent,
+    canActivate: [CanActivateTeamService],
+    data: {role: ['USER_ROLE']}
   }
 ];
 

@@ -10,3 +10,7 @@
 .loader{
   margin: auto;
 }
+
+.submit-btn:disabled{
+  opacity: 0.4;
+}
