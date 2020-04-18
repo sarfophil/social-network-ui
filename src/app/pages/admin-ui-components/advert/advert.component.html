@@ -23,10 +23,10 @@
                     <img class="card-img-top" [src]="sanitize(advert.downloadedImageBlob)" alt="post image">
                     <div class="card-body">
                         <h5 class="card-title">{{advert.title}}</h5>
-                        <p class="card-text">{{advert.content}}</p>
-                        <button style="font-size:medium;" (click)="delete(advert._id) "
+                        <p class="card-text">{{advert.content | shorten : 50}}</p>
+                        <button style="font-size:medium;" (click)="delete(advert._id,$event) "
                             class="badge badge-success mr-1">Push </button>
-                        <button style="font-size: medium;" (click)="delete(advert._id);$event.stopPropagation()"
+                        <button style="font-size: medium;" (click)="delete(advert._id,$event);"
                             class="badge badge-danger">Delete </button>
                         <p class="card-text"><small class="text-muted">Created {{advert.createdDate|dateAgo}}</small>
                         </p>
@@ -174,7 +174,7 @@
                         class="badge badge-danger">Delete </button>
                     <p class="card-text"><small class="text-muted">Created {{advertisment.createdDate|dateAgo}}</small>
                     </p>
-  
+
 
 
         </div>

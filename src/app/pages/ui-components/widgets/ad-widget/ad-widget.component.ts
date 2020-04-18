@@ -38,7 +38,7 @@ export class AdWidgetComponent implements OnInit {
 
   isLoadingMore: boolean = false;
 
-  limit: number = 3;
+  private readonly limit: number = 3;
 
   skip: number = 0;
 
@@ -71,12 +71,14 @@ export class AdWidgetComponent implements OnInit {
       )
       .subscribe(
       (response: Array<Advert>) => {
-          if(response.length == 0){
+
+          this.adsList = this.adsList.concat(response);
+          if(this.adsList.length == 0){
             this.isLoading = true
           }else {
             this.isLoading = false
-            this.adsList = response;
           }
+
 
       },
       (error => {
@@ -123,7 +125,7 @@ export class AdWidgetComponent implements OnInit {
 
   loadMore() {
       this.isLoadingMore = true;
-      this.skip += 1 * this.limit;
+      this.skip += 1
       this.loadAds()
   }
 }
