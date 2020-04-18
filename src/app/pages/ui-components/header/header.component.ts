@@ -60,6 +60,7 @@ export class HeaderComponent implements OnInit,OnDestroy {
 
   // View All Links from post search
   viewAllRoute:string = ''
+  searchkeyword: any;
 
   constructor(private router:Router,private route: ActivatedRoute,private _eref: ElementRef,
               private provider : ProviderService,private dialog: MatDialog,private socketioService: SocketioService) { }
@@ -81,9 +82,6 @@ export class HeaderComponent implements OnInit,OnDestroy {
         })
     )
 
-    this.route.params.subscribe((param) => {
-        console.log(param)
-    })
   }
 
   expandNotification(){
@@ -114,6 +112,13 @@ export class HeaderComponent implements OnInit,OnDestroy {
     this.router.navigateByUrl('/login')
     localStorage.clear()
   }
+
+  adminSignout(event:MouseEvent){
+    event.preventDefault();
+    this.router.navigateByUrl('/admin/login')
+    localStorage.clear()
+  }
+
 
   search(keyword:string){
     this.viewAllRoute = '/search/'.concat(keyword)
@@ -146,8 +151,8 @@ export class HeaderComponent implements OnInit,OnDestroy {
   notification($event: MouseEvent) {
     $event.preventDefault()
     let dialogRef = this.dialog.open(NotificationComponent,{
-        width: '700px',
-        height: '900px'
+        minWidth: '400px',
+        minHeight: '30%'
     })
   }
 }

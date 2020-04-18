@@ -13,7 +13,7 @@ import { LoginWidgetComponent } from 'src/app/pages/ui-components/login-widget/l
 })
 export class ProviderService {
 
-  constructor(private http:HttpClient,private config: ConfigService,private dialog: MatDialog) { }
+  constructor(private http: HttpClient, private config: ConfigService, private dialog: MatDialog) { }
 
 
   /**
@@ -22,46 +22,50 @@ export class ProviderService {
    * @param pathName
    * @param body
    */
-  post(apiType:API_TYPE,pathName,body){
+  post(apiType: API_TYPE, pathName, body) {
     // concat url
     const url = `${environment.apiEndpoint}${apiType}${pathName}`;
 
     // options
     const httpOptions = {
-       headers:  this.config.getHeaders()
+      headers: this.config.getHeaders()
     }
 
-    return this.http.post(url,body,httpOptions)
-          .pipe(
-            catchError(this.config.handleError)
-          )
+    return this.http.post(url, body, httpOptions)
+      .pipe(
+        catchError(this.config.handleError)
+      )
   }
 
 
-  upload(apiType:API_TYPE,pathName:string = '',formData: FormData,
-         httpOptions = { headers: this.config.getHeadersMultipart() }){
-      const url = `${environment.apiEndpoint}${apiType}${pathName}`
-      return this.http.put(url,formData,httpOptions)
-        .pipe(
-            catchError(this.config.handleError)
-        )
+  upload(apiType: API_TYPE, pathName: string = '', formData: FormData,
+    httpOptions = { headers: this.config.getHeadersMultipart() }) {
+    const url = `${environment.apiEndpoint}${apiType}${pathName}`
+    return this.http.put(url, formData, httpOptions)
+      .pipe(
+        catchError(this.config.handleError)
+      )
   }
 
-
-
-  put(apiType:API_TYPE,pathName,body){
+  /**
+   * Put method
+   * @param apiType
+   * @param pathName
+   * @param body
+   */
+  put(apiType: API_TYPE, pathName, body) {
     // concat url
     const url = `${environment.apiEndpoint}${apiType}${pathName}`;
 
     // options
     const httpOptions = {
-       headers:  this.config.getHeadersMultipart()
-    }
+      headers: this.config.getHeadersMultipart()
+    };
 
-    return this.http.put(url,body,httpOptions)
-          .pipe(
-            catchError(this.config.handleError)
-          )
+    return this.http.put(url, body, httpOptions)
+      .pipe(
+        catchError(this.config.handleError)
+      )
   }
 
 
@@ -72,43 +76,51 @@ export class ProviderService {
    * @param queryParam should start with [?example=value&example2=value2]
    * @param httpOptions
    */
-  get(apiType:API_TYPE,pathName,queryParam:string = '',httpOptions: Object = {headers:  this.config.getHeaders()}) {
+  get(apiType: API_TYPE, pathName, queryParam: string = '', httpOptions: Object = { headers: this.config.getHeaders() }) {
     // concat url
     const url = `${environment.apiEndpoint}${apiType}${pathName}${queryParam}`;
 
-    return this.http.get(url,httpOptions).pipe(
+    return this.http.get(url, httpOptions).pipe(
       retry(2), // retries 2 times when request fails
       catchError(this.config.handleError)
     )
   }
 
 
-  
 
-  delete(apiType:API_TYPE,pathName,queryParam,httpOptions:Object = {headers:  this.config.getHeaders()}) {
+  //FormData Post
+formdataPost(apiType:API_TYPE,pathName,formdata,httpOptions: Object = {headers:  this.config.getHeaders()}){
+  const url = `${environment.apiEndpoint}${apiType}${pathName}`;
+
+ return this.http.post(url ,formdata,httpOptions);
+}
+
+
+
+ delete(apiType: API_TYPE, pathName, queryParam, httpOptions: Object = { headers: this.config.getHeaders() }) {
     // concat url
     const url = `${environment.apiEndpoint}${apiType}${pathName}${queryParam}`;
-    return this.http.delete(url,httpOptions).pipe(
+    return this.http.delete(url, httpOptions).pipe(
       retry(2), // retries 2 times when request fails
       catchError(this.config.handleError)
-    )  
-  }
+    )
+ }
 
 
-  onTokenExpired(content:string,statusCode:number): void{
-    let expired = content == 'Token Expired'? true : false;
-        if(expired && statusCode === 403){
-            // launch Modal
-            let dialogRef = this.dialog.open(LoginWidgetComponent,{
-              maxWidth: '500px',
-              maxHeight: '300px',
-              data: this
-            })
+  onTokenExpired(content: string, statusCode: number): void {
+    let expired = content == 'Token Expired' ? true : false;
+    if (expired && statusCode === 403) {
+      // launch Modal
+      let dialogRef = this.dialog.open(LoginWidgetComponent, {
+        maxWidth: '500px',
+        maxHeight: '300px',
+        data: this
+      })
 
-            dialogRef.afterClosed().subscribe((res) => {
-              location.reload()
-            })
-        }
+      dialogRef.afterClosed().subscribe((res) => {
+        location.reload()
+      })
+    }
   }
 
 

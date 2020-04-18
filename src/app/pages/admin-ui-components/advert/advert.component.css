@@ -1,0 +1,28 @@
+ input.ng-valid , textarea.ng-valid  {
+    border-left: 5px solid #42A948; /* green */
+  }
+  
+  .ng-invalid:not(form)  {
+    border-left: 5px solid #a94442; /* red */
+  }
+
+  .validation-errors{
+    color: #a94442; /* red */
+  }
+  .card{
+      padding:  2px;
+  }
+
+  .card:hover{
+      cursor: pointer;
+  }
+
+ .back {
+    position: absolute;
+    color: #dc4734;
+    background-color:  #ffffffb0;
+    font-size: 16px;
+    padding: 12px 24px;
+    border-radius: 5px;
+    z-index: 10000;
+  }

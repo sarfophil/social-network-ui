@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
-import { UserService } from './user.service';
+import { AdResolverService } from './ad-resolver.service';
 
-describe('UserService', () => {
+describe('AdResolverService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: UserService = TestBed.get(UserService);
+    const service: AdResolverService = TestBed.get(AdResolverService);
     expect(service).toBeTruthy();
   });
 });

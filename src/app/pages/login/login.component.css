@@ -6,7 +6,20 @@
 .other-links{
     padding-top: 12px;
     font-size: 16px;
+    text-align: center;
+    width: 100%;
 }
+
+
+.submit-btn:disabled{
+  opacity: 0.4;
+}
+
+.login-btn:disabled{
+  opacity: 0.4;
+}
+
+
 
 .other-links a{
     color: #dc4734;

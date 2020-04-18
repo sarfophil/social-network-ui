@@ -1,0 +1,162 @@
+<app-create-post *ngIf="!userIdAdmin" (loadNewData)="loadNewData()" [pageType]="postState"></app-create-post>
+<br>
+
+<!-- Modal start -->
+<div class="modal fade large" id="postModal" aria-labelledby="postModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">User name</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body custom-scroll">
+                <div class="row">
+                    <div class="col-lg-7">
+
+                    </div>
+                    <div class="col-lg-4"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal end -->
+
+
+
+
+
+
+<!-- share box end -->
+<div class="box-placeholder" style="width: 100%; margin: auto;"
+    [@loadingPlaceholder]="showPlaceholder ? 'open':'close'">
+    <div class="p-4">
+        <span class="category text link"></span>
+        <h4 class="text line"></h4>
+        <h4 class="text"></h4>
+    </div>
+    <hr>
+    <div class="image">
+        <div class="embed-responsive embed-responsive-16by9"></div>
+    </div>
+    <hr>
+    <div class="excerpt p-4">
+        <div class="text line"></div>
+        <div class="text line"></div>
+        <div class="text"></div>
+    </div>
+</div>
+
+<div>
+    <!--  Pending Post-->
+    <div *ngIf="pendingPost">
+        <div class="spinner-loader" style="margin: auto;"></div>
+        <br>
+    </div>
+    <!--    -->
+    <!-- post status start -->
+  <div class="container">
+    <div class="row">
+          <br><br>
+          <div class="col-4"
+               [@loadingPlaceholder]="showPlaceholder ? 'close':'open'" *ngFor="let p of post" style="padding-top: 10px; ">
+
+
+
+            <div class="card fadeInUp ">
+
+              <!-- post title start -->
+              <div class="post-title d-flex align-items-center">
+                <!-- profile picture end -->
+                <div class="profile-thumb">
+                  <a href="#">
+                    <figure *ngIf="!userIdAdmin" class="profile-thumb-middle">
+                      <app-profile-photo [imageName]="p.userProfilePicture" [style]="" class="profile-pic">
+                      </app-profile-photo>
+                    </figure>
+                  </a>
+                </div>
+                <!-- profile picture end -->
+                <div class="posted-author">
+
+                  <!-- <h6 *ngIf= class="author"><a [routerLink]="'/profile/'+p.id+'/timeline'">{{p.username}}</a></h6> -->
+
+                  <h6 class="author"><a [routerLink]="'/profile/'+p.userId+'/timeline'">{{p.username}}</a></h6>
+
+                  <span class="post-time">{{p.createdDate | dateAgo}}</span>
+                </div>
+
+              </div>
+
+              <!-- post title start -->
+              <div class="post-content mb-2">
+                <p class="post-desc">
+                  {{p.content | shorten : 10}}
+                </p>
+                <div class="post-thumb-gallery img-gallery">
+                  <div class="row no-gutters">
+
+                    <div *ngIf="p.image" class="col-12">
+
+                      <figure class="post-thumb">
+                        <a class="gallery-selector" href="#" (click)="openPost($event,p)">
+                          <img [src]="sanitize(p.downloadedImageBlob)" alt="post image">
+                        </a>
+                      </figure>
+
+                    </div>
+                  </div>
+                </div>
+                <div class="post-meta">
+                  <button class="post-meta-like" (click)="react(p)">
+                    <i class="bi bi-heart-beat"></i>
+                    <span *ngIf="likeFilter(p.likes)">You and</span>
+                    <span>{{ p.likes ? p.likes.length : '0' }} people like this</span>
+                    <strong></strong>
+                  </button>
+                  <ul *ngIf="!userIdAdmin" class="comment-share-meta">
+                    <li>
+                      <button class="post-comment" (click)="openPost($event,p)">
+                        <i class="bi bi-chat-bubble"></i>
+                        <span>{{p.comments.length}}</span>
+                      </button>
+                    </li>
+                  </ul>
+                </div>
+
+
+              </div>
+
+              <div style="position: absolute; bottom: 0.5rem; left: 0.5rem; " class="btn-group">
+                <button style="font-size: medium;" class="badge badge-danger mr-2 active"
+                        (click)="deletePost(p.id)"><i class="fas fa-trash-alt"></i> Delete</button>
+                <button style="font-size: medium;" class="badge badge-primary mr-2 active" *ngIf="userIdAdmin!=''"
+                        (click)="acceptBlacklistedPost(p._id)"><i class="fas fa-check-circle"></i>Approve</button>
+              </div>
+            </div>
+
+
+          </div>
+
+
+
+
+    </div>
+  </div>
+
+    <p *ngIf="post.length ==0" style="text-align: center; margin: auto">No Post Available</p>
+
+    <!-- post status end -->
+    <div *ngIf="post.length != 0">
+        <br>
+        <button type="button" *ngIf="!openSpinner" class="submit-btn" style="margin: auto" (click)="loadMore()"> Load
+            more ...</button>
+    </div>
+
+
+
+</div>
+
+<div class="spinner-loader" style="margin: auto" *ngIf="openSpinner"></div>

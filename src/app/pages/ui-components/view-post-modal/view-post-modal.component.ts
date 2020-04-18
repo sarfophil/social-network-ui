@@ -119,7 +119,6 @@ export class ViewPostModalComponent implements OnInit,OnDestroy {
       this.post = this.data;
       this.populateLikes();
       this.loadComments(LoadingStrategy.PARTIAL);
-      this.countComment();
       this.previewPostImages()
 
   }
@@ -222,8 +221,12 @@ export class ViewPostModalComponent implements OnInit,OnDestroy {
       )
   }
 
+  /**
+   * Comment creation
+   */
   createComment() {
-    if(!this.commentInput){
+
+    if(this.commentInput){
       // @ts-ignore
       this.post.comments.push({content: this.commentInput,postId: this.post._id})
 
@@ -235,7 +238,7 @@ export class ViewPostModalComponent implements OnInit,OnDestroy {
       this.isCreatingCommentState = true;
       this.provider.post(API_TYPE.POST,path,body)
         .subscribe((res) => {
-          let snackBar$ = this.snackBar.open(`Comment Posted!`, 'OK');
+          let snackBar$ = this.snackBar.open(`Comment Posted!`, 'OK', {duration: 3000});
           this.sound.play();
         },(error => {
           this.isCreatingCommentState = false;
@@ -244,13 +247,11 @@ export class ViewPostModalComponent implements OnInit,OnDestroy {
         }),() => {
           this.commentInput = '';
           // Refresh
+          console.log(`Refreshed here`)
           this.skip = 0;
           this.loadComments(LoadingStrategy.DEFAULT);
           this.isCreatingCommentState = false;
 
-          // scroll to bottom
-        //  let commentSection: HTMLElement = document.getElementById('commentSection');
-         // commentSection.scrollTop = commentSection.scrollHeight;
         })
     }
 
@@ -310,6 +311,9 @@ export class ViewPostModalComponent implements OnInit,OnDestroy {
     this.likes = totalLikes == 0?'Be the first to like this':`${totalLikes} people liked this`;
   }
 
+  /**
+   * Image gallery
+   */
   nextImage(){
     this.currentImagePreview = this.postImagesHolder[this.currentImageIndex == this.postImagesHolder.length-1?
                                            this.postImagesHolder.length-1:this.currentImageIndex++]

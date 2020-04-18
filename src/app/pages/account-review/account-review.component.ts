@@ -31,7 +31,7 @@ export class AccountReviewComponent implements OnInit {
   ngOnInit() {
       this.reviewForm = this.fb.group(
         {
-           email: ['',Validators.email]
+           email: ['',Validators.required]
         }
       )
   }
@@ -44,12 +44,12 @@ export class AccountReviewComponent implements OnInit {
         .subscribe(
           (res) => {
               this.isLoading = false;
-              this.snackbar.open('Request sent! You will recieve an email');
+              this.snackbar.open('Request sent! You will recieve an email','Ok');
               this.dialogRef.close()
           },
           (error => {
             this.isLoading = false;
-            this.snackbar.open('Email not available in our platform')
+            this.snackbar.open('Sorry,Your Account has not been blocked','Ok')
           })
         )
   }

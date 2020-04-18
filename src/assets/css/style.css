@@ -2322,7 +2322,9 @@ textarea:focus {
   border: 1px solid #333333;
   background-color: transparent;
 }
-
+input.ng-invalid{
+  border: 1px solid red;
+}
 .request-btn-inner .frnd-btn.delete:hover {
   color: #fff;
 }

@@ -13,6 +13,10 @@
             <div class="profile-desc text-center">
                 <h6 class="author"><a [routerLink]="'/profile/'+currentuser._id+'/timeline'">{{currentuser.username}}</a></h6>
                 <p>{{currentuser.email}}</p>
+                <div class="profile-details">
+                  <p class="following-text">{{currentuser.following.length+ ' Follower(s)  '}}</p>
+                  <p class="follower-text">{{currentuser.followers.length+ ' Followings.'}}</p>
+                </div>
 
                 <button class="submit-btn btn-sm" (click)="uploadPhoto()">Change Profile Picture</button>
             </div>

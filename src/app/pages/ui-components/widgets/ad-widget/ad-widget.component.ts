@@ -10,6 +10,7 @@ import { environment } from 'src/environments/environment';
 import {DomSanitizer} from "@angular/platform-browser";
 import {of} from "rxjs";
 import {switchMap} from "rxjs/operators";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-ad-widget',
@@ -37,16 +38,16 @@ export class AdWidgetComponent implements OnInit {
 
   isLoadingMore: boolean = false;
 
-  limit: number = 3;
+  private readonly limit: number = 3;
 
   skip: number = 0;
 
-  constructor(private provider: ProviderService,private sanitizer: DomSanitizer) { }
+  constructor(private provider: ProviderService,private sanitizer: DomSanitizer,private router: Router) { }
 
   ngOnInit() {
       this.user = JSON.parse(localStorage.getItem('active_user'))
       this.loadAnimy();
-      setTimeout(()=> this.loadAds(),1000)
+      setTimeout(()=> this.loadAds(),3000)
   }
 
 
@@ -70,13 +71,20 @@ export class AdWidgetComponent implements OnInit {
       )
       .subscribe(
       (response: Array<Advert>) => {
-          this.adsList = response;
+
+          this.adsList = this.adsList.concat(response);
+          if(this.adsList.length == 0){
+            this.isLoading = true
+          }else {
+            this.isLoading = false
+          }
+
+
       },
       (error => {
         this.isLoading = false;
       }),
       (()=>{
-        this.isLoading = false;
         this.isLoadingMore = false
       })
     )
@@ -103,7 +111,8 @@ export class AdWidgetComponent implements OnInit {
   }
 
   visit(ad: Advert) {
-
+    // @ts-ignore
+    this.router.navigate([`/ads/${ad._id}`],{data: ad})
   }
 
   redirect(link: string) {
@@ -116,7 +125,7 @@ export class AdWidgetComponent implements OnInit {
 
   loadMore() {
       this.isLoadingMore = true;
-      this.skip += 1 * this.limit;
+      this.skip += 1
       this.loadAds()
   }
 }

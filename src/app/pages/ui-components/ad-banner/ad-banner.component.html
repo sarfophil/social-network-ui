@@ -1,1 +1,64 @@
-<p>ad-banner works!</p>
+<app-header [headerType] = "'user'"></app-header>
+<br><br>
+<main>
+  <div class="main-wrapper">
+        <div class="container">
+          <div class="box-placeholder" style="width: 100%; margin: auto;"
+               [@loadingPlaceholder]="showPlaceholder ? 'open':'close'">
+            <div class="p-4">
+              <span class="category text link"></span>
+              <h4 class="text line"></h4>
+              <h4 class="text"></h4>
+            </div>
+            <hr>
+            <div class="image">
+              <div class="embed-responsive embed-responsive-16by9"></div>
+            </div>
+            <hr>
+            <div class="excerpt p-4">
+              <div class="text line"></div>
+              <div class="text line"></div>
+              <div class="text"></div>
+            </div>
+          </div>
+
+          <div class="card" *ngIf="advert" [@loadingPlaceholder]="showPlaceholder ? 'close':'open'">
+
+            <div class="card-body">
+              <div class="post-thumb-gallery img-gallery">
+                <div class="row no-gutters">
+                  <div class="col-12">
+                    <figure class="post-thumb">
+                      <a  class="gallery-selector">
+                        <img [src]="sanitize(advert.bannerImageUrl)" alt="post image">
+                      </a>
+                    </figure>
+                    <hr>
+                  </div>
+                  <div class="col-12">
+
+                    <div class="ad-description">
+                      <p>{{advert.content }}</p>
+                      <small>{{advert.createdDate | moment}}</small>
+                    </div>
+                  </div>
+
+                  <div class="post-meta">
+                    <ul class="comment-share-meta">
+                      <li>
+                        <button class="btn-share btn-orange" (click)="visit(advert)">
+                          <span>Learn More</span>
+                        </button>
+                      </li>
+                    </ul>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+  </div>
+</main>
