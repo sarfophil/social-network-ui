@@ -25,6 +25,7 @@ export class KeywordComponent implements OnInit {
     this.providerService.get(API_TYPE.ADMIN, 'blacklistwords', '')
       .subscribe((words: Array<Words>) => {
         this.bannedWords = words;
+        localStorage.setItem('bannedWords',JSON.stringify(this.bannedWords))
       });
   }
 
@@ -40,6 +41,7 @@ export class KeywordComponent implements OnInit {
         .subscribe(
           () => {
             this.snackbar.open(`Keyword Configured`,'OK',{duration: 3000})
+            localStorage.setItem('bannedWords',JSON.stringify(this.bannedWords))
             },
           () => {
             this.snackbar.open(`Unable to configure keyword. Please try again`,'OK',{duration: 3000})
@@ -62,6 +64,7 @@ export class KeywordComponent implements OnInit {
       .subscribe(
         () => {
         this.snackbar.open(`Keyword Removed`,'Ok',{duration: 3000})
+          localStorage.setItem('bannedWords',JSON.stringify(this.bannedWords))
         },
         (error => {
           this.snackbar.open(`Unable to perform request`,'OK', {duration: 3000})

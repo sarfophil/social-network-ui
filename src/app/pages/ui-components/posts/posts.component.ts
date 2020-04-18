@@ -223,7 +223,7 @@ export class PostsComponent implements OnInit {
   deletePost(pid){
     this.showPlaceholder = true
     this.provider.delete(API_TYPE.POST,pid,'').subscribe(
-      
+
 
       (res: Array<any>) => {
         console.log('Success' + res)
@@ -322,36 +322,7 @@ export class PostsComponent implements OnInit {
      })
   }
 
-  //   load(apiType,path, query) {
-//     this.provider.get(apiType, path, query == '' ? '' : query)
-//       .pipe(
-//           map((response: Array<any>) => {
-//               let postsArr: Array<PostResponse> = [];
-//               for(let data of response){
-//                   let post = new PostResponse(data._id,data.imageLink[0],data.userDetail[0]._id,data.createdDate,data.isHealthy,data.userDetail[0].profilePicture,data.userDetail[0].username,data.likes,data.content,data.comments);
-//                   postsArr.push(post)
-//               }
-//               return postsArr
-//           }),
-//           switchMap((postArr: Array<PostResponse>) => this.requestImages(postArr))
-//       )
-//       .subscribe(
-//         (res: Array<PostResponse>) => {
-//          //   this.post = res;
-//          this.post = this.post.concat(res);
 
-//         },
-//         (error) => {
-
-//           this.showPlaceholder = false;
-//           this.provider.onTokenExpired(error.responseMessage, error.statusCode)
-//         },
-//         () => {
-//           this.openSpinner = false;
-//           this.showPlaceholder = false
-//         }
-//
-//     )
 
 
 }
