@@ -46,7 +46,7 @@ export class AdminLoginComponent implements OnInit {
       localStorage.setItem("active_user",JSON.stringify(userr));
 
 
-      this.snackbar.open("looged insuccessfully","ok",{
+      this.snackbar.open("Welcome Admin!","ok",{
         duration: 2000
       });
       this.router.navigate(['admin','dashboard'])

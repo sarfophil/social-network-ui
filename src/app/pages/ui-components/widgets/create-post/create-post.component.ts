@@ -52,9 +52,9 @@ export class CreatePostComponent implements OnInit ,AfterContentInit,AfterViewIn
 
 
   ngOnInit() {
-
+    let path = `${this.user._id}/followers`
     this.isSearchPage = this.pageType === PostType.SEARCH_POSTS;
-    this.providerService.get(API_TYPE.USER, '/followers', '').subscribe((Listusers: Array<any>) => {
+    this.providerService.get(API_TYPE.USER, path, '').subscribe((Listusers: Array<any>) => {
 
       this.users = Listusers;
 

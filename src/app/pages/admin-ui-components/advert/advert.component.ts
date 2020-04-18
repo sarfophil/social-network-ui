@@ -1,4 +1,4 @@
-import { config, Observable } from 'rxjs';
+import {config, Observable, of} from 'rxjs';
 import { Component, OnInit, ViewChild, ElementRef, TemplateRef } from '@angular/core';
 import { ProviderService } from 'src/app/service/provider-service/provider.service';
 import { API_TYPE } from 'src/app/model/apiType';
@@ -41,7 +41,7 @@ export class AdvertComponent implements OnInit {
   initializeForm(){
     this.addform = this.formBuilder.group({
       title: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(30)]],
-      content: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(70)]],
+      content: ['', [Validators.required, Validators.minLength(100), Validators.maxLength(700)]],
       link: [''],
       owner: [''],
       min: ['15', [Validators.required, this.minAge.bind(this)]],
@@ -54,11 +54,9 @@ export class AdvertComponent implements OnInit {
     //retiriving allads
     this.isActive = !this.isActive;
     console.log(this.isActive)
-    this.service.get(API_TYPE.ADMIN, 'ads', this.queryParam).pipe(switchMap(
-      (res) => {
-        this.requestImages(res)
-        return null
-      })
+    this.service.get(API_TYPE.ADMIN, 'ads', this.queryParam).pipe(
+      switchMap(
+      (res)=> this.requestImages(res))
     ).subscribe((res: []) => {
       console.log("advertisments", res);
     }, (err) => {
@@ -107,7 +105,7 @@ export class AdvertComponent implements OnInit {
       this.snackBar.open('Unable to create advertismnet', 'Ok')
 
     })
-    
+
     //reseting form
     this.initializeForm();
 
@@ -122,7 +120,7 @@ export class AdvertComponent implements OnInit {
     let files: FileList
     files = (event.target as HTMLInputElement).files;
 
-    //checking mime tipe 
+    //checking mime tipe
     for (let i = 0; i < files.length; i++) {
       this.imageUrl = [];
       var mimeType = files[i].type;
@@ -130,7 +128,7 @@ export class AdvertComponent implements OnInit {
         return;
       }
 
-      //Iimages to display on the template 
+      //Iimages to display on the template
       let reader = new FileReader();
       reader.onload = (e: any) => {
         this.imageUrl.push(e.target.result);
@@ -143,9 +141,14 @@ export class AdvertComponent implements OnInit {
     )
   }
 
-  //Delete 
+  //Delete
 
-  delete(id) {
+  delete(id,$event) {
+    $event.preventDefault()
+    // @ts:ignore
+    let lookup = this.advertisments.findIndex((ad) => ad._id === id);
+    this.advertisments.splice(lookup,1)
+
     this.service.post(API_TYPE.ADMIN,`ads/${id}`,'').subscribe((res)=>{
       this.snackBar.open('Advertisment deleted successfully', 'Ok')
 
@@ -154,10 +157,10 @@ export class AdvertComponent implements OnInit {
       this.snackBar.open('Advertisment Not found', 'Ok')
 
     })
-    
+
     //reseting form
-    this.isActive = false;
-    this.getAllAdds();
+    //this.isActive = false;
+   // this.getAllAdds();
 
   }
 
@@ -179,11 +182,11 @@ export class AdvertComponent implements OnInit {
   }
   sanitize2(downloadedImageBlobs: any) {
 for(let i = 0; i <downloadedImageBlobs.length ; i ++){
-this.advertimage.push(this.sanitizer.bypassSecurityTrustUrl(downloadedImageBlobs[i]))   
+this.advertimage.push(this.sanitizer.bypassSecurityTrustUrl(downloadedImageBlobs[i]))
  }
   }
 
-  requestImages(posts) {
+  requestImages(posts): Observable<any> {
 
     for (let post of posts) {
       console.log(post.banner[0])
@@ -200,6 +203,7 @@ this.advertimage.push(this.sanitizer.bypassSecurityTrustUrl(downloadedImageBlobs
     }
     this.advertisments = posts
     console.log(posts);
+    return of(posts)
   }
 
   async requestImages2(postsdetail) {
