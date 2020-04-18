@@ -37,13 +37,17 @@ export class ProfileComponent implements OnInit {
 
   subscribeUserFollowedEvent() {
     this.pubSub.subscribe('FOLLOWED_USER_EVENT', (res) => {
+      console.log(`Increase {}`)
       this.following += 1
     })
   }
 
   subscribeUserUnFollowedEvent() {
     this.pubSub.subscribe('UNFOLLOWED_USER_EVENT', (res) => {
-      this.following -= 1
+      console.log(`Decrease {}`)
+      if(this.following > 0){
+         this.following -= 1
+      }
     })
   }
 

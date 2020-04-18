@@ -6,6 +6,7 @@
   padding: 3px;
 }
 .follow-link{
+  display: inline-block;
   margin-left: 40px;
 }
 

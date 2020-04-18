@@ -6,7 +6,29 @@
 .other-links{
     padding-top: 12px;
     font-size: 16px;
+    text-align: center;
+    width: 100%;
 }
+
+
+.submit-btn:disabled{
+  opacity: 0.4;
+}
+
+.spinner-grow-sm{
+  display: inline-block;
+  overflow: hidden;
+  height: 0.8em;
+  width: 0.8em;
+  border-radius: 56px;
+  border: 2px solid #fff;
+  border-top-color: transparent;
+  -webkit-animation: spin .8s linear infinite;
+  animation: spin .8s linear infinite;
+  margin-left: 20px;
+}
+
+
 
 .other-links a{
     color: #dc4734;

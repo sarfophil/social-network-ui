@@ -1,11 +1,12 @@
 
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import { ProviderService } from "../../../service/provider-service/provider.service";
 import { API_TYPE } from "../../../model/apiType";
 import { User } from "../../../model/user";
 import { NgxPubSubService } from "@pscoped/ngx-pub-sub";
 import { FollowerResponse } from "../../../model/follower-response";
+import {FollowButtonState} from "../follow-button/follow-button.component";
 
 
 @Component({
@@ -18,17 +19,22 @@ export class FollowersComponent implements OnInit {
 
   followers: Array<FollowerResponse> = [];
   tempFollowersHolder: Array<FollowerResponse> = []
-  user: User = JSON.parse(localStorage.getItem("active_user"))
+  private readonly user: User = JSON.parse(localStorage.getItem("active_user"))
   isLoading: Boolean = true;
-  constructor(private route: ActivatedRoute, private providerService: ProviderService, private pubSub: NgxPubSubService) { }
+  lookupUser: User;
+  constructor(private route: ActivatedRoute, private providerService: ProviderService, private pubSub: NgxPubSubService,
+              private router: Router) { }
 
   ngOnInit() {
     setTimeout(() => this.loadFollowers(), 2000)
+    this.route.parent.data.subscribe((res) => {
+       this.lookupUser = res.user;
+    })
   }
 
 
   loadFollowers() {
-    let path = `followers`;
+    let path = `${this.user._id}/followers`;
     // @ts-ignore
     this.providerService.get(API_TYPE.USER, `${path}`, '')
       .subscribe(
@@ -56,7 +62,7 @@ export class FollowersComponent implements OnInit {
    */
   isFollowing(follower$: FollowerResponse): boolean {
     let findCurrentUser = follower$.followers.find((follower) => follower.userId == this.user._id)
-    return findCurrentUser ? true : false;
+    return !!findCurrentUser;
   }
 
   search(value: String) {
@@ -81,4 +87,44 @@ export class FollowersComponent implements OnInit {
 
   }
 
+  goToProfile($event: MouseEvent, _id: string) {
+    $event.preventDefault();
+    this.router.navigateByUrl('/home',{skipLocationChange: true})
+      .then(res => {
+        this.router.navigate([`/profile/${_id}/timeline`])
+      })
+
+  }
+
+  performAction($event: any, follower$: FollowerResponse) {
+    // successfull unfollowed
+    if($event.status === FollowButtonState.UNFOLLOW){
+
+      // publish event to listeners
+
+      if(this.lookupUser._id === this.user._id){
+        // find index from temp follower array
+        let indexOfTempFollower = this.tempFollowersHolder.findIndex((follower) => follower._id == follower$._id)
+        this.tempFollowersHolder.splice(indexOfTempFollower,1)
+
+        // only publish event if its the current user's profile
+        this.pubSub.publishEvent('UNFOLLOWED_USER_EVENT', {
+          friendId: follower$._id
+        })
+      }
+
+
+
+    } else if($event.status === FollowButtonState.FOLLOW) {
+      // publish event to listeners
+      // only publish event if its the current user's profile
+      if(this.lookupUser._id === this.user._id){
+        this.pubSub.publishEvent('FOLLOWED_USER_EVENT', {
+          friendId: follower$._id
+        })
+      }
+
+
+    }
+  }
 }

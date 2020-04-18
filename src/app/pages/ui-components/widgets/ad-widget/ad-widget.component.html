@@ -14,19 +14,18 @@
 
              <div class="post-thumb-gallery img-gallery">
                <div class="row no-gutters">
-                 <div class="col-3">
+                 <div class="col-12">
                    <figure class="post-thumb">
-                     <a (click)="redirect(advert.link)" class="gallery-selector">
+                     <a (click)="visit(advert)" class="gallery-selector">
                        <img [src]="sanitize(advert.bannerImageUrl)" alt="post image">
                      </a>
                    </figure>
                    <hr>
                  </div>
-                 <div class="col-9"></div>
                  <div class="col-12">
 
                    <div class="ad-description">
-                     <p>{{advert.content | shorten}}</p>
+                     <p>{{advert.content | shorten: 90}}</p>
                      <small>{{advert.createdDate | moment}}</small>
                    </div>
                  </div>
@@ -38,7 +37,7 @@
              <div class="post-meta">
                <ul class="comment-share-meta">
                  <li>
-                   <button class="btn-share btn-orange" (click)="redirect(advert.link)">
+                   <button class="btn-share btn-orange" (click)="visit(advert)">
                      <span>Learn More</span>
                    </button>
                  </li>
