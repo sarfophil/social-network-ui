@@ -24,7 +24,7 @@ export class AdminAccountReviewComponent implements OnInit {
   limit = 10;
   @ViewChild('modal', { static: false }) modal: ElementRef;
 
-  constructor(private router: Router, private service: ProviderService ,private snackBar:MatSnackBar) {
+  constructor(private router: Router, private service: ProviderService, private snackBar: MatSnackBar) {
     this.load();
   }
 
@@ -36,32 +36,46 @@ export class AdminAccountReviewComponent implements OnInit {
     this.accountreview = true;
     this.userId = id;
   }
-load(){
-  this.accountreview=false
-  this.service.get(API_TYPE.ADMIN, 'accounts/reviews', `?limit=${this.limit}`).subscribe(
-    (blockedAccount) => {
-      this.blockedAccounts = blockedAccount;
-      console.log(this.blockedAccounts);
-    },
-    (err) => {
-      console.log(err)
-    },
-    () => {
+  load() {
+    this.accountreview = false
+    this.service.get(API_TYPE.ADMIN, 'accounts/reviews', `?limit=${this.limit}`).subscribe(
+      (blockedAccount) => {
+        this.blockedAccounts = blockedAccount;
+        console.log(this.blockedAccounts);
+      },
+      (err) => {
+        console.log(err)
+      },
+      () => {
 
-      console.log("complete")
-    })
-}
+        console.log("complete")
+      })
+  }
   activateAccount(reviewId) {
     this.service.put(API_TYPE.ADMIN, `/accounts/reviews/${reviewId}`, '').subscribe((res: { error: boolean, message: string }) => {
       console.log(res.message);
-      this.snackBar.open("account activated",'',{
+      this.snackBar.open("account activated", '', {
         duration: 3000
       })
-        this.load();
+      this.load();
     }, (err) => {
       console.log(err)
     }, () => {
       console.log("complate");
+    })
+  }
+
+  reject(reviewId) {
+    this.service.put(API_TYPE.ADMIN, `accounts/reviews/${reviewId}/reject`, '').subscribe((res: { error: boolean, message: string }) => {
+      console.log(res.message);
+      this.snackBar.open("Account activation Rejected", '', {
+        duration: 3000
+      })
+      this.load();
+    }, (err) => {
+      console.log(err)
+    }, () => {
+      console.log("Complete");
     })
   }
 }

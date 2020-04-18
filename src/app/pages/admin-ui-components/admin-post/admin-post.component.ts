@@ -10,6 +10,8 @@ import { DomSanitizer } from "@angular/platform-browser";
 import { MatDialog } from "@angular/material/dialog";
 import { ViewPostModalComponent } from '../../ui-components/view-post-modal/view-post-modal.component';
 import { Component, OnInit, Input } from '@angular/core';
+import { NgxPubSubService } from '@pscoped/ngx-pub-sub';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-admin-posts',
@@ -30,11 +32,13 @@ import { Component, OnInit, Input } from '@angular/core';
     ])
   ]
 })
-export class AdminPostComponent implements OnInit {
+export class AdminPostComponent  implements OnInit {
   /** Useful when making a request to the server */
-  showPlaceholder: Boolean = false;
+  showPlaceholder: Boolean = true;
   skip = 0;
-  limit = 5;
+
+  private readonly limit = 3;
+
 
   /**
    * @description loadPosts method will depend on this decorator to load contents
@@ -54,17 +58,26 @@ export class AdminPostComponent implements OnInit {
   private currentUser: User = JSON.parse(localStorage.getItem('active_user'));
 
 
+  pendingPost: Boolean = false;
+
+
   private postId: {} = null;
   private path;
   private apiType: API_TYPE;
   private queryParam;
   private openSpinner: boolean = false
-  constructor(private provider: ProviderService, private sanitizer: DomSanitizer, private dialog: MatDialog) { }
+
+  constructor(private provider: ProviderService,private sanitizer: DomSanitizer,private dialog: MatDialog,
+              private pubSubService: NgxPubSubService,private snackBar: MatSnackBar) { }
+
 
   ngOnInit() {
     // this.loadPosts(this.postState)
     console.log('current user',this.currentUser);
     setTimeout(() => this.loadPosts(this.postState), 2000)
+    this.onPostCreatedEventSubscription()
+    this.onPostedSuccessfulEvent()
+    this.onPostRejectedEvent()
   }
 
   /**
@@ -107,10 +120,11 @@ export class AdminPostComponent implements OnInit {
   }
 
   loadMore() {
-    this.skip += this.limit;
+    this.skip += 1;
     this.openSpinner = true;
     this.loadPosts(this.postState)
   }
+
 
 
 
@@ -118,7 +132,6 @@ export class AdminPostComponent implements OnInit {
     this.provider.get(apiType, path, query == '' ? '' : query)
       .pipe(
         map((response: PostResponse[]) => {
-          console.log(response)
 
           return response.map((postresponce) => {
             // Mapping posts For Account and Post Review
@@ -126,7 +139,10 @@ export class AdminPostComponent implements OnInit {
           }).map((data: any) => {
             return new PostResponse(data._id, data.imageLink[0], data.userDetail[0]._id, data.createdDate, data.isHealthy, data.userDetail[0].profilePicture, data.userDetail[0].username, data.likes, data.content, data.comments);
           })
-        }),switchMap((postArr: Array<PostResponse>) => this.requestImages(postArr))).subscribe(
+          }),
+          switchMap((postArr: Array<PostResponse>) => this.requestImages(postArr))
+        )
+      .subscribe(
           (res:Array<PostResponse>) => {
             this.post = this.post.concat(res);
             console.log(res)
@@ -136,10 +152,10 @@ export class AdminPostComponent implements OnInit {
             this.provider.onTokenExpired(error.responseMessage, error.statusCode)
           },
           () => {
-            this.openSpinner = false;
-            this.showPlaceholder = true
+           this.openSpinner = false;
+           this.showPlaceholder = false
           }
-    )
+      )
   }
 
 
@@ -163,10 +179,13 @@ export class AdminPostComponent implements OnInit {
 
   }
 
+  /**
+   * @deprecated
+   */
   loadNewData() {
     this.post = [];
     this.skip = 0;
-    this.limit = 4;
+    //this.limit = 4;
     let apiType = API_TYPE.POST;
     let path = ''
     let queryParam = '?page=' + this.skip + '&limit=' + this.limit;
@@ -178,26 +197,33 @@ export class AdminPostComponent implements OnInit {
     this.postId = { pid: pid, rand: Math.random() }
   }
 
-  deletePost(pid) {
-    this.provider.delete(API_TYPE.POST, pid, '').subscribe(
+
+  deletePost(pid){
+    this.showPlaceholder = true
+    this.provider.delete(API_TYPE.POST,pid,'').subscribe(
+      
+
       (res: Array<any>) => {
         console.log('Success' + res)
-        this.loadNewData()
+        console.log(`Complete {}`)
+        this.snackBar.open(`Post removed successfully`,'ok',{duration: 3000})
+        this.showPlaceholder = false
+        this.post = []
+        this.loadPosts(this.postState)
       },
       (error) => {
         console.log('Success' + error)
-
+        this.snackBar.open(`An Error occurred`,'ok',{duration: 3000})
         this.showPlaceholder = false;
         this.provider.onTokenExpired(error.responseMessage, error.statusCode)
       },
       () => {
-        console.log(`Complete {}`)
-        this.showPlaceholder = true
+        
       }
     )
 
-  }
 
+  }
 
   openPost($event: MouseEvent, post: PostResponse) {
     $event.preventDefault()
@@ -210,9 +236,6 @@ export class AdminPostComponent implements OnInit {
       data: post
     })
   }
-
-
-
 
   sanitize(downloadedImageBlob: any) {
     return this.sanitizer.bypassSecurityTrustUrl(downloadedImageBlob);
@@ -238,12 +261,11 @@ export class AdminPostComponent implements OnInit {
       this.provider.put(API_TYPE.POST, path, body)
         .subscribe((res) => console.log(`liked`))
     }
-    console.log(`Lookup: ${lookup}`)
-    console.log(post.likes)
-    console.log(post.likes.length)
+
 
 
   }
+
 
 
   acceptBlacklistedPost(reviewId) {
@@ -256,4 +278,27 @@ export class AdminPostComponent implements OnInit {
 
     })
   }
+
+  onPostCreatedEventSubscription() : void{
+      this.pubSubService.subscribe('onPostCreatedEvent',(data: PostResponse) => {
+          this.pendingPost = true
+      })
+  }
+
+  onPostedSuccessfulEvent(): void{
+    this.pubSubService.subscribe(`POST_CREATED_EVENT`,() => {
+       this.skip = 0
+       this.pendingPost = false;
+       this.showPlaceholder = true;
+       this.post = [];
+       setTimeout(() => this.loadPosts(this.postState),2000)
+    })
+  }
+
+  onPostRejectedEvent(): void{
+     this.pubSubService.subscribe(`UNHEALTHY_POST_EVENT`,() => {
+        this.pendingPost = false
+     })
+  }
+
 }

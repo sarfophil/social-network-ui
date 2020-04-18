@@ -32,7 +32,8 @@
               "src/assets/css/plugins/slick.min.css",
               "src/assets/css/plugins/perfect-scrollbar.css",   
               "src/assets/css/style.css",
-              "src/assets/css/placeholder.scss"
+              "src/assets/css/placeholder.scss",
+              "node_modules/font-awesome/css/font-awesome.css"
             ],
             "scripts": [
               "src/assets/js/vendor/modernizr-3.6.0.min.js",
@@ -46,7 +47,9 @@
               "src/assets/js/plugins/imagesloaded.pkgd.min.js",
               "src/assets/js/plugins/isotope.pkgd.min.js",
               "src/assets/js/plugins/nice-select.min.js",
-              "src/assets/js/main.js"
+              "src/assets/js/main.js",
+              "node_modules/@fortawesome/fontawesome-free/js/all.js"
+
             ]
           },
           "configurations": {
