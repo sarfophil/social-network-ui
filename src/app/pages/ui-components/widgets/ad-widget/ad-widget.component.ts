@@ -10,6 +10,7 @@ import { environment } from 'src/environments/environment';
 import {DomSanitizer} from "@angular/platform-browser";
 import {of} from "rxjs";
 import {switchMap} from "rxjs/operators";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-ad-widget',
@@ -41,7 +42,7 @@ export class AdWidgetComponent implements OnInit {
 
   skip: number = 0;
 
-  constructor(private provider: ProviderService,private sanitizer: DomSanitizer) { }
+  constructor(private provider: ProviderService,private sanitizer: DomSanitizer,private router: Router) { }
 
   ngOnInit() {
       this.user = JSON.parse(localStorage.getItem('active_user'))
@@ -108,7 +109,8 @@ export class AdWidgetComponent implements OnInit {
   }
 
   visit(ad: Advert) {
-
+    // @ts-ignore
+    this.router.navigate([`/ads/${ad._id}`],{data: ad})
   }
 
   redirect(link: string) {

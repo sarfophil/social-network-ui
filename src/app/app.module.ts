@@ -51,7 +51,9 @@ import { FollowingComponent } from './pages/ui-components/following/following.co
 import { NotificationComponent } from './pages/ui-components/notification/notification.component';
 import { TimelineComponent } from './pages/ui-components/timeline/timeline.component';
 import { ImagePipe } from './pipe/imagepipe';
-import { from } from 'rxjs';
+
+import { FollowButtonComponent } from './pages/ui-components/follow-button/follow-button.component';
+
 
 
 
@@ -97,7 +99,8 @@ const socketConfig: SocketIoConfig = {url: environment.socketEndpoint,options: {
     TimelineComponent,
     FollowingComponent,
     NotificationComponent,
-    ImagePipe
+    ImagePipe,
+    FollowButtonComponent
   ],
   imports: [
     BrowserModule,
