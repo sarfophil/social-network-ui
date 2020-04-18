@@ -13,12 +13,7 @@ import { CanActivateTeamService } from './service/canActivateTeam/can-activate-t
 import { SearchComponent } from './pages/search/search.component';
 import { AdminAccountReviewComponent } from './pages/admin-ui-components/admin-account-review/admin-account-review.component';
 
-<<<<<<< HEAD
-import { AdminAccountReviewComponent } from './pages/admin-ui-components/admin-account-review/admin-account-review.component';
-import { NotfoundComponent } from './pages/404/notfound/notfound.component';
-=======
 import { NotfoundComponent } from './pages/notfound/notfound.component';
->>>>>>> 520a3ec1165ea69026954ce7be1397b914ccd62e
 
 import {TimelineComponent} from "./pages/ui-components/timeline/timeline.component";
 import {UserResolverService} from "./service/user-resolver/user-resolver.service";
