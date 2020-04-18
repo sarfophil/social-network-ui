@@ -62,35 +62,38 @@
                   <h1 class="create-acc text-center">Create An Account</h1>
                   <div class="signup-inner text-center">
                     <h5 class="title">Wellcome to Adda</h5>
-                    <form class="signup-inner--form" >
+                    <form class="signup-inner--form" [formGroup]="signUpForm" (ngSubmit)="signUp()">
+
                       <div class="row">
-                        <div class="col-6">
-                          <input  required  ngModel minlength="3"   name="email" #email="ngModel" class="single-field" placeholder="Email">
-                          <p class="alert alert-danger" *ngIf="email.touched && !email.valid" >email is required</p>
+                        <div class="col-6" >
+                          <input class="single-field" required   formControlName="email"   name="email"  placeholder="Email">
+
                         </div>
                         <div class="col-md-6">
-                          <input type="text" ngModel required minlength="3" name="username" #username="ngModel" class="single-field" placeholder="Username" >
-                          <p class="alert alert-danger" *ngIf="username.touched && !username.valid" >username is required</p>
+                          <input type="text"  required  formControlName="username"  name="username"  class="single-field" placeholder="Username" >
+
                         </div>
 
 
                         <div class="col-md-6">
-                          <input type="password"  ngModel required minlength="8"  name="password" #password="ngModel" class="single-field" placeholder="Password">
+                          <input type="password"   required formControlName="password"   name="password"  class="single-field" placeholder="Password">
 
-                          <p class="alert alert-danger" *ngIf="password.touched && !password.valid" > password is required </p>
                         </div>
+
+<!--                        <div class="col-md-6">-->
+<!--                          <input type="password"  name="confirmPassword"  required minlength="8" formControlName="confirmPassword"    class="single-field" placeholder="Confirm password">-->
+
+<!--                        </div>-->
+
                         <div class="col-md-6">
-                          <input type="password" ngModel required minlength="8"  name="conformpassword" #conformpassword="ngModel" class="single-field" placeholder="confirm password">
-                          <p class="alert alert-danger" *ngIf="conformpassword.touched && !conformpassword.valid" >password is required</p>
-                        </div>
-                        <div class="col-md-12">
-                          <select class="nice-select" ngModel name="sortby" #sortby="ngModel"  [value]='18' placeholder="Age">
-                            <option value="trending">Age</option>
-                            <option value="old">18+</option>
-                            <option value="young">18-</option>
-                          </select>
+                          <input type="number"  name="age" formControlName="age"    class="single-field" placeholder="Age" required>
 
                         </div>
+
+                        <div class="col-12">
+                          <button class="submit-btn" [disabled]="!signUpForm.valid">Create Account <span class="spinner-grow-sm" *ngIf="isCreatingAccount"></span></button>
+                        </div>
+
                         <!-- <h6 class="terms-condition">I have read & accepted the <a href="#">terms of use</a></h6> -->
                         <div class="other-links">
                           <p>Account Locked? <a href="#" (click)="reviewForm($event)">Click

@@ -33,9 +33,10 @@
                 <!-- profile picture end -->
 
                 <div class="posted-author">
-                  <h6 class="author"><a [routerLink]="'/profile/'+follower._id+'/timeline'">{{follower.username}}</a></h6>
+                  <h6 class="author"><a href="#" (click)="goToProfile($event,follower._id)">{{follower.username}}  <i style="font-size: 0.9rem; color: #dc4734">  {{follower._id === this.user._id?'| You':''}}</i></a></h6>
                   <small>{{follower.followers.length+' followers'}} &nbsp;  {{follower.following.length+' following'}}</small>
-                  <button class="add-frnd" *ngIf="follower.isFollowing" (click)="unfollow(follower)">Unfollow</button>
+<!--                  <button class="add-frnd" *ngIf="follower.isFollowing" (click)="unfollow(follower)">Unfollow</button>-->
+                  <app-follow-button [followData] = "follower" (action)="performAction($event,follower)"></app-follow-button>
                 </div>
               </div>
             </div>

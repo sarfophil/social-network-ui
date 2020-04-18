@@ -36,11 +36,10 @@ export interface LoginResponse{
   ]
 })
 export class LoginComponent implements OnInit {
-  selcetedValue:string;
   signUpForm:FormGroup;
   loginForm: FormGroup;
   isLoading: Boolean = false;
-  user: User = JSON.parse(localStorage.getItem("active_user"))
+  isCreatingAccount: Boolean = false
   constructor(private router:Router,private provider:ProviderService,
               private formBuilder:FormBuilder,private snackbar:MatSnackBar,
               private dialog: MatDialog,private activeRoute: ActivatedRoute,
@@ -55,31 +54,15 @@ export class LoginComponent implements OnInit {
     this.signUpForm=this.formBuilder.group({
       username: ['',Validators.required],
       password: ['',Validators.required],
-      email:['',Validators.required],
-      age:['',Validators.required],
-      conformpassword:['',Validators.required]
+      email:['',Validators.email],
+      age:['',Validators.required]
     })
-
-
-
-
   }
 
-  // Verifies TOken before logging in
-  implicitLogin(){
-    if(this.user){
-      this.activeRoute.data.subscribe(
-        (res) => {
-          this.router.navigateByUrl('/home')
-        },
-        (error => {
-          console.log('Error Here')
-        })
-      )
-    }
-  }
+
 
   login() {
+
     this.isLoading = true;
     let body = this.loginForm.value;
     let response: LoginResponse;
@@ -127,9 +110,34 @@ export class LoginComponent implements OnInit {
 
 
 signUp(){
-  let body = this.signUpForm.value;
-  this.provider.post(API_TYPE.USER,'account',body)
-  console.log(body)
+
+  if(this.signUpForm.valid){
+    this.isCreatingAccount = true
+    this.provider.post(API_TYPE.USER,'account',this.signUpForm.value).subscribe(
+      (res: Array<any>) => {
+        this.isCreatingAccount = false
+      },
+      (error) => {
+        this.isCreatingAccount = false;
+        this.snackbar.open(error.responseMessage,'ok',{duration: 1000})
+
+      },
+      () => {
+        console.log(`Complete {}`)
+        let snackRef = this.snackbar.open(`Account Created. Signing in ...`,'Login now')
+        snackRef.afterDismissed().subscribe((res) => {
+
+          this.loginForm.setValue({username: this.signUpForm.get('username').value,password: this.signUpForm.get('password').value})
+          this.login();
+        })
+
+      }
+    )
+  }else {
+    this.snackbar.open('All inputs are required','Ok',{ duration: 5000 })
+  }
+
+
 }
 
   reviewForm($event: MouseEvent) {
