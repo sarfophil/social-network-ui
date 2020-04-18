@@ -16,34 +16,36 @@ export class FollowingComponent implements OnInit {
 
   following:Array<FollowerResponse> = [];
   tempFollowingHolder: Array<FollowerResponse> = [];
+
   isLoading:boolean = true;
   user: User = JSON.parse(localStorage.getItem("active_user"))
   lookupUser: User;
+
   constructor(private providerService: ProviderService,private pubSub: NgxPubSubService,private router: Router,private route: ActivatedRoute) { }
 
   ngOnInit() {
-    setTimeout(() => this.loadFriends(),2000)
+    setTimeout(() => this.loadFriends(),2000);
     this.route.parent.data.subscribe((data) => {
       this.lookupUser = data.user;
-    })
-    this.subscribeUserFollowedEvent()
-    this.subscribeUserUnFollowedEvent()
+    });
+    // this.subscribeUserFollowedEvent()
+    // this.subscribeUserUnFollowedEvent()
   }
 
   loadFriends(){
-    let path = `${this.lookupUser._id}/following`;
+    let path = `${this.user._id}/following`;
     // @ts-ignore
     this.providerService.get(API_TYPE.USER, `${path}`,'')
       .subscribe(
         (response: Array<any>) => {
-          this.following = []
+          this.following = [];
           for(let res of response){
             let followerResponse: FollowerResponse = res.userId;
-            followerResponse.isFollowing = this.isFollowing(followerResponse)
+            //followerResponse.isFollowing = this.isFollowing(followerResponse)
             this.following.push(followerResponse)
           }
           this.tempFollowingHolder = this.following
-          this.isLoading = false
+          this.isLoading = false;
         },
         (error => {
           this.providerService.onTokenExpired(error.error,error.status)
@@ -100,6 +102,7 @@ export class FollowingComponent implements OnInit {
    * @param follower$
    */
   isFollowing(follower$: FollowerResponse): boolean{
+    console.log('====== ',follower$.followers)
       let findCurrentUser = follower$.followers.find((follower) => follower.userId == this.user._id)
       return !!findCurrentUser;
   }
@@ -123,16 +126,12 @@ export class FollowingComponent implements OnInit {
          let indexOfTempFollower = this.tempFollowingHolder.findIndex((follower) => follower._id == follower$._id)
          this.tempFollowingHolder.splice(indexOfTempFollower,1)
 
-
-
          // publish event to listeners
          this.pubSub.publishEvent('UNFOLLOWED_USER_EVENT', {
            friendId: follower$._id
          })
        }
 
-       // refresh
-       this.loadFriends()
 
      } else if($event.status === FollowButtonState.FOLLOW) {
        // publish event to listeners
@@ -143,6 +142,9 @@ export class FollowingComponent implements OnInit {
          })
        }
      }
+
+       // refresh
+       this.loadFriends()
   }
 
 

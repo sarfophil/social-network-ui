@@ -1,12 +1,12 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {User} from "../../../model/user";
-import {FollowerResponse} from "../../../model/follower-response";
-import {API_TYPE} from "../../../model/apiType";
-import {ProviderService} from "../../../service/provider-service/provider.service";
-import {NgxPubSubService} from "@pscoped/ngx-pub-sub";
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { User } from "../../../model/user";
+import { FollowerResponse } from "../../../model/follower-response";
+import { API_TYPE } from "../../../model/apiType";
+import { ProviderService } from "../../../service/provider-service/provider.service";
+import { NgxPubSubService } from "@pscoped/ngx-pub-sub";
 
 export enum FollowButtonState {
-  FOLLOW,UNFOLLOW,UNDEFINED
+  FOLLOW, UNFOLLOW, UNDEFINED
 }
 
 @Component({
@@ -16,7 +16,7 @@ export enum FollowButtonState {
 })
 export class FollowButtonComponent implements OnInit {
 
-  private readonly user : User = JSON.parse(localStorage.getItem('active_user'))
+  private readonly user: User = JSON.parse(localStorage.getItem('active_user'))
 
   @Input("followData") followData: FollowerResponse;
 
@@ -26,7 +26,7 @@ export class FollowButtonComponent implements OnInit {
   // action
   @Output("action") action = new EventEmitter()
 
-  constructor(private providerService: ProviderService,private pubSubService: NgxPubSubService) { }
+  constructor(private providerService: ProviderService, private pubSubService: NgxPubSubService) { }
 
   ngOnInit() {
     this.isFollowing(this.followData)
@@ -37,13 +37,13 @@ export class FollowButtonComponent implements OnInit {
 
   subscribeUserFollowedEvent() {
     this.pubSubService.subscribe('FOLLOWED_USER_EVENT', (res) => {
-      this.buttonState = FollowButtonState.UNFOLLOW
+      this.buttonState = FollowButtonState.UNFOLLOW;
     })
   }
 
   subscribeUserUnFollowedEvent() {
     this.pubSubService.subscribe('UNFOLLOWED_USER_EVENT', (res) => {
-      this.buttonState = FollowButtonState.FOLLOW
+      this.buttonState = FollowButtonState.FOLLOW;
     })
   }
 
@@ -51,22 +51,22 @@ export class FollowButtonComponent implements OnInit {
    * Method performs a checkup if current user follows a specific user.
    * @param follower$
    */
-  isFollowing(follower$: FollowerResponse): void{
+  isFollowing(follower$: FollowerResponse): void {
 
-    if(follower$){
+    if (follower$) {
 
       // check if user is not current user
-      if(follower$._id === this.user._id){
+      if (follower$._id === this.user._id) {
         this.buttonState = FollowButtonState.UNDEFINED
-      }else{
+      } else {
         let findCurrentUser = follower$.followers.find((follower) => {
-          return follower.userId == this.user._id
+          return follower.userId === this.user._id;
         })
 
-        if(findCurrentUser){
+        if (findCurrentUser) {
           // user is following
           this.buttonState = FollowButtonState.UNFOLLOW
-        }else{
+        } else {
           // user is not following
           this.buttonState = FollowButtonState.FOLLOW
         }
@@ -82,16 +82,16 @@ export class FollowButtonComponent implements OnInit {
     let indexOfFollower = this.followData.following.findIndex((follower) => follower._id == this.followData._id)
 
     // remove from array
-    this.followData.following.splice(indexOfFollower,1)
+    this.followData.following.splice(indexOfFollower, 1)
 
     let path = `${this.user._id}/unfollow/${this.followData._id}`;
-    this.providerService.put(API_TYPE.USER,path,{})
-    .subscribe((res) => {
+    this.providerService.put(API_TYPE.USER, path, {})
+      .subscribe((res) => {
         this.buttonState = FollowButtonState.FOLLOW
-        this.action.emit({status: FollowButtonState.UNFOLLOW})
+        this.action.emit({ status: FollowButtonState.UNFOLLOW })
       },
-      (error => this.action.emit({status: null}))
-    )
+        (error => this.action.emit({ status: null }))
+      )
   }
 
   follow() {
@@ -100,8 +100,8 @@ export class FollowButtonComponent implements OnInit {
     this.providerService.put(API_TYPE.USER, path, {})
       .subscribe((res) => {
         this.buttonState = FollowButtonState.UNFOLLOW
-        this.action.emit({status: FollowButtonState.FOLLOW})
+        this.action.emit({ status: FollowButtonState.FOLLOW })
       },
-      (error => this.action.emit({status: null})))
+        (error => this.action.emit({ status: null })))
   }
 }

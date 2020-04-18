@@ -36,10 +36,6 @@
 
                                     <h6 class="author"><a href="#" (click)="goToProfile($event,follower._id)">{{follower.username}}</a></h6>
                                     <small>{{follower.followers.length+' followers'}} &nbsp;  {{follower.following.length+' following'}}</small>
-                                    <!-- <button class="add-frnd" *ngIf="!follower.isFollowing" (click)="follow(follower)">Follow</button>
-                                    <button class="add-frnd" *ngIf="follower.isFollowing" (click)="unfollow(follower)">Unfollow</button> -->
-
-<!--                                    <button class="add-frnd" *ngIf="!follower.isFollowing" (click)="follow(follower)">Follow</button>-->
                                    <app-follow-button [followData] = "follower" (action)="performAction($event,follower)"></app-follow-button>
                                 </div>
                             </div>
