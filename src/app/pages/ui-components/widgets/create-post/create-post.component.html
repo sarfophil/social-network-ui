@@ -35,25 +35,52 @@
                             </button>
                         </div>
                         <div class="modal-body custom-scroll">
-                            <textarea name="content" id="content" formControlName="content" required
-                                class="share-field-big custom-scroll" maxlength="1000" placeholder="Say Something"
-                                required></textarea>
-                            <div *ngIf="postform.controls['content'].errors" class="error-msg">
-                                <div [hidden]="!postform.controls['content'].errors.required">Content is required.</div>
-                                <div [hidden]="!postform.controls['content'].errors.minLength">Content min Length is 5.
-                                </div>
-                                <div [hidden]="!postform.controls['content'].errors.maxLength">Content max Length is 30.
-                                </div>
+                            <textarea name="content" id="content" formControlName="content"
+                                class="share-field-big custom-scroll" placeholder="Say Something"></textarea>
+                            <div *ngIf="postform.controls['content'].errors&& postform.controls['content'].touched"
+                                class="validation-errors">
+                                <p *ngIf="postform.controls['content'].errors.required">
+                                    Content is required
+                                </p>
+                                <p *ngIf="postform.controls['content'].errors.minlength">
+                                    Please add more content
+                                </p>
+                                <p *ngIf="postform.controls['content'].errors.maxlength">
+                                    You have reached the maximum length
+                                </p>
                             </div>
 
                             <h6 class="modal-title">Insert your audience age</h6>
                             <input type="number" name="minAge" formControlName="minAge" placeholder="Min Age"
                                 class="mr-4 mt-2 single-field">
-                            <input type="number" name="maxAge" formControlName="maxAge" placeholder="Max Age"
-                                class=" mt-2 single-field">
-                            <br><br>
 
-                            <a class="a" class="text-danger" (click)=toggleDisplay()>Select Followers to Notify</a>
+                            <input type="number" name="maxAge" formControlName="maxAge" placeholder="Max Age"
+                                class="mt-2 single-field">
+                            <div class="ml-0">
+                                <div *ngIf="postform.controls['minAge'].errors&&postform.controls['minAge'].touched"
+                                    class="validation-errors">
+
+                                    <p *ngIf="postform.controls['minAge'].errors.invalidMinAge">
+                                        Minimum age must be less than the maximum age
+                                    </p>
+                                    <p *ngIf="postform.controls['minAge'].errors.min">
+                                        Only positive number allowed
+                                    </p>
+                                </div>
+                                <div *ngIf="postform.controls['maxAge'].errors&&postform.controls['maxAge'].touched"
+                                    class="validation-errors">
+
+                                    <p *ngIf="postform.controls['maxAge'].errors.invalidMaxAge">
+                                        Maximum age must be greater than the minimum age
+                                    </p>
+                                    <p *ngIf="postform.controls['maxAge'].errors.min">
+                                        Only positive number allowed
+                                    </p>
+                                </div>
+
+                            </div>
+                            
+                            <button class="badge badge-primary mt-3" type="button" style="font-size: medium;"  (click)=toggleDisplay()>Select Followers to Notify</button>
                             <hr [hidden]=isShow>
 
                             <div [hidden]='isShow' *ngFor="let user of users; let i = index">
@@ -67,8 +94,7 @@
                             </div>
                             <hr [hidden]=isShow>
 
-                            <br>
-                            <h4>Uload Image</h4>
+                            <h4 class="mt-3">Uload Image</h4>
                             <input accept="image/*" id="output" type="file" (change)="uploadFile($event)">
                             <div *ngIf="imageUrl">
                                 <img [src]="imageUrl" style="width: 300px;" class="mx-auto">
