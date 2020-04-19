@@ -18,6 +18,7 @@ import { NotfoundComponent } from './pages/notfound/notfound.component';
 import {TimelineComponent} from "./pages/ui-components/timeline/timeline.component";
 import {UserResolverService} from "./service/user-resolver/user-resolver.service";
 import {FollowingComponent} from "./pages/ui-components/following/following.component";
+import { AllUsersComponent } from './pages/ui-components/all-users/all-users.component';
 import {AdBannerComponent} from "./pages/ui-components/ad-banner/ad-banner.component";
 import {AdResolverService} from "./service/adResolver/ad-resolver.service";
 import {FriendsComponent} from "./pages/friends/friends.component";
@@ -68,6 +69,12 @@ const routes: Routes = [
       {
         path: 'following',
         component: FollowingComponent,
+        data: {role: ['USER_ROLE']},
+        canActivateChild: [CanActivateTeamService]
+      },
+      {
+        path: 'all-users',
+        component: AllUsersComponent,
         data: {role: ['USER_ROLE']},
         canActivateChild: [CanActivateTeamService]
       }

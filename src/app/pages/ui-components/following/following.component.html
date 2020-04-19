@@ -4,8 +4,7 @@
     <!-- share content box start -->
     <div class="share-content-box w-100">
       <form class="share-text-box">
-        <textarea name="share" (keyup)="search($event.target.value)" class="share-text-field" aria-disabled="true" placeholder="Search Followers" id="email"></textarea>
-        <!--                <button class="btn-share" type="submit">Search</button>-->
+        <textarea name="share" (keyup)="search($event.target.value)" class="share-text-field" aria-disabled="true" placeholder="Search users you follow" id="email"></textarea>
       </form>
     </div>
 
@@ -31,17 +30,14 @@
                   </a>
                 </div>
                 <!-- profile picture end -->
-
+                <!-- <i style="font-size: 0.9rem; color: #dc4734">  {{follower._id === this.user._id?'| You':''}}</i> -->
                 <div class="posted-author">
-                  <h6 class="author"><a href="#" (click)="goToProfile($event,follower._id)">{{follower.username}}  <i style="font-size: 0.9rem; color: #dc4734">  {{follower._id === this.user._id?'| You':''}}</i></a></h6>
+                  <h6 class="author"><a href="#" (click)="goToProfile($event,follower._id)">{{follower.username}}  </a></h6>
                   <small>{{follower.followers.length+' followers'}} &nbsp;  {{follower.following.length+' following'}}</small>
-<!--                  <button class="add-frnd" *ngIf="follower.isFollowing" (click)="unfollow(follower)">Unfollow</button>-->
                   <app-follow-button [followData] = "follower" (action)="performAction($event,follower)"></app-follow-button>
                 </div>
               </div>
             </div>
-
-
           </div>
           <mat-progress-spinner *ngIf="isLoading" class="loader" color="white" mode="indeterminate" value="10" strokeWidth="3" diameter="40">
           </mat-progress-spinner>

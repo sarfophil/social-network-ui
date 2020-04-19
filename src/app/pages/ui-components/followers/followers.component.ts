@@ -104,8 +104,8 @@ export class FollowersComponent implements OnInit {
 
       if(this.lookupUser._id === this.user._id){
         // find index from temp follower array
-        let indexOfTempFollower = this.tempFollowersHolder.findIndex((follower) => follower._id == follower$._id)
-        this.tempFollowersHolder.splice(indexOfTempFollower,1)
+        //let indexOfTempFollower = this.tempFollowersHolder.findIndex((follower) => follower._id == follower$._id)
+        //this.tempFollowersHolder.splice(indexOfTempFollower,1)
 
         // only publish event if its the current user's profile
         this.pubSub.publishEvent('UNFOLLOWED_USER_EVENT', {
