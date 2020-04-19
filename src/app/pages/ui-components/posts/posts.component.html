@@ -1,4 +1,4 @@
-<app-create-post *ngIf="!userIdAdmin" (loadNewData)="loadNewData()" [pageType]="postState"></app-create-post>
+<app-create-post  (loadNewData)="loadNewData()" [pageType]="postState"></app-create-post>
 <br>
 
 <!-- Modal start -->
@@ -69,7 +69,7 @@
                 <!-- profile picture end -->
                 <div class="profile-thumb">
                     <a href="#">
-                        <figure *ngIf="!userIdAdmin" class="profile-thumb-middle">
+                        <figure class="profile-thumb-middle">
                           <app-profile-photo  [imageName]="p.userProfilePicture" [style]="" class="profile-pic"></app-profile-photo>
                         </figure>
                     </a>
@@ -84,15 +84,13 @@
                     <span class="post-time">{{p.createdDate | dateAgo}}</span>
                 </div>
 
-                <div class="post-settings-bar" *ngIf="(p.userId == currentUser._id)||userIdAdmin!=''">
+                <div class="post-settings-bar" *ngIf="p.userId == currentUser._id">
                     <span></span>
                     <span></span>
                     <span></span>
-                    <div class="post-settings arrow-shape">
+                    <div class="post-settings arrow-shape" >
                         <ul>
-<!--                            <li  (click)="setPostId(p.id)" data-toggle="modal" data-target="#editPost" ><button>edit post</button></li>-->
                             <li  (click)="deletePost(p.id)" ><button>Delete Post</button></li>
-                            <li *ngIf="userIdAdmin"  (click)="acceptBlacklistedPost(p._id)" ><button>Approve Post</button></li>
                         </ul>
                     </div>
                 </div>
@@ -124,7 +122,7 @@
                          <span>{{ p.likes ? p.likes.length : '0' }} people like this</span>
                         <strong></strong>
                     </button>
-                    <ul *ngIf="!userIdAdmin" class="comment-share-meta">
+                    <ul  class="comment-share-meta">
                         <li>
                             <button class="post-comment" (click)="openPost($event,p)">
                                 <i class="bi bi-chat-bubble"></i>
