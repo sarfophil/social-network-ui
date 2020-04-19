@@ -17,10 +17,7 @@ import {NgxPubSubService} from "@pscoped/ngx-pub-sub";
 @Component({
   selector: 'app-create-post',
   templateUrl: './create-post.component.html',
-  styles: [`a{
-    color: #dc4734;
-}`],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./create-post.component.css']
 
 })
 export class CreatePostComponent implements OnInit ,AfterContentInit,AfterViewInit {
@@ -40,14 +37,7 @@ export class CreatePostComponent implements OnInit ,AfterContentInit,AfterViewIn
   imageUrl: string | ArrayBuffer;
 
   constructor(private config:ConfigService,private snackBar:MatSnackBar,private http: HttpClient, private formBuilder: FormBuilder, private providerService: ProviderService,private pubSubService: NgxPubSubService) {
-
-    this.postform = this.formBuilder.group({
-      content:new FormControl('', [Validators.required]),
-      avatar: [null],
-      minAge: [''],
-      maxAge: [''],
-      notifyFollowers: ['']
-    })
+    this.initForm();
   }
 
 
@@ -66,6 +56,15 @@ export class CreatePostComponent implements OnInit ,AfterContentInit,AfterViewIn
     })
   }
 
+  initForm(){
+    this.postform = this.formBuilder.group({
+      content:['',[Validators.required, Validators.minLength(2), Validators.maxLength(700)]],
+      avatar: [null],
+      minAge: ['',[ Validators.min(0),this.minAge.bind(this)]],
+      maxAge: ['',[ Validators.min(0),this.maxAge.bind(this)]],
+      notifyFollowers: ['']
+    })
+  }
 
   submit() {
     let audienceFollowers = [];
@@ -83,23 +82,28 @@ export class CreatePostComponent implements OnInit ,AfterContentInit,AfterViewIn
     let ageGroupTarget =  { min: this.postform.get('minAge').value, max: this.postform.get('maxAge').value }
     var formData: any = new FormData();
     formData.append("content", this.postform.get('content').value);
-    formData.append("imageLink", this.postform.get('avatar').value);
+    if(this.postform.get('avatar').value){
+      formData.append("imageLink", this.postform.get('avatar').value);
+    }
     formData.append("targetFollowers", JSON.stringify(audienceFollowers));
 
     formData.append('ageGroupTarget', JSON.stringify(ageGroupTarget)?JSON.stringify(ageGroupTarget):'');
     formData.append("notifyFollowers",new String(notifyfoll))
-    console.log(this.postform.get('avatar').value)
     console.log("notifyFollowers",new String(this.postform.get('notifyFollowers').value));
 
     const httpOptions = {
       headers:  this.config.getHeadersMultipart()
     }
 
+
     // Publishes an event on the homepage
     this.onPostCreatedEvent(formData)
 
+    console.log(formData);
+
     this.http.post(`${this.apiEndpoint}/posts`, formData,httpOptions).subscribe((data: Post) => {
       this.isCreated = true
+      console.log(data)
      // this.snackBar.open('post created successfully','Ok')
     //  this.loadNewData();
     }, error => {
@@ -110,7 +114,8 @@ export class CreatePostComponent implements OnInit ,AfterContentInit,AfterViewIn
 
     });
 
-    this.postform.reset()
+    this.initForm();
+    this.imageUrl=null;
     this.closeModall.nativeElement.click();
   }
 
@@ -159,5 +164,50 @@ export class CreatePostComponent implements OnInit ,AfterContentInit,AfterViewIn
     console.log("ng on after Content Init : " + this.closeModall);
 
   }
+
+  maxAge(max: FormControl): { [s: string]: boolean } {
+    if (this.postform) {
+      let min = this.postform.get('minAge');
+      let control = this.postform.get('maxAge');
+
+      if (control != null)
+        if (control.value > 110)
+          return { invalidMaxAge: true };
+
+
+      if (control != null && min != null) {
+        if (control.value < min.value) {
+          min.setErrors({ invalidMinAge: true })
+          return { invalidMaxAge: true };
+        }
+      }
+      min.setErrors(null)
+
+      return null;
+
+    }
+
+  }
+
+  minAge(min: FormControl): { [s: string]: boolean } {
+    if (this.postform) {
+      let max = this.postform.get('maxAge');
+      let control = this.postform.get('minAge');
+
+
+      if (control != null && max != null) {
+        if (control.value > max.value ) {
+          max.setErrors({ invalidMaxAge: true })
+          return { invalidMinAge: true };
+        }
+      }
+      if (max.value < 120)
+        max.setErrors(null)
+
+      return null;
+
+    }
+
+}
 
 }
