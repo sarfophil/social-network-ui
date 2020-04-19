@@ -23,6 +23,7 @@ speed-measure-plugin*.json
 .settings/
 *.sublime-workspace
 social-network.iml
+/dist
 
 # IDE - VSCode
 .vscode/*
@@ -45,5 +46,6 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+
 
 
