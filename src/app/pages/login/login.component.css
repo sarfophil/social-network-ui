@@ -33,4 +33,8 @@
     stroke: #fff !important;
 }
 
+.spinner-grow-sm:hover{
+  background: #0b2e13;
+}
+
 

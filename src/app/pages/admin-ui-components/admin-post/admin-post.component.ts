@@ -1,17 +1,17 @@
-import { animate, state, style, transition, trigger } from '@angular/animations';
-import { ProviderService } from 'src/app/service/provider-service/provider.service';
-import { API_TYPE } from 'src/app/model/apiType';
-import { User } from 'src/app/model/user';
-import { PostType } from 'src/app/model/post-type';
-import { of } from "rxjs";
-import { map, switchMap } from "rxjs/operators";
-import { Like, PostResponse } from "../../../model/post-response";
-import { DomSanitizer } from "@angular/platform-browser";
-import { MatDialog } from "@angular/material/dialog";
-import { ViewPostModalComponent } from '../../ui-components/view-post-modal/view-post-modal.component';
-import { Component, OnInit, Input } from '@angular/core';
-import { NgxPubSubService } from '@pscoped/ngx-pub-sub';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import {animate, state, style, transition, trigger} from '@angular/animations';
+import {ProviderService} from 'src/app/service/provider-service/provider.service';
+import {API_TYPE} from 'src/app/model/apiType';
+import {User} from 'src/app/model/user';
+import {PostType} from 'src/app/model/post-type';
+import {of} from "rxjs";
+import {map, switchMap} from "rxjs/operators";
+import {Like, PostResponse} from "../../../model/post-response";
+import {DomSanitizer} from "@angular/platform-browser";
+import {MatDialog} from "@angular/material/dialog";
+import {ViewPostModalComponent} from '../../ui-components/view-post-modal/view-post-modal.component';
+import {Component, Input, OnInit} from '@angular/core';
+import {NgxPubSubService} from '@pscoped/ngx-pub-sub';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-admin-posts',
@@ -91,7 +91,7 @@ export class AdminPostComponent  implements OnInit {
     if (this.userIdAdmin == null) {
       this.queryParam = `?user=${this.currentUser._id}&page=0&limit=5`
     }
-    
+
     //Account Review Post
     if (postType === PostType.ACCOUNT_REVIEW) {
       this.apiType = API_TYPE.POST
@@ -167,8 +167,7 @@ export class AdminPostComponent  implements OnInit {
       this.provider.get(API_TYPE.DEFAULT, 'download', queryParam, headerOption)
         .subscribe(
           (res) => {
-            let objectUrl = URL.createObjectURL(res);
-            post.downloadedImageBlob = objectUrl;
+            post.downloadedImageBlob = URL.createObjectURL(res);
           },
           (error => post.downloadedImageBlob = 'assets/img/placeholder.png')
         )
@@ -201,8 +200,6 @@ export class AdminPostComponent  implements OnInit {
   deletePost(pid){
     this.showPlaceholder = true
     this.provider.delete(API_TYPE.POST,pid,'').subscribe(
-      
-
       (res: Array<any>) => {
         console.log('Success' + res)
         console.log(`Complete {}`)
@@ -218,7 +215,7 @@ export class AdminPostComponent  implements OnInit {
         this.provider.onTokenExpired(error.responseMessage, error.statusCode)
       },
       () => {
-        
+
       }
     )
 
@@ -269,9 +266,9 @@ export class AdminPostComponent  implements OnInit {
 
 
   acceptBlacklistedPost(reviewId) {
-    console.log(reviewId)
+
     this.provider.put(API_TYPE.ADMIN, `blacklist/posts/reviews/${reviewId}`, '').subscribe((res: { err: boolean, message: string }) => {
-      this.loadNewData();
+      this.loadPosts(this.postState)
     }, (err) => {
       console.log(err);
     }, () => {
