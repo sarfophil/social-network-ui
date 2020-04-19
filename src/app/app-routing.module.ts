@@ -99,6 +99,10 @@ const routes: Routes = [
         component: AdvertComponent
       },
       {
+        path: '/ads/:adId',
+        component: AdvertComponent
+      },
+      {
         path: 'keywords',
         component: KeywordComponent
       },

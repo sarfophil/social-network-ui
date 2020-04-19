@@ -45,11 +45,10 @@ import { ViewPostModalComponent } from './pages/ui-components/view-post-modal/vi
 import { ProfilePicUploadComponent } from './pages/ui-components/profile-pic-upload/profile-pic-upload.component';
 import { NgxPubSubModule } from '@pscoped/ngx-pub-sub';
 import { AdBannerComponent } from './pages/ui-components/ad-banner/ad-banner.component';
-import { AdminAccountReviewComponent } from './pages/admin-ui-components/admin-account-review/admin-account-review.component';
 import { NotfoundComponent } from "./pages/notfound/notfound.component";
-
-
 import { FollowingComponent } from './pages/ui-components/following/following.component';
+import { AdminAccountReviewComponent } from './pages/admin-ui-components/admin-account-review/admin-account-review.component';
+import { AdvertComponentComponent } from './pages/advert-component/advert-component.component';
 import { NotificationComponent } from './pages/ui-components/notification/notification.component';
 import { TimelineComponent } from './pages/ui-components/timeline/timeline.component';
 import { ImagePipe } from './pipe/imagepipe';
@@ -57,7 +56,6 @@ import { AllUsersComponent } from './pages/ui-components/all-users/all-users.com
 
 import { AdminPostComponent } from './pages/admin-ui-components/admin-post/admin-post.component';
 import { from } from 'rxjs';
-
 import { FollowButtonComponent } from './pages/ui-components/follow-button/follow-button.component';
 import { FriendsComponent } from './pages/friends/friends.component';
 import { WordsHighlighterPipe } from './pipe/words-highlighter/words-highlighter.pipe';
@@ -104,6 +102,8 @@ const socketConfig: SocketIoConfig = {url: environment.socketEndpoint,options: {
     NotfoundComponent,
     TimelineComponent,
     FollowingComponent,
+    AdminAccountReviewComponent,
+    AdvertComponentComponent,
     NotificationComponent,
     ImagePipe,
     AllUsersComponent,
@@ -111,7 +111,6 @@ const socketConfig: SocketIoConfig = {url: environment.socketEndpoint,options: {
     FollowButtonComponent,
     FriendsComponent,
     WordsHighlighterPipe
-
   ],
   imports: [
     BrowserModule,

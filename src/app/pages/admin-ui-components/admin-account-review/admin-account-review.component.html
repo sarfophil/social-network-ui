@@ -1,3 +1,26 @@
+<<<<<<< HEAD
+<h1 class="display-4" >Account-review</h1>
+<table class="mt-4 table">
+    <thead class="thead-light">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">First Nme</th>
+        <th scope="col">Unhealthy Posts</th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let user of users ">
+            <th scope="row">1</th>
+            <td>{{user.name}}</td>
+            <td>{{user.unhealtyPosts}}</td>
+            <td><button (click)="reviewAccount(user.id)" class="btn btn-primary">Review Account</button></td>
+            <td><button (click)="activateAccount(user.id)" class="btn ">Activate Account</button></td>
+            </tr>
+    </tbody>
+  </table>
+=======
 <h1 class="display-4">Account-review</h1> <span class="display-5">Deactivated-user-Accounts</span>
 
 <table class="mt-4 table">
@@ -59,3 +82,7 @@
   <a class="btn btn-primary" (click)="accountreview = !accountreview">&laquo; Back</a>
   <app-admin-posts [userIdAdmin]="userId" [postState]="postState" [postData]="username"></app-admin-posts>
 </div>
+<<<<<<< HEAD
+>>>>>>> 520a3ec1165ea69026954ce7be1397b914ccd62e
+=======
+>>>>>>> 4f74b2a72f95cf7a1fe5f628ecbb2872ea341993
